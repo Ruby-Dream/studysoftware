@@ -18,7 +18,7 @@
     <rect>
      <x>60</x>
      <y>80</y>
-     <width>471</width>
+     <width>751</width>
      <height>501</height>
     </rect>
    </property>
@@ -41,8 +41,8 @@
   <widget class="QPushButton" name="bt_change">
    <property name="geometry">
     <rect>
-     <x>590</x>
-     <y>120</y>
+     <x>220</x>
+     <y>590</y>
      <width>111</width>
      <height>41</height>
     </rect>
@@ -96,31 +96,38 @@
     <string>下一周</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="bt_tablesetting">
+  <widget class="QWidget" name="">
    <property name="geometry">
     <rect>
-     <x>590</x>
-     <y>200</y>
-     <width>121</width>
-     <height>31</height>
+     <x>850</x>
+     <y>180</y>
+     <width>107</width>
+     <height>231</height>
     </rect>
    </property>
-   <property name="text">
-    <string>课表设置</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="pushButton">
-   <property name="geometry">
-    <rect>
-     <x>590</x>
-     <y>270</y>
-     <width>111</width>
-     <height>51</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>上下课时间设置</string>
-   </property>
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <widget class="QPushButton" name="bt_tablesetting">
+      <property name="text">
+       <string>课表设置</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QPushButton" name="pushButton">
+      <property name="text">
+       <string>上下课时间设置</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QPushButton" name="bt_coursemanager">
+      <property name="text">
+       <string>课程管理</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
   </widget>
  </widget>
  <resources/>

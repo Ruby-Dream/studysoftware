@@ -2,6 +2,7 @@
 #include "dialog_timesetting.h"
 #include "ui_courseform.h"
 #include "dialog_tablesetting.h"
+#include "widget_coursemanager.h"
 
 courseform::courseform(QWidget *parent)
     : QWidget(parent)
@@ -9,9 +10,8 @@ courseform::courseform(QWidget *parent)
 {
     ui->setupUi(this);
 
-
     db=QSqlDatabase::addDatabase("QSQLITE","tableoption");//记录课表的长和宽
-    db.setDatabaseName("E:/Qt/table.db");
+    db.setDatabaseName("table.db");
     db.open();
     sqlmodel=new QSqlTableModel(nullptr,db);
     sqlmodel->setTable("classtableoption");
@@ -22,7 +22,7 @@ courseform::courseform(QWidget *parent)
     }
 
     db2=QSqlDatabase::addDatabase("QSQLITE","time");//记录了一天内的时间安排
-    db2.setDatabaseName("E:/Qt/table.db");
+    db2.setDatabaseName("table.db");
     db2.open();
     sqlmodel2=new QSqlTableModel(nullptr,db2);
     sqlmodel2->setTable("begin_and_end_at");
@@ -33,7 +33,7 @@ courseform::courseform(QWidget *parent)
     }
 
     db3=QSqlDatabase::addDatabase("QSQLITE","course");//记录了课程信息
-    db3.setDatabaseName("E:/Qt/table.db");
+    db3.setDatabaseName("table.db");
     db3.open();
     sqlmodel3=new QSqlTableModel(nullptr,db3);
     sqlmodel3->setTable("course");
@@ -44,7 +44,7 @@ courseform::courseform(QWidget *parent)
     }
 
     db4=QSqlDatabase::addDatabase("QSQLITE","file");//记录了课件信息条目
-    db4.setDatabaseName("E:/Qt/table.db");
+    db4.setDatabaseName("table.db");
     db4.open();
     // sqlmodel4=new QSqlTableModel(nullptr,db3);
     // sqlmodel4->setTable("coursefile");
@@ -108,6 +108,7 @@ void courseform::on_bt_change_clicked(bool checked)//切换课表显示为时间
 void courseform::loadtable()//设置课表横竖表头
 {
     QStringList strlist;
+
     if(column==5){
         strlist<<"周一"<<"周二"<<"周三"<<"周四"<<"周五";
     }
@@ -142,11 +143,9 @@ void courseform::loadcourse(int weekof)//加载课程
     ui->labelweek->setText(QString::asprintf("第%d周",weekof));
     for(int i=0;i<sqlmodel3->rowCount();i++){
         QSqlRecord rec=sqlmodel3->record(i);
-        if(rec.value("weekfrom").toInt()>weekof ||rec.value("weekto").toInt()<weekof){
+        if(rec.value("weekfrom").toInt()>weekof ||rec.value("weekto").toInt()<weekof){//如果当前不在开课周和结课周之间，跳过
             continue;
         }
-        int class_begin_at=rec.value("begin_at").toInt()-1;
-        int class_end_at=rec.value("end_at").toInt();
 
         int daynumber=-1;//课在周几
         QString day=rec.value("workday_on").toString();
@@ -157,16 +156,26 @@ void courseform::loadcourse(int weekof)//加载课程
         else if(day=="周五") daynumber=4;
         else if(day=="周六") daynumber=5;
         else if(day=="周日") daynumber=6;
+        //下面这句非常重要
+        if(daynumber+1>column) continue;//比如课在周日但是课表只显示周一到周五的，就跳过
+
+        int class_begin_at=rec.value("begin_at").toInt()-1;//从哪节开始上课
+        int class_end_at=rec.value("end_at").toInt();//到哪节下课
+
         QColor c;
-        if(rec.value("color").toString()=="") c=Qt::black;
+        if(rec.value("color").toString()=="") c=Qt::black;//如果数据库没有存颜色，默认用黑色
         else c=rec.value("color").toString();
 
         for(;class_begin_at<class_end_at;class_begin_at++){
-            if(class_begin_at>row-1) break;
+            if(class_begin_at>row-1) break;//如果课程节位置超过一天范围，直接结束
             QStandardItem *m=new QStandardItem(rec.value("name").toString());
             m->setTextAlignment(Qt::AlignHCenter |Qt::AlignVCenter);
-            m->setToolTip(rec.value("text").toString());
-
+            if(rec.value("text").toString()!=""){//如果有备注
+                m->setToolTip(rec.value("text").toString());//填写备注
+                QFont font=m->font();
+                font.setBold(true);
+                m->setFont(font);//将其加粗
+            }
             m->setBackground(c);
             model->setItem(class_begin_at,daynumber,m);
         }
@@ -178,16 +187,17 @@ void courseform::on_bt_upweek_clicked()
     model->clear();
     loadtable();
     loadcourse(week-=1);
-    if(week==1) ui->bt_upweek->setHidden(true);
+    if(week==1) ui->bt_upweek->setHidden(true);//如果是从第二周切换到第一周，隐藏 上一周 按钮
+
 }
 
 
-void courseform::on_bt_downweek_clicked()
+void courseform::on_bt_downweek_clicked()//下一周
 {
     model->clear();
     loadtable();
     loadcourse(week+=1);
-    if(week>1) ui->bt_upweek->setHidden(false);
+    if(ui->bt_upweek->isHidden()) ui->bt_upweek->setHidden(false);//如果是从第一周切换到第二周，显示 上一周 按钮
 }
 
 
@@ -203,8 +213,8 @@ void courseform::on_bt_tablesetting_clicked()
         column=settable->getcuroptioncolumn();
         day=settable->getcuroptiondate();
 
-        model->setColumnCount(column);//更新长宽
-        model->setRowCount(row);
+        model->setColumnCount(column);//更新一周天数
+        model->setRowCount(row);//更新一天节数
 
         if(sqlmodel2->rowCount()>row){//如果当前课程节数大于目标值，删除多余的记录
             sqlmodel2->removeRows(row,sqlmodel2->rowCount()-row);
@@ -234,5 +244,14 @@ void courseform::on_pushButton_clicked()
     QSqlRecord rec=sqlmodel2->record(0);
     settime->inittime(rec);
     settime->exec();
+}
+
+
+void courseform::on_bt_coursemanager_clicked()
+{
+    widget_coursemanager *course=new widget_coursemanager(this,week,sqlmodel3,nullptr);
+    course->setWindowFlag(Qt::MSWindowsFixedSizeDialogHint);
+    course->setAttribute(Qt::WA_DeleteOnClose);//关闭窗口时自动释放内存，避免内存占用无限上涨
+    course->show();
 }
 

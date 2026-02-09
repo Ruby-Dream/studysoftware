@@ -13,19 +13,22 @@ SOURCES += \
     dialog_tablesetting.cpp \
     dialog_timesetting.cpp \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    widget_coursemanager.cpp
 
 HEADERS += \
     courseform.h \
     dialog_tablesetting.h \
     dialog_timesetting.h \
-    mainwindow.h
+    mainwindow.h \
+    widget_coursemanager.h
 
 FORMS += \
     courseform.ui \
     dialog_tablesetting.ui \
     dialog_timesetting.ui \
-    mainwindow.ui
+    mainwindow.ui \
+    widget_coursemanager.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

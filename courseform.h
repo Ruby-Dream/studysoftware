@@ -34,9 +34,12 @@ private slots:
 
     void on_pushButton_clicked();
 
+    void on_bt_coursemanager_clicked();
+
 private:
     Ui::courseform *ui;
     QStandardItemModel *model;
+    QWidget p;
 
     int row;//一天的课程节数
     int column;//一周的天数
