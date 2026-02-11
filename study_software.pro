@@ -9,25 +9,28 @@ CONFIG += c++17
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    courseform.cpp \
     dialog_tablesetting.cpp \
     dialog_timesetting.cpp \
     main.cpp \
     mainwindow.cpp \
+    widget_course.cpp \
+    widget_coursefile.cpp \
     widget_coursemanager.cpp
 
 HEADERS += \
-    courseform.h \
     dialog_tablesetting.h \
     dialog_timesetting.h \
     mainwindow.h \
+    widget_course.h \
+    widget_coursefile.h \
     widget_coursemanager.h
 
 FORMS += \
-    courseform.ui \
     dialog_tablesetting.ui \
     dialog_timesetting.ui \
     mainwindow.ui \
+    widget_course.ui \
+    widget_coursefile.ui \
     widget_coursemanager.ui
 
 # Default rules for deployment.

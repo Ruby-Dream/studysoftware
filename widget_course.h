@@ -1,5 +1,5 @@
-#ifndef COURSEFORM_H
-#define COURSEFORM_H
+#ifndef WIDGET_COURSE_H
+#define WIDGET_COURSE_H
 #include <QtSql>
 #include <QStandardItemModel>
 #include <QSqlTableModel>
@@ -32,14 +32,14 @@ private slots:
 
     void on_bt_tablesetting_clicked();
 
-    void on_pushButton_clicked();
-
     void on_bt_coursemanager_clicked();
+
+    void on_bt_timesetting_clicked();
 
 private:
     Ui::courseform *ui;
     QStandardItemModel *model;
-    QWidget p;
+    //QWidget p;
 
     int row;//一天的课程节数
     int column;//一周的天数
@@ -48,9 +48,9 @@ private:
 
 
     void loadtable();
-    QSqlTableModel *sqlmodel,*sqlmodel2,*sqlmodel3,*sqlmodel4;
-    QSqlDatabase db,db2,db3,db4;
-    QSqlQueryModel *qrymodel;
+    QSqlTableModel *sqlmodel,*sqlmodel2,*sqlmodel3;
+    QSqlDatabase db,db2,db3;
+    //QSqlQueryModel *qrymodel;
 };
 
-#endif // COURSEFORM_H
+#endif // WIDGET_COURSE_H

@@ -96,7 +96,7 @@
     <string>下一周</string>
    </property>
   </widget>
-  <widget class="QWidget" name="">
+  <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
      <x>850</x>
@@ -114,7 +114,7 @@
      </widget>
     </item>
     <item>
-     <widget class="QPushButton" name="pushButton">
+     <widget class="QPushButton" name="bt_timesetting">
       <property name="text">
        <string>上下课时间设置</string>
       </property>

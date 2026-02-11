@@ -1,6 +1,6 @@
-#include "courseform.h"
+#include "widget_course.h"
 #include "dialog_timesetting.h"
-#include "ui_courseform.h"
+#include "ui_widget_course.h"
 #include "dialog_tablesetting.h"
 #include "widget_coursemanager.h"
 
@@ -43,20 +43,6 @@ courseform::courseform(QWidget *parent)
         QMessageBox::critical(this,"bad","e");
     }
 
-    db4=QSqlDatabase::addDatabase("QSQLITE","file");//记录了课件信息条目
-    db4.setDatabaseName("table.db");
-    db4.open();
-    // sqlmodel4=new QSqlTableModel(nullptr,db3);
-    // sqlmodel4->setTable("coursefile");
-    // sqlmodel4->setEditStrategy(QSqlTableModel::OnManualSubmit);
-    // sqlmodel4->setSort(sqlmodel4->fieldIndex("no"),Qt::AscendingOrder);
-    // if(!sqlmodel4->select()){
-    //     QMessageBox::critical(this,"bad","e");
-    // }
-
-    qrymodel=new QSqlQueryModel(this);//sql语句查询所有课程名
-    qrymodel->setQuery("SELECT name FROM course group by name",db3);
-
     QSqlRecord rec=sqlmodel->record(0);
     column=rec.value("workdays").toInt();
     row=rec.value("classes").toInt();
@@ -80,6 +66,10 @@ courseform::courseform(QWidget *parent)
 
 courseform::~courseform()
 {
+    QSqlDatabase::removeDatabase("tableoption");
+    QSqlDatabase::removeDatabase("time");
+    QSqlDatabase::removeDatabase("course");
+
     delete ui;
 }
 
@@ -105,7 +95,7 @@ void courseform::on_bt_change_clicked(bool checked)//切换课表显示为时间
     }
 }
 
-void courseform::loadtable()//设置课表横竖表头
+void courseform::loadtable()//设置课表横竖表头，以及长宽
 {
     QStringList strlist;
 
@@ -182,7 +172,7 @@ void courseform::loadcourse(int weekof)//加载课程
     }
 }
 
-void courseform::on_bt_upweek_clicked()
+void courseform::on_bt_upweek_clicked()//点击上一周
 {
     model->clear();
     loadtable();
@@ -201,7 +191,7 @@ void courseform::on_bt_downweek_clicked()//下一周
 }
 
 
-void courseform::on_bt_tablesetting_clicked()
+void courseform::on_bt_tablesetting_clicked()//点击课表设置，以及处理返回结果
 {
     Dialog_tablesetting *settable=new Dialog_tablesetting(sqlmodel,this);
     settable->setWindowFlag(Qt::MSWindowsFixedSizeDialogHint);
@@ -232,19 +222,11 @@ void courseform::on_bt_tablesetting_clicked()
         model->clear();
         loadtable();//更新横竖表头
         loadcourse(week);//更新本周内课程
-        settable->close();
+        settable->close();//关闭释放内存
     }
 }
 
-void courseform::on_pushButton_clicked()
-{
-    Dialog_timesetting *settime=new Dialog_timesetting(sqlmodel2,this);
-    settime->setWindowFlag(Qt::MSWindowsFixedSizeDialogHint);
-    settime->setAttribute(Qt::WA_DeleteOnClose);
-    QSqlRecord rec=sqlmodel2->record(0);
-    settime->inittime(rec);
-    settime->exec();
-}
+
 
 
 void courseform::on_bt_coursemanager_clicked()
@@ -253,5 +235,16 @@ void courseform::on_bt_coursemanager_clicked()
     course->setWindowFlag(Qt::MSWindowsFixedSizeDialogHint);
     course->setAttribute(Qt::WA_DeleteOnClose);//关闭窗口时自动释放内存，避免内存占用无限上涨
     course->show();
+}
+
+
+void courseform::on_bt_timesetting_clicked()
+{
+    Dialog_timesetting *settime=new Dialog_timesetting(sqlmodel2,this);
+    settime->setWindowFlag(Qt::MSWindowsFixedSizeDialogHint);
+    settime->setAttribute(Qt::WA_DeleteOnClose);
+    QSqlRecord rec=sqlmodel2->record(0);
+    settime->inittime(rec);
+    settime->exec();
 }
 

@@ -8,7 +8,7 @@
 #include <QSqlRecord>
 #include <QColorDialog>
 #include <QDataWidgetMapper>
-#include "courseform.h"
+#include "widget_course.h"
 namespace Ui {
 class widget_coursemanager;
 }
