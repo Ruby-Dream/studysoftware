@@ -1,4 +1,4 @@
-QT       += core gui sql
+QT       += core gui sql multimedia multimediawidgets
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -13,25 +13,31 @@ SOURCES += \
     dialog_timesetting.cpp \
     main.cpp \
     mainwindow.cpp \
+    widget_audioplayer.cpp \
     widget_course.cpp \
     widget_coursefile.cpp \
-    widget_coursemanager.cpp
+    widget_coursemanager.cpp \
+    widget_notice.cpp
 
 HEADERS += \
     dialog_tablesetting.h \
     dialog_timesetting.h \
     mainwindow.h \
+    widget_audioplayer.h \
     widget_course.h \
     widget_coursefile.h \
-    widget_coursemanager.h
+    widget_coursemanager.h \
+    widget_notice.h
 
 FORMS += \
     dialog_tablesetting.ui \
     dialog_timesetting.ui \
     mainwindow.ui \
+    widget_audioplayer.ui \
     widget_course.ui \
     widget_coursefile.ui \
-    widget_coursemanager.ui
+    widget_coursemanager.ui \
+    widget_notice.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

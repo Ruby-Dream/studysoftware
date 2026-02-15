@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include "widget_course.h"
 #include "widget_coursefile.h"
+#include "widget_notice.h"
 #include <QSystemTrayIcon>
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -25,9 +26,12 @@ private slots:
 
     void on_bt_coursefile_clicked();
 
+    void on_bt_notice_clicked();
+
 private:
     Ui::MainWindow *ui;
     courseform *_courseform=nullptr;
     widget_coursefile *_widget_coursefile=nullptr;
+    widget_notice *_widget_notice=nullptr;
 };
 #endif // MAINWINDOW_H

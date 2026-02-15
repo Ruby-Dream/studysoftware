@@ -9,7 +9,7 @@ widget_coursemanager::widget_coursemanager(courseform *m,int week,QSqlTableModel
     sqlmodel3=sqlmodel;
     w=m;
     currentweek=week;
-    qDebug() << "当前对象数：" << QApplication::allWidgets().size();
+    //qDebug() << "当前对象数：" << QApplication::allWidgets().size();
     opentable();
 }
 

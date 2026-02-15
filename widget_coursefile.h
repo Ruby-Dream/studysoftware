@@ -15,6 +15,7 @@
 #include <QFileDialog>
 #include <QDir>
 #include <QMessageBox>
+#include "widget_audioplayer.h"
 namespace Ui {
 class widget_coursefile;
 }

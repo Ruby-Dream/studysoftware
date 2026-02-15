@@ -146,7 +146,15 @@ void widget_coursefile::on_listView_file_clicked(const QModelIndex &index)//单�
 void widget_coursefile::on_listView_file_doubleClicked(const QModelIndex &index)//双击课件条目时打开文件
 {
     QString file=listmodel2->data(index).toString();
-    QDesktopServices::openUrl(QUrl::fromLocalFile(file));
+    QFileInfo fileinfo(file);
+    if(fileinfo.suffix().toLower()=="mp3"){
+        widget_audioplayer *_audioplayer=new widget_audioplayer(file,nullptr);
+        _audioplayer->setWindowFlag(Qt::MSWindowsFixedSizeDialogHint);
+        _audioplayer->show();
+    }
+    else{
+        QDesktopServices::openUrl(QUrl::fromLocalFile(file));
+    }
 }
 
 

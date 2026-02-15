@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1200</width>
-    <height>800</height>
+    <width>1100</width>
+    <height>700</height>
    </rect>
   </property>
   <property name="maximumSize">
@@ -26,7 +26,7 @@
       <x>30</x>
       <y>20</y>
       <width>1111</width>
-      <height>651</height>
+      <height>541</height>
      </rect>
     </property>
     <layout class="QGridLayout" name="gridLayout">
@@ -44,8 +44,8 @@
    <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
-      <x>30</x>
-      <y>706</y>
+      <x>40</x>
+      <y>590</y>
       <width>1031</width>
       <height>51</height>
      </rect>
@@ -98,7 +98,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1200</width>
+     <width>1100</width>
      <height>22</height>
     </rect>
    </property>

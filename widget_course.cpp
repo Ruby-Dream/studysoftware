@@ -229,7 +229,7 @@ void courseform::on_bt_tablesetting_clicked()//点击课表设置，以及处理
 
 
 
-void courseform::on_bt_coursemanager_clicked()
+void courseform::on_bt_coursemanager_clicked()//点击课程管理按钮
 {
     widget_coursemanager *course=new widget_coursemanager(this,week,sqlmodel3,nullptr);
     course->setWindowFlag(Qt::MSWindowsFixedSizeDialogHint);
@@ -238,7 +238,7 @@ void courseform::on_bt_coursemanager_clicked()
 }
 
 
-void courseform::on_bt_timesetting_clicked()
+void courseform::on_bt_timesetting_clicked()//点击时间管理按钮
 {
     Dialog_timesetting *settime=new Dialog_timesetting(sqlmodel2,this);
     settime->setWindowFlag(Qt::MSWindowsFixedSizeDialogHint);
