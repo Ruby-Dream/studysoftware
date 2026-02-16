@@ -25,6 +25,7 @@ widget_audioplayer::widget_audioplayer(QString audiofile,QWidget *parent)
 widget_audioplayer::~widget_audioplayer()
 {
     delete ui;
+    player->stop();
     this->close();
 }
 
@@ -63,6 +64,7 @@ void widget_audioplayer::on_volumeslider_valueChanged(int value)//设置音量
 {
     volume=float(value)/100;
     output->setVolume(volume);
+    ui->label_volume->setText(QString::asprintf("%d",ui->volumeslider->value()));
 }
 
 
@@ -91,5 +93,19 @@ void widget_audioplayer::on_playerslider_sliderReleased()//只有鼠标松开滑
 {
     qint64 now=ui->playerslider->value();
     player->setPosition(now);
+}
+
+
+
+
+void widget_audioplayer::on_bt_volume_up_clicked()//音量加，然后触发on_volumeslider_valueChanged
+{
+    ui->volumeslider->setValue(ui->volumeslider->value()+5);
+}
+
+
+void widget_audioplayer::on_bt_volume_down_clicked()//音量减，然后触发on_volumeslider_valueChanged
+{
+    ui->volumeslider->setValue(ui->volumeslider->value()-5);
 }
 
