@@ -20,13 +20,27 @@ widget_audioplayer::widget_audioplayer(QString audiofile,QWidget *parent)
     player->setSource(s);
     player->play();
 
+
+    db5=QSqlDatabase::addDatabase("QSQLITE","timestamp");//记录了音频的时间戳节点
+    db5.setDatabaseName("table.db");
+    db5.open();
+    qrymodel3=new QSqlQueryModel(this);
+    qrymodel3->setQuery("SELECT timestamp,text from media_time where media = \""+filename+"\"",db5);//读取所有该音频的时间节点和节点备注
+    QStringList strlist;
+    for(int i=0;i<qrymodel3->rowCount();i++){
+        QSqlRecord rec=qrymodel3->record(i);
+        int position=rec.value("timestamp").toInt();
+        QString playedtime=gettime(position);
+        strlist<<playedtime;
+    }
+    listmodel=new QStringListModel();
+    listmodel->setStringList(strlist);
+    ui->timeview->setModel(listmodel);
 }
 
 widget_audioplayer::~widget_audioplayer()
 {
     delete ui;
-    // player->stop();
-    // this->close();
 }
 
 void widget_audioplayer::on_bt_control_clicked()//点击播放控制按钮时
@@ -54,13 +68,13 @@ void widget_audioplayer::do_statechanged(QMediaPlayer::PlaybackState state)
 }
 
 
-void widget_audioplayer::on_bt_isloop_clicked(bool checked)
+void widget_audioplayer::on_bt_isloop_clicked(bool checked)//改变单曲循环
 {
     loop=checked;
 }
 
 
-void widget_audioplayer::on_volumeslider_valueChanged(int value)//设置音量
+void widget_audioplayer::on_volumeslider_valueChanged(int value)//拖动音量滑块条以设置音量
 {
     volume=float(value)/100;
     output->setVolume(volume);
@@ -77,20 +91,14 @@ void widget_audioplayer::do_positionchanged(qint64 position)//音乐播放时，
 {
     if(ui->playerslider->isSliderDown()) return;//如果这时鼠标正在按住滑块，停止自动移动
     ui->playerslider->setSliderPosition(position);
-    int sec=position/1000;
-    int min=sec/60;
-    sec=sec%60;
-    QString playedtime=QString::asprintf("%.2d:%.2d",min,sec);
+    QString playedtime=gettime(position);
     ui->playedtime->setText(playedtime);
 }
 
 void widget_audioplayer::do_durationchanged(qint64 duration)//设置播放进度条最大值
 {
+    QString totaltime=gettime(duration);
     ui->playerslider->setMaximum(duration);
-    int sec=duration/1000;
-    int min=sec/60;
-    sec=sec%60;
-    QString totaltime=QString::asprintf("%.2d:%.2d",min,sec);
     ui->totaltime->setText(totaltime);
 }
 
@@ -118,10 +126,26 @@ void widget_audioplayer::on_bt_volume_down_clicked()//音量减，然后触发on
 
 void widget_audioplayer::on_playerslider_sliderMoved(int position)//拖动进度条时动态变化时间戳
 {
+    QString playedtime=gettime(position);
+    ui->playedtime->setText(playedtime);
+}
+
+
+void widget_audioplayer::on_timeview_doubleClicked(const QModelIndex &index)//双击时间戳时跳转播放位置
+{
+    QString s=listmodel->data(index).toString();
+    int position=s.mid(0,2).toInt()*60000+s.mid(3,2).toInt()*1000;
+    player->setPosition(position);
+}
+
+QString widget_audioplayer::gettime(int position)//将毫秒转换为mm:ss格式的字符串
+{
     int sec=position/1000;
     int min=sec/60;
     sec=sec%60;
-    QString playedtime=QString::asprintf("%.2d:%.2d",min,sec);
-    ui->playedtime->setText(playedtime);
+    QString time=QString::asprintf("%.2d:%.2d",min,sec);
+    return time;
 }
+
+
 

@@ -4,6 +4,9 @@
 #include <QWidget>
 #include <QtMultimedia>
 #include <QtMultimediaWidgets>
+#include <QSqlQueryModel>
+#include <QSqlRecord>
+#include <QStringListModel>
 namespace Ui {
 class widget_audioplayer;
 }
@@ -37,13 +40,20 @@ private slots:
 
     void on_playerslider_sliderMoved(int position);
 
+    void on_timeview_doubleClicked(const QModelIndex &index);
+
 private:
     Ui::widget_audioplayer *ui;
+    QSqlDatabase db5;
     bool loop=false;
     QMediaPlayer *player;
     QAudioOutput *output;
     float volume=0.5;
     QString filename;
+    QSqlQueryModel *qrymodel3;
+    QStringListModel *listmodel;
+
+    QString gettime(int position);
 };
 
 #endif // WIDGET_AUDIOPLAYER_H

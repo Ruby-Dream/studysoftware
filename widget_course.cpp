@@ -48,7 +48,7 @@ courseform::courseform(QWidget *parent)
     row=rec.value("classes").toInt();
     day=rec.value("firstday").toDate();
     model=new QStandardItemModel(row,column,this);
-    ui->tableView->setModel(model);
+    ui->tableView->setModel(model);//课程表模型-视图
 
     //第一次启动时获取时间
     //day=sqlmodel->record(0).value("firstday").toDate();
@@ -57,7 +57,8 @@ courseform::courseform(QWidget *parent)
     // int week=d/7+1;
     // ui->label_2->setText(QString::asprintf("这是第%d周星期%d",week,now.dayOfWeek()));
     // //ui->label_2->setText(date.toString("yyyy-MM-dd"));
-    model->clear();
+
+    //model->clear();
     loadtable();//加载课表结构框架
     QDate now=QDate::currentDate();
     week=day.daysTo(now)/7+1;
@@ -66,9 +67,10 @@ courseform::courseform(QWidget *parent)
 
 courseform::~courseform()
 {
-    QSqlDatabase::removeDatabase("tableoption");
-    QSqlDatabase::removeDatabase("time");
-    QSqlDatabase::removeDatabase("course");
+
+    // QSqlDatabase::removeDatabase("tableoption");
+    // QSqlDatabase::removeDatabase("time");
+    // QSqlDatabase::removeDatabase("course");
 
     delete ui;
 }
@@ -222,11 +224,14 @@ void courseform::on_bt_tablesetting_clicked()//点击课表设置，以及处理
         model->clear();
         loadtable();//更新横竖表头
         loadcourse(week);//更新本周内课程
-        settable->close();//关闭释放内存
+
+    }
+    {//无论返回结果如何
+        settable->close();//关闭窗口
+        delete settable;//释放内存
+        settable=nullptr;//避免野指针
     }
 }
-
-
 
 
 void courseform::on_bt_coursemanager_clicked()//点击课程管理按钮

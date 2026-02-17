@@ -184,7 +184,7 @@ void widget_coursefile::on_bt_save_clicked()//点击保存
 }
 
 
-void widget_coursefile::on_plainTextEdit_filetext_textChanged()
+void widget_coursefile::on_plainTextEdit_filetext_textChanged()//保存课件备注到数据库
 {
     ui->bt_save->setText("保存该课件的备注");
 }
