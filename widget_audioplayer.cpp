@@ -25,8 +25,8 @@ widget_audioplayer::widget_audioplayer(QString audiofile,QWidget *parent)
 widget_audioplayer::~widget_audioplayer()
 {
     delete ui;
-    player->stop();
-    this->close();
+    // player->stop();
+    // this->close();
 }
 
 void widget_audioplayer::on_bt_control_clicked()//点击播放控制按钮时
@@ -77,15 +77,21 @@ void widget_audioplayer::do_positionchanged(qint64 position)//音乐播放时，
 {
     if(ui->playerslider->isSliderDown()) return;//如果这时鼠标正在按住滑块，停止自动移动
     ui->playerslider->setSliderPosition(position);
-
-    // int sec=position/1000;
-    // int min=sec/60;
-    // sec=sec%60;
+    int sec=position/1000;
+    int min=sec/60;
+    sec=sec%60;
+    QString playedtime=QString::asprintf("%.2d:%.2d",min,sec);
+    ui->playedtime->setText(playedtime);
 }
 
 void widget_audioplayer::do_durationchanged(qint64 duration)//设置播放进度条最大值
 {
     ui->playerslider->setMaximum(duration);
+    int sec=duration/1000;
+    int min=sec/60;
+    sec=sec%60;
+    QString totaltime=QString::asprintf("%.2d:%.2d",min,sec);
+    ui->totaltime->setText(totaltime);
 }
 
 
@@ -107,5 +113,15 @@ void widget_audioplayer::on_bt_volume_up_clicked()//音量加，然后触发on_v
 void widget_audioplayer::on_bt_volume_down_clicked()//音量减，然后触发on_volumeslider_valueChanged
 {
     ui->volumeslider->setValue(ui->volumeslider->value()-5);
+}
+
+
+void widget_audioplayer::on_playerslider_sliderMoved(int position)//拖动进度条时动态变化时间戳
+{
+    int sec=position/1000;
+    int min=sec/60;
+    sec=sec%60;
+    QString playedtime=QString::asprintf("%.2d:%.2d",min,sec);
+    ui->playedtime->setText(playedtime);
 }
 

@@ -35,6 +35,8 @@ private slots:
 
     void on_bt_volume_down_clicked();
 
+    void on_playerslider_sliderMoved(int position);
+
 private:
     Ui::widget_audioplayer *ui;
     bool loop=false;

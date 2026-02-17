@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>720</width>
-    <height>373</height>
+    <width>739</width>
+    <height>416</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,8 +16,8 @@
   <widget class="QSlider" name="playerslider">
    <property name="geometry">
     <rect>
-     <x>90</x>
-     <y>280</y>
+     <x>110</x>
+     <y>310</y>
      <width>341</width>
      <height>20</height>
     </rect>
@@ -35,8 +35,8 @@
    </property>
    <property name="geometry">
     <rect>
-     <x>250</x>
-     <y>320</y>
+     <x>270</x>
+     <y>350</y>
      <width>41</width>
      <height>25</height>
     </rect>
@@ -51,8 +51,8 @@
   <widget class="QRadioButton" name="bt_isloop">
    <property name="geometry">
     <rect>
-     <x>130</x>
-     <y>320</y>
+     <x>160</x>
+     <y>360</y>
      <width>102</width>
      <height>22</height>
     </rect>
@@ -64,20 +64,20 @@
   <widget class="QListView" name="listView">
    <property name="geometry">
     <rect>
-     <x>490</x>
-     <y>40</y>
+     <x>510</x>
+     <y>30</y>
      <width>201</width>
-     <height>261</height>
+     <height>351</height>
     </rect>
    </property>
   </widget>
-  <widget class="QWidget" name="">
+  <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
-     <x>40</x>
-     <y>70</y>
+     <x>20</x>
+     <y>50</y>
      <width>41</width>
-     <height>241</height>
+     <height>301</height>
     </rect>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout">
@@ -138,6 +138,32 @@
      </widget>
     </item>
    </layout>
+  </widget>
+  <widget class="QLabel" name="playedtime">
+   <property name="geometry">
+    <rect>
+     <x>70</x>
+     <y>290</y>
+     <width>41</width>
+     <height>17</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>now</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="totaltime">
+   <property name="geometry">
+    <rect>
+     <x>450</x>
+     <y>290</y>
+     <width>58</width>
+     <height>17</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>total</string>
+   </property>
   </widget>
  </widget>
  <resources/>

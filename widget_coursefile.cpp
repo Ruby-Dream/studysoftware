@@ -150,6 +150,7 @@ void widget_coursefile::on_listView_file_doubleClicked(const QModelIndex &index)
     if(fileinfo.suffix().toLower()=="mp3"){
         widget_audioplayer *_audioplayer=new widget_audioplayer(file,nullptr);
         _audioplayer->setWindowFlag(Qt::MSWindowsFixedSizeDialogHint);
+        _audioplayer->setAttribute(Qt::WA_DeleteOnClose);
         _audioplayer->show();
     }
     else{
