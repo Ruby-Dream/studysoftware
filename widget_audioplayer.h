@@ -7,6 +7,7 @@
 #include <QSqlQueryModel>
 #include <QSqlRecord>
 #include <QStringListModel>
+#include <QSqlQuery>
 namespace Ui {
 class widget_audioplayer;
 }
@@ -42,6 +43,10 @@ private slots:
 
     void on_timeview_doubleClicked(const QModelIndex &index);
 
+    void on_bt_newtime_clicked();
+
+    void on_bt_deletetime_clicked();
+
 private:
     Ui::widget_audioplayer *ui;
     QSqlDatabase db;
@@ -54,6 +59,7 @@ private:
     QStringListModel *listmodel;
 
     QString gettime(int position);
+    void loadtimestamp();
 };
 
 #endif // WIDGET_AUDIOPLAYER_H

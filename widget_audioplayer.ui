@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>607</width>
-    <height>488</height>
+    <height>418</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -20,7 +20,7 @@
    <property name="geometry">
     <rect>
      <x>290</x>
-     <y>440</y>
+     <y>360</y>
      <width>31</width>
      <height>31</height>
     </rect>
@@ -36,7 +36,7 @@
    <property name="geometry">
     <rect>
      <x>180</x>
-     <y>440</y>
+     <y>360</y>
      <width>102</width>
      <height>22</height>
     </rect>
@@ -49,9 +49,9 @@
    <property name="geometry">
     <rect>
      <x>60</x>
-     <y>30</y>
-     <width>231</width>
-     <height>351</height>
+     <y>20</y>
+     <width>241</width>
+     <height>291</height>
     </rect>
    </property>
    <property name="title">
@@ -70,16 +70,31 @@
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_2">
         <item>
-         <widget class="QPushButton" name="pushButton">
+         <widget class="QPushButton" name="bt_newtime">
           <property name="text">
-           <string>新建时间节点</string>
+           <string>以当前时间新建节点</string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="pushButton_3">
+         <widget class="QPushButton" name="bt_deletetime">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>400</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="styleSheet">
+           <string notr="true"/>
+          </property>
           <property name="text">
-           <string>删除时间节点</string>
+           <string>删除节点</string>
           </property>
          </widget>
         </item>
@@ -93,10 +108,13 @@
    <property name="geometry">
     <rect>
      <x>310</x>
-     <y>30</y>
+     <y>20</y>
      <width>241</width>
-     <height>351</height>
+     <height>291</height>
     </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true"/>
    </property>
    <property name="title">
     <string>节点备注</string>
@@ -106,7 +124,7 @@
      <widget class="QPlainTextEdit" name="plainTextEdit"/>
     </item>
     <item>
-     <widget class="QPushButton" name="pushButton_2">
+     <widget class="QPushButton" name="bt_save">
       <property name="text">
        <string>保存当前时间节点备注</string>
       </property>
@@ -114,13 +132,13 @@
     </item>
    </layout>
   </widget>
-  <widget class="QWidget" name="">
+  <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
      <x>330</x>
-     <y>440</y>
+     <y>360</y>
      <width>241</width>
-     <height>31</height>
+     <height>42</height>
     </rect>
    </property>
    <layout class="QHBoxLayout" name="horizontalLayout_3">
@@ -182,11 +200,11 @@
     </item>
    </layout>
   </widget>
-  <widget class="QWidget" name="">
+  <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
      <x>30</x>
-     <y>400</y>
+     <y>320</y>
      <width>551</width>
      <height>20</height>
     </rect>

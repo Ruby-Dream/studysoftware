@@ -133,10 +133,10 @@ void widget_coursefile::on_listView_file_clicked(const QModelIndex &index)//单�
     QSqlRecord r=q->record(0);
     ui->plainTextEdit_filetext->setPlainText(r.value("text").toString());
     QString ss=ui->listView_course->currentIndex().data().toString();
-    if(ss=="全部"){
+/*    if(ss=="全部"){
         ui->bt_delete->setEnabled(false);
     }
-    else ui->bt_delete->setEnabled(true);
+    else */ui->bt_delete->setEnabled(true);
     ui->bt_save->setEnabled(true);
 }
 
@@ -162,9 +162,15 @@ void widget_coursefile::on_bt_delete_clicked()//点击删除当前课件条目
     QString filename=ui->listView_file->currentIndex().data().toString();
     QString coursename=ui->listView_course->currentIndex().data().toString();
     QSqlQuery query(db);
-    query.prepare("DELETE from coursefile where file =?");
+    query.prepare("DELETE from coursefile where file =?");//删除课件条目
     query.bindValue(0,filename);
     query.exec();
+
+    query.prepare("DELETE from media_time where media = ?");//顺带删除课件下的时间节点
+    query.bindValue(0,filename);
+    query.exec();
+    ui->plainTextEdit_filetext->clear();
+    ui->bt_save->setEnabled(false);
     loadfile();
 }
 

@@ -20,19 +20,11 @@ widget_audioplayer::widget_audioplayer(QString audiofile,QSqlDatabase db,QWidget
     QUrl s=QUrl::fromLocalFile(filename);
     player->setSource(s);
     player->play();
-
-    qrymodel3=new QSqlQueryModel(this);
-    qrymodel3->setQuery("SELECT timestamp,text from media_time where media = \""+filename+"\"",db);//读取所有该音频的时间节点和节点备注
-    QStringList strlist;
-    for(int i=0;i<qrymodel3->rowCount();i++){
-        QSqlRecord rec=qrymodel3->record(i);
-        int position=rec.value("timestamp").toInt();
-        QString playedtime=gettime(position);
-        strlist<<playedtime;
-    }
     listmodel=new QStringListModel();
-    listmodel->setStringList(strlist);
+    qrymodel3=new QSqlQueryModel(this);//初始化时间节点查询模型
+
     ui->timeview->setModel(listmodel);
+    loadtimestamp();
 }
 
 widget_audioplayer::~widget_audioplayer()
@@ -142,5 +134,42 @@ QString widget_audioplayer::gettime(int position)//将毫秒转换为mm:ss格式
     sec=sec%60;
     QString time=QString::asprintf("%.2d:%.2d",min,sec);
     return time;
+}
+
+void widget_audioplayer::loadtimestamp()//加载该文件对应的时间节点和备注，根据时间升序排序
+{
+    qrymodel3->setQuery("SELECT timestamp,text from media_time where media = \""+filename+"\" ORDER BY timestamp ASC" ,db);//读取所有该音频的时间节点和节点备注
+    QStringList strlist;
+    for(int i=0;i<qrymodel3->rowCount();i++){
+        QSqlRecord rec=qrymodel3->record(i);
+        int position=rec.value("timestamp").toInt();
+        QString playedtime=gettime(position);
+        strlist<<playedtime;
+    }
+    listmodel->setStringList(strlist);
+
+}
+
+
+void widget_audioplayer::on_bt_newtime_clicked()//新建时间节点
+{
+    int time=player->position();//当前播放位置
+    QSqlQueryModel *q=new QSqlQueryModel();
+    q->setQuery("SELECT media from media_time",db);
+    int row=q->rowCount();
+    QSqlQuery query(db);
+    query.prepare("INSERT into media_time (no,media,timestamp) values(?,?,?)");//节点条目插入数据库
+    query.bindValue(0,row+1);
+    query.bindValue(1,filename);
+    query.bindValue(2,time);
+    query.exec();
+
+    loadtimestamp();//刷新时间节点视图
+}
+
+
+void widget_audioplayer::on_bt_deletetime_clicked()
+{
+
 }
 
