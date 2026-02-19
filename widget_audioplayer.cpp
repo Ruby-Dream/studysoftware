@@ -1,6 +1,6 @@
 #include "widget_audioplayer.h"
 #include "ui_widget_audioplayer.h"
-#include "QStyle"
+
 
 widget_audioplayer::widget_audioplayer(QString audiofile,QSqlDatabase db,QWidget *parent)
     : QWidget(parent)
@@ -80,13 +80,13 @@ void widget_audioplayer::do_positionchanged(qint64 position)//音乐播放时，
 {
     if(ui->playerslider->isSliderDown()) return;//如果这时鼠标正在按住滑块，停止自动移动
     ui->playerslider->setSliderPosition(position);
-    QString playedtime=gettime(position);
+    QString playedtime=getstringtime(position);
     ui->playedtime->setText(playedtime);
 }
 
 void widget_audioplayer::do_durationchanged(qint64 duration)//设置播放进度条最大值
 {
-    QString totaltime=gettime(duration);
+    QString totaltime=getstringtime(duration);
     ui->playerslider->setMaximum(duration);
     ui->totaltime->setText(totaltime);
 }
@@ -97,8 +97,6 @@ void widget_audioplayer::on_playerslider_sliderReleased()//只有鼠标松开滑
     qint64 now=ui->playerslider->value();
     player->setPosition(now);
 }
-
-
 
 
 void widget_audioplayer::on_bt_volume_up_clicked()//音量加，然后触发on_volumeslider_valueChanged
@@ -115,7 +113,7 @@ void widget_audioplayer::on_bt_volume_down_clicked()//音量减，然后触发on
 
 void widget_audioplayer::on_playerslider_sliderMoved(int position)//拖动进度条时动态变化时间戳
 {
-    QString playedtime=gettime(position);
+    QString playedtime=getstringtime(position);
     ui->playedtime->setText(playedtime);
 }
 
@@ -123,17 +121,22 @@ void widget_audioplayer::on_playerslider_sliderMoved(int position)//拖动进度
 void widget_audioplayer::on_timeview_doubleClicked(const QModelIndex &index)//双击时间戳时跳转播放位置
 {
     QString s=listmodel->data(index).toString();
-    int position=s.mid(0,2).toInt()*60000+s.mid(3,2).toInt()*1000;
+    int position=getinttime(s);
     player->setPosition(position);
 }
 
-QString widget_audioplayer::gettime(int position)//将毫秒转换为mm:ss格式的字符串
+QString widget_audioplayer::getstringtime(int position)//将毫秒转换为mm:ss格式的字符串
 {
     int sec=position/1000;
     int min=sec/60;
     sec=sec%60;
     QString time=QString::asprintf("%.2d:%.2d",min,sec);
     return time;
+}
+
+int widget_audioplayer::getinttime(QString time)
+{
+    return time.mid(0,2).toInt()*60000+time.mid(3,2).toInt()*1000;
 }
 
 void widget_audioplayer::loadtimestamp()//加载该文件对应的时间节点和备注，根据时间升序排序
@@ -143,7 +146,7 @@ void widget_audioplayer::loadtimestamp()//加载该文件对应的时间节点�
     for(int i=0;i<qrymodel3->rowCount();i++){
         QSqlRecord rec=qrymodel3->record(i);
         int position=rec.value("timestamp").toInt();
-        QString playedtime=gettime(position);
+        QString playedtime=getstringtime(position);
         strlist<<playedtime;
     }
     listmodel->setStringList(strlist);
@@ -153,23 +156,53 @@ void widget_audioplayer::loadtimestamp()//加载该文件对应的时间节点�
 
 void widget_audioplayer::on_bt_newtime_clicked()//新建时间节点
 {
-    int time=player->position();//当前播放位置
-    QSqlQueryModel *q=new QSqlQueryModel();
-    q->setQuery("SELECT media from media_time",db);
-    int row=q->rowCount();
+    int time=(player->position()/1000*1000);//当前播放位置，以1000ms为最小单位
+
     QSqlQuery query(db);
-    query.prepare("INSERT into media_time (no,media,timestamp) values(?,?,?)");//节点条目插入数据库
-    query.bindValue(0,row+1);
-    query.bindValue(1,filename);
-    query.bindValue(2,time);
+    query.prepare("INSERT into media_time (media,timestamp) values(?,?)");//节点条目插入数据库
+    query.bindValue(0,filename);
+    query.bindValue(1,time);
     query.exec();
 
     loadtimestamp();//刷新时间节点视图
 }
 
 
-void widget_audioplayer::on_bt_deletetime_clicked()
+void widget_audioplayer::on_bt_deletetime_clicked()//删除某个时间节点时
 {
+    QString time=ui->timeview->currentIndex().data().toString();
+    QSqlQuery query(db);
+    query.prepare("DELETE from media_time where media = ? and timestamp = ?");//删除该文件的时间节点
+    query.bindValue(0,filename);
+    query.bindValue(1,getinttime(time));
+    query.exec();
+    ui->plainTextEdit->clear();
+    ui->bt_save->setEnabled(false);
 
+    loadtimestamp();//刷新视图
+}
+
+
+void widget_audioplayer::on_timeview_clicked(const QModelIndex &index)//单击时间节点项时
+{
+    QString time=QString::asprintf("%d",getinttime(index.data().toString()));
+    QSqlQueryModel *q=new QSqlQueryModel();
+    q->setQuery("SELECT text from media_time where media =\""+filename+"\"and timestamp =\""+time+"\"",db);
+    QSqlRecord r=q->record(0);
+    ui->plainTextEdit->setPlainText(r.value("text").toString());//显示数据库中该文件节点备注
+    ui->bt_save->setEnabled(true);
+    ui->bt_save->setText("保存当前时间节点备注");
+}
+
+
+void widget_audioplayer::on_bt_save_clicked()//点击保存备注
+{
+    QSqlQuery query(db);
+    query.prepare("UPDATE media_time set text=? where media =? and timestamp=?");
+    query.bindValue(0,ui->plainTextEdit->toPlainText());
+    query.bindValue(1,filename);
+    query.bindValue(2,QString::asprintf("%d",getinttime(ui->timeview->currentIndex().data().toString())));
+    query.exec();
+    ui->bt_save->setText("已保存");
 }
 

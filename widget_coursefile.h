@@ -2,19 +2,17 @@
 #define WIDGET_COURSEFILE_H
 
 #include <QWidget>
-#include <QSqlQueryModel>
-#include <QStringListModel>
-#include <QMainWindow>
-#include <QSqlTableModel>
-#include <QItemSelectionModel>
+#include <QSqlQueryModel>//sql查询模型
+#include <QStringListModel>//QStringlist模型
+#include <QSqlTableModel>//课件模型
+#include <QItemSelectionModel>//课件选择模型？
 
-#include <QSqlRecord>
-#include <QSqlQuery>
-#include <QDesktopServices>
-#include <QStringListModel>
-#include <QFileDialog>
-#include <QDir>
-#include <QMessageBox>
+#include <QSqlRecord>//sql记录写入读取
+#include <QSqlQuery>//sql执行语句
+#include <QDesktopServices>//？
+#include <QFileDialog>//文件读取对话框
+#include <QDir>//文件路径
+#include <QMessageBox>//消息通知框
 #include "widget_audioplayer.h"
 namespace Ui {
 class widget_coursefile;

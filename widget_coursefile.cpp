@@ -177,7 +177,6 @@ void widget_coursefile::on_bt_delete_clicked()//点击删除当前课件条目
 
 void widget_coursefile::on_bt_save_clicked()//点击保存
 {
-    QString s=ui->listView_file->currentIndex().data().toString();
     QSqlQuery query(db);
     query.prepare("UPDATE coursefile set text=? where file =?");
     query.bindValue(0,ui->plainTextEdit_filetext->toPlainText());

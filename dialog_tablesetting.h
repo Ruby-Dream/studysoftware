@@ -2,7 +2,6 @@
 #define DIALOG_TABLESETTING_H
 
 #include <QDialog>
-#include <QDialog>
 #include <QSqlTableModel>
 #include <QMessageBox>
 #include <QSqlRecord>

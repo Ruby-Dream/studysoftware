@@ -1,13 +1,13 @@
 #ifndef WIDGET_COURSE_H
 #define WIDGET_COURSE_H
-#include <QtSql>
-#include <QStandardItemModel>
-#include <QSqlTableModel>
-#include <QSqlDatabase>
-#include <QMessageBox>
-#include <QFileDialog>
-#include <QSqlRecord>
-#include <QSqlQueryModel>
+
+#include <QStandardItemModel>//课表表格模型
+#include <QSqlTableModel>//sql表格模型
+#include <QSqlDatabase>//数据库连接
+#include <QMessageBox>//消息框
+#include <QFileDialog>//打开文件操作
+#include <QSqlRecord>//sql记录读取写入
+#include <QSqlQueryModel>//sql查询模型
 #include <QWidget>
 
 namespace Ui {

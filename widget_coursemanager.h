@@ -2,12 +2,11 @@
 #define WIDGET_COURSEMANAGER_H
 
 #include <QWidget>
-#include<QSqlTableModel>
-#include <QItemSelectionModel>
-#include <QMainWindow>
-#include <QSqlRecord>
-#include <QColorDialog>
-#include <QDataWidgetMapper>
+#include <QSqlTableModel>//课程表格模型
+#include <QItemSelectionModel>//选择模型
+#include <QSqlRecord>//sql记录读取写入
+#include <QColorDialog>//颜色对话框
+#include <QDataWidgetMapper>//数据映射组件
 #include "widget_course.h"
 namespace Ui {
 class widget_coursemanager;

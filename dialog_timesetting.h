@@ -6,7 +6,7 @@
 #include <QMessageBox>
 #include <QSqlDatabase>
 #include <QSqlTableModel>
-#include<QTime>
+#include <QTime>
 namespace Ui {
 class Dialog_timesetting;
 }

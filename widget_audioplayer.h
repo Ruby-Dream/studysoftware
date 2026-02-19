@@ -2,12 +2,14 @@
 #define WIDGET_AUDIOPLAYER_H
 
 #include <QWidget>
-#include <QtMultimedia>
-#include <QtMultimediaWidgets>
-#include <QSqlQueryModel>
-#include <QSqlRecord>
-#include <QStringListModel>
-#include <QSqlQuery>
+#include <QtMultimedia>//媒体
+#include <QtMultimediaWidgets>//媒体视图
+#include <QSqlQueryModel>//sql查询模型
+#include <QSqlRecord>//sql记录读取写入
+#include <QSqlTableModel>//sqltable模型
+#include <QStringListModel>//qstringlist模型
+#include <QSqlQuery>//执行sql语句
+#include "QStyle"//用于播放/暂停图标变化
 namespace Ui {
 class widget_audioplayer;
 }
@@ -47,6 +49,10 @@ private slots:
 
     void on_bt_deletetime_clicked();
 
+    void on_timeview_clicked(const QModelIndex &index);
+
+    void on_bt_save_clicked();
+
 private:
     Ui::widget_audioplayer *ui;
     QSqlDatabase db;
@@ -58,7 +64,8 @@ private:
     QSqlQueryModel *qrymodel3;
     QStringListModel *listmodel;
 
-    QString gettime(int position);
+    QString getstringtime(int position);
+    int getinttime(QString time);
     void loadtimestamp();
 };
 

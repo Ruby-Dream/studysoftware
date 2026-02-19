@@ -5,9 +5,8 @@
 #include "widget_course.h"
 #include "widget_coursefile.h"
 #include "widget_notice.h"
-#include <QSystemTrayIcon>
-#include <QSqlTableModel>
-#include <QSqlDatabase>
+#include <QSystemTrayIcon>//右下角程序托盘图标
+#include <QSqlDatabase>//数据库连接
 QT_BEGIN_NAMESPACE
 namespace Ui {
 class MainWindow;
