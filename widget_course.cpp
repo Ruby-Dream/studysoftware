@@ -4,15 +4,12 @@
 #include "dialog_tablesetting.h"
 #include "widget_coursemanager.h"
 
-courseform::courseform(QWidget *parent)
+courseform::courseform(QSqlDatabase db,QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::courseform)
 {
     ui->setupUi(this);
-
-    db=QSqlDatabase::addDatabase("QSQLITE","tableoption");//记录课表的长和宽
-    db.setDatabaseName("table.db");
-    db.open();
+    this->db=db;
     sqlmodel=new QSqlTableModel(nullptr,db);
     sqlmodel->setTable("classtableoption");
     sqlmodel->setEditStrategy(QSqlTableModel::OnManualSubmit);
@@ -21,10 +18,8 @@ courseform::courseform(QWidget *parent)
         QMessageBox::critical(this,"bad","e");
     }
 
-    db2=QSqlDatabase::addDatabase("QSQLITE","time");//记录了一天内的时间安排
-    db2.setDatabaseName("table.db");
-    db2.open();
-    sqlmodel2=new QSqlTableModel(nullptr,db2);
+
+    sqlmodel2=new QSqlTableModel(nullptr,db);
     sqlmodel2->setTable("begin_and_end_at");
     sqlmodel2->setEditStrategy(QSqlTableModel::OnManualSubmit);
     sqlmodel2->setSort(sqlmodel2->fieldIndex("no"),Qt::AscendingOrder);
@@ -32,10 +27,8 @@ courseform::courseform(QWidget *parent)
         QMessageBox::critical(this,"bad","e");
     }
 
-    db3=QSqlDatabase::addDatabase("QSQLITE","course");//记录了课程信息
-    db3.setDatabaseName("table.db");
-    db3.open();
-    sqlmodel3=new QSqlTableModel(nullptr,db3);
+
+    sqlmodel3=new QSqlTableModel(nullptr,db);
     sqlmodel3->setTable("course");
     sqlmodel3->setEditStrategy(QSqlTableModel::OnManualSubmit);
     sqlmodel3->setSort(sqlmodel3->fieldIndex("no"),Qt::AscendingOrder);
@@ -47,8 +40,8 @@ courseform::courseform(QWidget *parent)
     column=rec.value("workdays").toInt();
     row=rec.value("classes").toInt();
     day=rec.value("firstday").toDate();
-    model=new QStandardItemModel(row,column,this);
-    ui->tableView->setModel(model);//课程表模型-视图
+    mmodel=new QStandardItemModel(row,column,this);
+    ui->tableView->setModel(mmodel);//课程表模型-视图
 
     //第一次启动时获取时间
     //day=sqlmodel->record(0).value("firstday").toDate();
@@ -67,11 +60,6 @@ courseform::courseform(QWidget *parent)
 
 courseform::~courseform()
 {
-
-    // QSqlDatabase::removeDatabase("tableoption");
-    // QSqlDatabase::removeDatabase("time");
-    // QSqlDatabase::removeDatabase("course");
-
     delete ui;
 }
 
@@ -83,7 +71,7 @@ void courseform::on_bt_change_clicked(bool checked)//切换课表显示为时间
             QSqlRecord rec=sqlmodel2->record(i);
             classlist<<rec.value("begin_at").toString().mid(0,5)+'-'+rec.value("end_at").toString().mid(0,5);
         }
-        model->setVerticalHeaderLabels(classlist);
+        mmodel->setVerticalHeaderLabels(classlist);
         ui->bt_change->setText("切换为节数");
     }
     else{//变成节数
@@ -92,7 +80,7 @@ void courseform::on_bt_change_clicked(bool checked)//切换课表显示为时间
             QSqlRecord rec=sqlmodel2->record(i);
             classlist<<QString::asprintf("第%d节\n",i+1);
         }
-        model->setVerticalHeaderLabels(classlist);
+        mmodel->setVerticalHeaderLabels(classlist);
         ui->bt_change->setText("切换为时间");
     }
 }
@@ -110,7 +98,7 @@ void courseform::loadtable()//设置课表横竖表头，以及长宽
     else if(column==7){
         strlist<<"周一"<<"周二"<<"周三"<<"周四"<<"周五"<<"周六"<<"周日";
     }
-    model->setHorizontalHeaderLabels(strlist);
+    mmodel->setHorizontalHeaderLabels(strlist);
 
     if(ui->bt_change->isChecked()){//变成时间
         QStringList classlist;
@@ -118,7 +106,7 @@ void courseform::loadtable()//设置课表横竖表头，以及长宽
             QSqlRecord rec=sqlmodel2->record(i);
             classlist<<rec.value("begin_at").toString().mid(0,5)+'-'+rec.value("end_at").toString().mid(0,5);
         }
-        model->setVerticalHeaderLabels(classlist);
+        mmodel->setVerticalHeaderLabels(classlist);
     }
     else{//变成节数
         QStringList classlist;
@@ -126,7 +114,7 @@ void courseform::loadtable()//设置课表横竖表头，以及长宽
             QSqlRecord rec=sqlmodel2->record(i);
             classlist<<QString::asprintf("第%d节\n",i+1);
         }
-        model->setVerticalHeaderLabels(classlist);
+        mmodel->setVerticalHeaderLabels(classlist);
     }
 }
 
@@ -169,14 +157,14 @@ void courseform::loadcourse(int weekof)//加载课程
                 m->setFont(font);//将其加粗
             }
             m->setBackground(c);
-            model->setItem(class_begin_at,daynumber,m);
+            mmodel->setItem(class_begin_at,daynumber,m);
         }
     }
 }
 
 void courseform::on_bt_upweek_clicked()//点击上一周
 {
-    model->clear();
+    mmodel->clear();
     loadtable();
     loadcourse(week-=1);
     if(week==1) ui->bt_upweek->setHidden(true);//如果是从第二周切换到第一周，隐藏 上一周 按钮
@@ -186,7 +174,7 @@ void courseform::on_bt_upweek_clicked()//点击上一周
 
 void courseform::on_bt_downweek_clicked()//下一周
 {
-    model->clear();
+    mmodel->clear();
     loadtable();
     loadcourse(week+=1);
     if(ui->bt_upweek->isHidden()) ui->bt_upweek->setHidden(false);//如果是从第一周切换到第二周，显示 上一周 按钮
@@ -205,8 +193,8 @@ void courseform::on_bt_tablesetting_clicked()//点击课表设置，以及处理
         column=settable->getcuroptioncolumn();
         day=settable->getcuroptiondate();
 
-        model->setColumnCount(column);//更新一周天数
-        model->setRowCount(row);//更新一天节数
+        mmodel->setColumnCount(column);//更新一周天数
+        mmodel->setRowCount(row);//更新一天节数
 
         if(sqlmodel2->rowCount()>row){//如果当前课程节数大于目标值，删除多余的记录
             sqlmodel2->removeRows(row,sqlmodel2->rowCount()-row);
@@ -221,7 +209,7 @@ void courseform::on_bt_tablesetting_clicked()//点击课表设置，以及处理
             }
         }
         sqlmodel2->submitAll();
-        model->clear();
+        mmodel->clear();
         loadtable();//更新横竖表头
         loadcourse(week);//更新本周内课程
 

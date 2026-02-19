@@ -2,12 +2,13 @@
 #include "ui_widget_audioplayer.h"
 #include "QStyle"
 
-widget_audioplayer::widget_audioplayer(QString audiofile,QWidget *parent)
+widget_audioplayer::widget_audioplayer(QString audiofile,QSqlDatabase db,QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::widget_audioplayer)
 {
     ui->setupUi(this);
-    filename=audiofile;
+    filename=audiofile;//传入的文件名，绝对路径
+    this->db=db;
     player=new QMediaPlayer(this);//配置媒介
     output=new QAudioOutput(this);//配置输出设备
 
@@ -20,12 +21,8 @@ widget_audioplayer::widget_audioplayer(QString audiofile,QWidget *parent)
     player->setSource(s);
     player->play();
 
-
-    db5=QSqlDatabase::addDatabase("QSQLITE","timestamp");//记录了音频的时间戳节点
-    db5.setDatabaseName("table.db");
-    db5.open();
     qrymodel3=new QSqlQueryModel(this);
-    qrymodel3->setQuery("SELECT timestamp,text from media_time where media = \""+filename+"\"",db5);//读取所有该音频的时间节点和节点备注
+    qrymodel3->setQuery("SELECT timestamp,text from media_time where media = \""+filename+"\"",db);//读取所有该音频的时间节点和节点备注
     QStringList strlist;
     for(int i=0;i<qrymodel3->rowCount();i++){
         QSqlRecord rec=qrymodel3->record(i);
@@ -146,6 +143,4 @@ QString widget_audioplayer::gettime(int position)//将毫秒转换为mm:ss格式
     QString time=QString::asprintf("%.2d:%.2d",min,sec);
     return time;
 }
-
-
 

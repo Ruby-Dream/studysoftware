@@ -19,7 +19,7 @@ class courseform : public QWidget
     Q_OBJECT
 
 public:
-    explicit courseform(QWidget *parent = nullptr);
+    explicit courseform(QSqlDatabase db,QWidget *parent = nullptr);
     ~courseform();
     void loadcourse(int weekof);
 
@@ -38,7 +38,7 @@ private slots:
 
 private:
     Ui::courseform *ui;
-    QStandardItemModel *model;
+    QStandardItemModel *mmodel;
     //QWidget p;
 
     int row;//一天的课程节数
@@ -49,7 +49,7 @@ private:
 
     void loadtable();
     QSqlTableModel *sqlmodel,*sqlmodel2,*sqlmodel3;
-    QSqlDatabase db,db2,db3;
+    QSqlDatabase db;
     //QSqlQueryModel *qrymodel;
 };
 

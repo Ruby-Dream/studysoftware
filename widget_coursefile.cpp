@@ -1,16 +1,14 @@
 #include "widget_coursefile.h"
 #include "ui_widget_coursefile.h"
 
-widget_coursefile::widget_coursefile(QWidget *parent)
+widget_coursefile::widget_coursefile(QSqlDatabase db,QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::widget_coursefile)
 {
     ui->setupUi(this);
+    this->db=db;
 
-    db4=QSqlDatabase::addDatabase("QSQLITE","file");//记录了课件信息条目
-    db4.setDatabaseName("table.db");
-    db4.open();
-    sqlmodel4=new QSqlTableModel(nullptr,db4);
+    sqlmodel4=new QSqlTableModel(nullptr,db);
     sqlmodel4->setTable("coursefile");
     sqlmodel4->setEditStrategy(QSqlTableModel::OnManualSubmit);
     sqlmodel4->setSort(sqlmodel4->fieldIndex("no"),Qt::AscendingOrder);
@@ -18,7 +16,7 @@ widget_coursefile::widget_coursefile(QWidget *parent)
         QMessageBox::critical(this,"bad","e");
     }
     qrymodel=new QSqlQueryModel(this);//sql语句查询所有课程名
-    qrymodel->setQuery("SELECT name FROM course group by name",db4);
+    qrymodel->setQuery("SELECT name FROM course group by name",db);
 
     listmodel1=new QStringListModel(this);//记录课程条目的列表模型
     QStringList strlist;
@@ -34,7 +32,7 @@ widget_coursefile::widget_coursefile(QWidget *parent)
 
     ui->listView_course->setCurrentIndex(listmodel1->index(0));//
     qrymodel2=new QSqlQueryModel();
-    qrymodel2->setQuery("SELECT file from coursefile",db4);//查询全部课件
+    qrymodel2->setQuery("SELECT file from coursefile",db);//查询全部课件
     QStringList strlist2;
     listmodel2=new QStringListModel(this);
     for(int j=0;j<qrymodel2->rowCount();j++){
@@ -58,11 +56,11 @@ void widget_coursefile::loadfile()//加载视图，显示对应科目下的文�
     QString course=ui->listView_course->currentIndex().data().toString();//当前课程名
     if(course!="全部")
     {
-        qrymodel2->setQuery("SELECT file from coursefile where name = \""+course+"\"",db4);
+        qrymodel2->setQuery("SELECT file from coursefile where name = \""+course+"\"",db);
         ui->bt_include->setEnabled(true);
     }
     else{
-        qrymodel2->setQuery("SELECT file from coursefile",db4);
+        qrymodel2->setQuery("SELECT file from coursefile",db);
         ui->bt_include->setEnabled(false);
     }
     QStringList strlist2;//当前课程的课件列表
@@ -85,7 +83,7 @@ void widget_coursefile::on_bt_include_clicked()//导入课件
         QString course=ui->listView_course->currentIndex().data().toString();//课程名
         for(int i=0;i<filelist.size();i++){//对于每一个待导入的课件
             QString filename=filelist.at(i);
-            model->setQuery("SELECT file from coursefile where file =\""+filename+"\"",db4);
+            model->setQuery("SELECT file from coursefile where file =\""+filename+"\"",db);
             if(model->rowCount()>0) {
                 continue;//如果已经有这个文件了，跳过
             }
@@ -106,11 +104,11 @@ void widget_coursefile::on_listView_course_clicked(const QModelIndex &index)//�
     QString s=listmodel1->data(index).toString();
     if(s!="全部")
     {
-        qrymodel2->setQuery("SELECT file from coursefile where name = \""+s+"\"",db4);
+        qrymodel2->setQuery("SELECT file from coursefile where name = \""+s+"\"",db);
         ui->bt_include->setEnabled(true);
     }
     else{
-        qrymodel2->setQuery("SELECT file from coursefile",db4);
+        qrymodel2->setQuery("SELECT file from coursefile",db);
         ui->bt_include->setEnabled(false);
     }
     ui->bt_delete->setEnabled(false);
@@ -131,7 +129,7 @@ void widget_coursefile::on_listView_file_clicked(const QModelIndex &index)//单�
 {
     QString s=listmodel2->data(index).toString();
     QSqlQueryModel *q=new QSqlQueryModel();
-    q->setQuery("SELECT text from coursefile where file =\""+s+"\"",db4);
+    q->setQuery("SELECT text from coursefile where file =\""+s+"\"",db);
     QSqlRecord r=q->record(0);
     ui->plainTextEdit_filetext->setPlainText(r.value("text").toString());
     QString ss=ui->listView_course->currentIndex().data().toString();
@@ -148,7 +146,7 @@ void widget_coursefile::on_listView_file_doubleClicked(const QModelIndex &index)
     QString file=listmodel2->data(index).toString();
     QFileInfo fileinfo(file);
     if(fileinfo.suffix().toLower()=="mp3"){
-        widget_audioplayer *_audioplayer=new widget_audioplayer(file,nullptr);
+        widget_audioplayer *_audioplayer=new widget_audioplayer(file,db,nullptr);
         _audioplayer->setWindowFlag(Qt::MSWindowsFixedSizeDialogHint);
         _audioplayer->setAttribute(Qt::WA_DeleteOnClose);
         _audioplayer->show();
@@ -163,7 +161,7 @@ void widget_coursefile::on_bt_delete_clicked()//点击删除当前课件条目
 {
     QString filename=ui->listView_file->currentIndex().data().toString();
     QString coursename=ui->listView_course->currentIndex().data().toString();
-    QSqlQuery query(db4);
+    QSqlQuery query(db);
     query.prepare("DELETE from coursefile where file =?");
     query.bindValue(0,filename);
     query.exec();
@@ -171,11 +169,10 @@ void widget_coursefile::on_bt_delete_clicked()//点击删除当前课件条目
 }
 
 
-
 void widget_coursefile::on_bt_save_clicked()//点击保存
 {
     QString s=ui->listView_file->currentIndex().data().toString();
-    QSqlQuery query(db4);
+    QSqlQuery query(db);
     query.prepare("UPDATE coursefile set text=? where file =?");
     query.bindValue(0,ui->plainTextEdit_filetext->toPlainText());
     query.bindValue(1,ui->listView_file->currentIndex().data().toString());

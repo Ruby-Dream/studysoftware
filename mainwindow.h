@@ -6,6 +6,8 @@
 #include "widget_coursefile.h"
 #include "widget_notice.h"
 #include <QSystemTrayIcon>
+#include <QSqlTableModel>
+#include <QSqlDatabase>
 QT_BEGIN_NAMESPACE
 namespace Ui {
 class MainWindow;
@@ -33,5 +35,6 @@ private:
     courseform *_courseform=nullptr;
     widget_coursefile *_widget_coursefile=nullptr;
     widget_notice *_widget_notice=nullptr;
+    QSqlDatabase db;
 };
 #endif // MAINWINDOW_H

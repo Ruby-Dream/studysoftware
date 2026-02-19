@@ -25,7 +25,7 @@ class widget_coursefile : public QWidget
     Q_OBJECT
 
 public:
-    explicit widget_coursefile(QWidget *parent = nullptr);
+    explicit widget_coursefile(QSqlDatabase db,QWidget *parent = nullptr);
     ~widget_coursefile();
 
 private slots:
@@ -46,7 +46,7 @@ private slots:
 private:
     Ui::widget_coursefile *ui;
     QSqlQueryModel *qrymodel,*qrymodel2;
-    QSqlDatabase db4;
+    QSqlDatabase db;
     QStringListModel *listmodel1,*listmodel2;
     QItemSelectionModel *selection1,*selection2;
     QSqlTableModel *sqlmodel4;

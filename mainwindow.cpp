@@ -10,9 +10,13 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
     this->setWindowFlag(Qt::MSWindowsFixedSizeDialogHint);
 
-    _courseform=new courseform(this);
+    db=QSqlDatabase::addDatabase("QSQLITE");//所有数据库的连接
+    db.setDatabaseName("table.db");
+    db.open();
+
+    _courseform=new courseform(db,this);
     _courseform->setAttribute(Qt::WA_DeleteOnClose);
-    _widget_coursefile=new widget_coursefile(this);
+    _widget_coursefile=new widget_coursefile(db,this);
     _widget_coursefile->setAttribute(Qt::WA_DeleteOnClose);
     _widget_notice=new widget_notice(this);
     _widget_notice->setAttribute(Qt::WA_DeleteOnClose);

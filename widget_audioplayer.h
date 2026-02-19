@@ -16,7 +16,7 @@ class widget_audioplayer : public QWidget
     Q_OBJECT
 
 public:
-    explicit widget_audioplayer(QString audiofile,QWidget *parent = nullptr);
+    explicit widget_audioplayer(QString audiofile,QSqlDatabase db,QWidget *parent = nullptr);
     ~widget_audioplayer();
 
 private slots:
@@ -44,7 +44,7 @@ private slots:
 
 private:
     Ui::widget_audioplayer *ui;
-    QSqlDatabase db5;
+    QSqlDatabase db;
     bool loop=false;
     QMediaPlayer *player;
     QAudioOutput *output;
