@@ -1,14 +1,14 @@
 #include "widget_coursemanager.h"
 #include "ui_widget_coursemanager.h"
 
-widget_coursemanager::widget_coursemanager(courseform *m,int week,QSqlTableModel *sqlmodel,QWidget *parent)
+widget_coursemanager::widget_coursemanager(courseform *m,QStandardItemModel *mmodel,QSqlTableModel *sqlmodel,QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::widget_coursemanager)
 {
     ui->setupUi(this);
     sqlmodel3=sqlmodel;
+    this->mmodel=mmodel;
     w=m;
-    currentweek=week;
     //qDebug() << "当前对象数：" << QApplication::allWidgets().size();
     opentable();
 }
@@ -30,7 +30,6 @@ void widget_coursemanager::opentable()
     sqlmodel3->setHeaderData(sqlmodel3->fieldIndex("text"),Qt::Horizontal,"备注");
     //绑定选择模型
     selection=new QItemSelectionModel(sqlmodel3,this);
-    //connect(selection,&QItemSelectionModel::hasSelection,ui->bt_delete,&QWidget::setEnabled);
     connect(selection,&QItemSelectionModel::currentRowChanged,this,&widget_coursemanager::do_currentRowChanged);
     //绑定模型视图
     ui->tableView->setModel(sqlmodel3);
@@ -73,9 +72,6 @@ void widget_coursemanager::do_currentRowChanged(const QModelIndex &current, cons
         ui->color->setAutoFillBackground(true);
         ui->color->setPalette(p);
     }
-    if(sqlmodel3->isDirty()){
-        //ui->action->setEnabled(true);
-    }
 }
 
 void widget_coursemanager::on_btchangecolor_clicked()//修改颜色
@@ -85,11 +81,15 @@ void widget_coursemanager::on_btchangecolor_clicked()//修改颜色
         QPalette p=ui->color->palette();
         p.setColor(QPalette::Window,c);
         ui->color->setPalette(p);
-    //如果没有选就提交失败
-        QSqlRecord rec=sqlmodel3->record(selection->currentIndex().row());
-        rec.setValue("color",c.name());
-        sqlmodel3->setRecord(selection->currentIndex().row(),rec);
-        //ui->action->setEnabled(true);
+        //以下代码存在问题
+        //原因：setrecord不适合单独修改一条记录中仅某一列的值，改用setdata
+        // QSqlRecord rec=sqlmodel3->record(selection->currentIndex().row());
+        // rec.setValue("color",c.name());
+        // rec.setGenerated("color",false);
+        // sqlmodel3->setRecord(selection->currentIndex().row(),rec);
+
+        QModelIndex index=sqlmodel3->index(selection->currentIndex().row(),7);
+        sqlmodel3->setData(index,c.name());
     }
 }
 
@@ -97,10 +97,17 @@ void widget_coursemanager::on_btchangecolor_clicked()//修改颜色
 void widget_coursemanager::on_bt_save_clicked()//点击保存按钮
 {
     QModelIndex index=selection->currentIndex();//当前索引
+    for(int i=0;i<sqlmodel3->rowCount()+1;i++){
+        QString ss=sqlmodel3->record(i).value("color").toString();
+    }
     sqlmodel3->submitAll();
-    selection->setCurrentIndex(index,QItemSelectionModel::Select);//保留选择状态
-
-    w->loadcourse(currentweek);//更新课表显示
+    for(int i=0;i<sqlmodel3->rowCount()+1;i++){
+        QString ss=sqlmodel3->record(i).value("color").toString();
+    }
+    selection->setCurrentIndex(index,QItemSelectionModel::Select);//
+    mmodel->clear();
+    w->loadtable();
+    w->loadcourse(w->selected_week);//更新课表显示
 
 }
 
@@ -109,17 +116,20 @@ void widget_coursemanager::on_bt_new_clicked()//点击新建课程按钮
 {
     QSqlRecord rec=sqlmodel3->record();
     //配置默认值
-    rec.setValue("no",sqlmodel3->record(sqlmodel3->rowCount()-1).value("no").toInt()+1);
+    rec.setValue("no",sqlmodel3->record(sqlmodel3->rowCount()-1).value("no").toInt()+1);//最后一条记录的no值+1，永不重复
     rec.setValue("name","新课程");
     rec.setValue("weekfrom",1);
     rec.setValue("weekto",1);
     rec.setValue("workday_on","周一");
     rec.setValue("begin_at",1);
     rec.setValue("end_at",1);
+    rec.setValue("color","#000001");
+    rec.setValue("noticed",true);
     sqlmodel3->insertRecord(sqlmodel3->rowCount(),rec);
     sqlmodel3->submitAll();
     QModelIndex index=sqlmodel3->index(sqlmodel3->rowCount()-1,1);
     selection->setCurrentIndex(index,QItemSelectionModel::Select);//选择新建的条目
+
 }
 
 
@@ -135,5 +145,8 @@ void widget_coursemanager::on_bt_delete_clicked()//点击删除当前课程
         }
 
     }
+    mmodel->clear();
+    w->loadtable();
+    w->loadcourse(w->selected_week);//更新课表显示
 }
 

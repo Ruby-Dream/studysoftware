@@ -21,7 +21,9 @@ class courseform : public QWidget
 public:
     explicit courseform(QSqlDatabase db,QWidget *parent = nullptr);
     ~courseform();
+    void loadtable();
     void loadcourse(int weekof);
+    int selected_week;//当前课表显示的是第几周
 
 private slots:
     void on_bt_change_clicked(bool checked);
@@ -47,7 +49,8 @@ private:
     int week;//当前周是第几周
 
 
-    void loadtable();
+
+
     QSqlTableModel *sqlmodel,*sqlmodel2,*sqlmodel3;
     QSqlDatabase db;
     //QSqlQueryModel *qrymodel;

@@ -55,7 +55,8 @@ courseform::courseform(QSqlDatabase db,QWidget *parent)
     loadtable();//加载课表结构框架
     QDate now=QDate::currentDate();
     week=day.daysTo(now)/7+1;
-    loadcourse(week);//加载数据库中的课程
+    selected_week=week;
+    loadcourse(selected_week);//加载数据库中的课程
 }
 
 courseform::~courseform()
@@ -166,8 +167,8 @@ void courseform::on_bt_upweek_clicked()//点击上一周
 {
     mmodel->clear();
     loadtable();
-    loadcourse(week-=1);
-    if(week==1) ui->bt_upweek->setHidden(true);//如果是从第二周切换到第一周，隐藏 上一周 按钮
+    loadcourse(selected_week-=1);
+    if(selected_week==1) ui->bt_upweek->setHidden(true);//如果是从第二周切换到第一周，隐藏 上一周 按钮
 
 }
 
@@ -176,7 +177,7 @@ void courseform::on_bt_downweek_clicked()//下一周
 {
     mmodel->clear();
     loadtable();
-    loadcourse(week+=1);
+    loadcourse(selected_week+=1);
     if(ui->bt_upweek->isHidden()) ui->bt_upweek->setHidden(false);//如果是从第一周切换到第二周，显示 上一周 按钮
 }
 
@@ -224,7 +225,7 @@ void courseform::on_bt_tablesetting_clicked()//点击课表设置，以及处理
 
 void courseform::on_bt_coursemanager_clicked()//点击课程管理按钮
 {
-    widget_coursemanager *course=new widget_coursemanager(this,week,sqlmodel3,nullptr);
+    widget_coursemanager *course=new widget_coursemanager(this,mmodel,sqlmodel3,nullptr);
     course->setWindowFlag(Qt::MSWindowsFixedSizeDialogHint);
     course->setAttribute(Qt::WA_DeleteOnClose);//关闭窗口时自动释放内存，避免内存占用无限上涨
     course->show();
