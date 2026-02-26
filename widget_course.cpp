@@ -4,37 +4,15 @@
 #include "dialog_tablesetting.h"
 #include "widget_coursemanager.h"
 
-courseform::courseform(QSqlDatabase db,QWidget *parent)
+courseform::courseform(QSqlTableModel *sqlmodel,QSqlTableModel *sqlmodel2,QSqlTableModel *sqlmodel3,QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::courseform)
 {
     ui->setupUi(this);
-    this->db=db;
-    sqlmodel=new QSqlTableModel(nullptr,db);
-    sqlmodel->setTable("classtableoption");
-    sqlmodel->setEditStrategy(QSqlTableModel::OnManualSubmit);
-    sqlmodel->setSort(sqlmodel->fieldIndex("rowid"),Qt::AscendingOrder);
-    if(!sqlmodel->select()){
-        QMessageBox::critical(this,"bad","e");
-    }
 
-
-    sqlmodel2=new QSqlTableModel(nullptr,db);
-    sqlmodel2->setTable("begin_and_end_at");
-    sqlmodel2->setEditStrategy(QSqlTableModel::OnManualSubmit);
-    sqlmodel2->setSort(sqlmodel2->fieldIndex("no"),Qt::AscendingOrder);
-    if(!sqlmodel2->select()){
-        QMessageBox::critical(this,"bad","e");
-    }
-
-
-    sqlmodel3=new QSqlTableModel(nullptr,db);
-    sqlmodel3->setTable("course");
-    sqlmodel3->setEditStrategy(QSqlTableModel::OnManualSubmit);
-    sqlmodel3->setSort(sqlmodel3->fieldIndex("no"),Qt::AscendingOrder);
-    if(!sqlmodel3->select()){
-        QMessageBox::critical(this,"bad","e");
-    }
+    this->sqlmodel=sqlmodel;
+    this->sqlmodel2=sqlmodel2;
+    this->sqlmodel3=sqlmodel3;
 
     QSqlRecord rec=sqlmodel->record(0);
     column=rec.value("workdays").toInt();
@@ -119,6 +97,11 @@ void courseform::loadtable()//设置课表横竖表头，以及长宽
     }
 }
 
+void courseform::enable()//恢复按钮可用性
+{
+    ui->bt_coursemanager->setEnabled(true);
+}
+
 void courseform::loadcourse(int weekof)//加载课程
 {
     ui->labelweek->setText(QString::asprintf("第%d周",weekof));
@@ -144,7 +127,7 @@ void courseform::loadcourse(int weekof)//加载课程
         int class_end_at=rec.value("end_at").toInt();//到哪节下课
 
         QColor c;
-        if(rec.value("color").toString()=="") c=Qt::black;//如果数据库没有存颜色，默认用黑色
+        if(rec.value("color").toString()=="") c=Qt::black;//如果数据库没有存颜色，默认用黑色，但一般这句不会触发
         else c=rec.value("color").toString();
 
         for(;class_begin_at<class_end_at;class_begin_at++){
@@ -157,7 +140,7 @@ void courseform::loadcourse(int weekof)//加载课程
                 font.setBold(true);
                 m->setFont(font);//将其加粗
             }
-            m->setBackground(c);
+            m->setBackground(c);//为单元格背景设置颜色
             mmodel->setItem(class_begin_at,daynumber,m);
         }
     }
@@ -186,9 +169,9 @@ void courseform::on_bt_tablesetting_clicked()//点击课表设置，以及处理
 {
     Dialog_tablesetting *settable=new Dialog_tablesetting(sqlmodel,this);
     settable->setWindowFlag(Qt::MSWindowsFixedSizeDialogHint);
-    //settable->setAttribute(Qt::WA_DeleteOnClose);
     settable->setcuroption(row,column,day);
     int ret=settable->exec();
+    //在对话框产生返回值前，进程阻塞在这里
     if(ret==QDialog::Accepted){//设置新的课表长和宽，以及第一周
         row=settable->getcuroptionrow();
         column=settable->getcuroptioncolumn();
@@ -216,7 +199,7 @@ void courseform::on_bt_tablesetting_clicked()//点击课表设置，以及处理
 
     }
     {//无论返回结果如何
-        settable->close();//关闭窗口
+        settable->close();//手动关闭窗口
         delete settable;//释放内存
         settable=nullptr;//避免野指针
     }
@@ -225,6 +208,7 @@ void courseform::on_bt_tablesetting_clicked()//点击课表设置，以及处理
 
 void courseform::on_bt_coursemanager_clicked()//点击课程管理按钮
 {
+    ui->bt_coursemanager->setEnabled(false);//按钮禁用，避免多开
     widget_coursemanager *course=new widget_coursemanager(this,mmodel,sqlmodel3,nullptr);
     course->setWindowFlag(Qt::MSWindowsFixedSizeDialogHint);
     course->setAttribute(Qt::WA_DeleteOnClose);//关闭窗口时自动释放内存，避免内存占用无限上涨

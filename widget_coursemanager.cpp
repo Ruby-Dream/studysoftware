@@ -16,6 +16,7 @@ widget_coursemanager::widget_coursemanager(courseform *m,QStandardItemModel *mmo
 widget_coursemanager::~widget_coursemanager()
 {
     delete ui;
+    w->enable();//按钮恢复
 }
 
 void widget_coursemanager::opentable()
@@ -28,6 +29,8 @@ void widget_coursemanager::opentable()
     sqlmodel3->setHeaderData(sqlmodel3->fieldIndex("end_at"),Qt::Horizontal,"下课节");
     sqlmodel3->setHeaderData(sqlmodel3->fieldIndex("color"),Qt::Horizontal,"颜色");
     sqlmodel3->setHeaderData(sqlmodel3->fieldIndex("text"),Qt::Horizontal,"备注");
+    sqlmodel3->setHeaderData(sqlmodel3->fieldIndex("noticed"),Qt::Horizontal,"是否提醒");
+    sqlmodel3->setHeaderData(sqlmodel3->fieldIndex("notice_text"),Qt::Horizontal,"提醒备注");
     //绑定选择模型
     selection=new QItemSelectionModel(sqlmodel3,this);
     connect(selection,&QItemSelectionModel::currentRowChanged,this,&widget_coursemanager::do_currentRowChanged);
@@ -54,7 +57,7 @@ void widget_coursemanager::opentable()
 }
 
 void widget_coursemanager::do_currentRowChanged(const QModelIndex &current, const QModelIndex &previous)
-{//行变换时
+{//行变换时,首次进入也会触发
     Q_UNUSED(previous);
     ui->bt_delete->setEnabled(true);
     mapper->setCurrentIndex(current.row());
