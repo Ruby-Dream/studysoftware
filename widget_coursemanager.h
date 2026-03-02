@@ -7,7 +7,9 @@
 #include <QStandardItemModel>
 #include <QSqlRecord>//sql记录读取写入
 #include <QColorDialog>//颜色对话框
+#include <QSqlDatabase>
 #include <QDataWidgetMapper>//数据映射组件
+#include <QSqlQuery>
 #include "widget_course.h"
 namespace Ui {
 class widget_coursemanager;
@@ -18,7 +20,7 @@ class widget_coursemanager : public QWidget
     Q_OBJECT
 
 public:
-    explicit widget_coursemanager(courseform *m,QStandardItemModel *mmodel,QSqlTableModel *sqlmodel,QWidget *parent = nullptr);
+    explicit widget_coursemanager(QSqlDatabase db,courseform *m,QStandardItemModel *mmodel,QSqlTableModel *sqlmodel,QWidget *parent = nullptr);
     void opentable();
     ~widget_coursemanager();
 private slots:
@@ -31,6 +33,8 @@ private slots:
 
     void on_bt_delete_clicked();
 
+    void on_name_editingFinished();
+
 private:
     Ui::widget_coursemanager *ui;
     QSqlTableModel *sqlmodel3;
@@ -38,6 +42,7 @@ private:
     QItemSelectionModel *selection;
     QDataWidgetMapper *mapper;
     courseform *w;
+    QSqlDatabase db;
     int currentweek;
 };
 

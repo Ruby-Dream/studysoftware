@@ -17,7 +17,8 @@ SOURCES += \
     widget_course.cpp \
     widget_coursefile.cpp \
     widget_coursemanager.cpp \
-    widget_notice.cpp
+    widget_notice.cpp \
+    widget_videoplayer.cpp
 
 HEADERS += \
     dialog_tablesetting.h \
@@ -27,7 +28,8 @@ HEADERS += \
     widget_course.h \
     widget_coursefile.h \
     widget_coursemanager.h \
-    widget_notice.h
+    widget_notice.h \
+    widget_videoplayer.h
 
 FORMS += \
     dialog_tablesetting.ui \
@@ -37,7 +39,8 @@ FORMS += \
     widget_course.ui \
     widget_coursefile.ui \
     widget_coursemanager.ui \
-    widget_notice.ui
+    widget_notice.ui \
+    widget_videoplayer.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

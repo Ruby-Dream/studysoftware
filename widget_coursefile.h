@@ -14,6 +14,7 @@
 #include <QDir>//文件路径
 #include <QMessageBox>//消息通知框
 #include "widget_audioplayer.h"
+#include "widget_videoplayer.h"
 namespace Ui {
 class widget_coursefile;
 }

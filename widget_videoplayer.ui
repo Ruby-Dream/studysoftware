@@ -1,57 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>widget_audioplayer</class>
- <widget class="QWidget" name="widget_audioplayer">
+ <class>widget_videoplayer</class>
+ <widget class="QWidget" name="widget_videoplayer">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>607</width>
-    <height>427</height>
+    <width>884</width>
+    <height>590</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <widget class="QPushButton" name="bt_control">
-   <property name="enabled">
-    <bool>true</bool>
-   </property>
-   <property name="geometry">
-    <rect>
-     <x>290</x>
-     <y>360</y>
-     <width>31</width>
-     <height>31</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string/>
-   </property>
-   <property name="icon">
-    <iconset theme="QIcon::ThemeIcon::MediaPlaybackPause"/>
-   </property>
-  </widget>
-  <widget class="QRadioButton" name="bt_isloop">
-   <property name="geometry">
-    <rect>
-     <x>180</x>
-     <y>360</y>
-     <width>102</width>
-     <height>22</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>循环播放</string>
-   </property>
-  </widget>
   <widget class="QGroupBox" name="groupBox">
    <property name="geometry">
     <rect>
-     <x>60</x>
-     <y>20</y>
+     <x>620</x>
+     <y>70</y>
      <width>241</width>
-     <height>291</height>
+     <height>221</height>
     </rect>
    </property>
    <property name="title">
@@ -104,39 +72,24 @@
     </item>
    </layout>
   </widget>
-  <widget class="QGroupBox" name="groupBox_2">
+  <widget class="QRadioButton" name="bt_isloop">
    <property name="geometry">
     <rect>
-     <x>310</x>
-     <y>20</y>
-     <width>241</width>
-     <height>291</height>
+     <x>320</x>
+     <y>540</y>
+     <width>102</width>
+     <height>22</height>
     </rect>
    </property>
-   <property name="styleSheet">
-    <string notr="true"/>
+   <property name="text">
+    <string>循环播放</string>
    </property>
-   <property name="title">
-    <string>节点备注</string>
-   </property>
-   <layout class="QVBoxLayout" name="verticalLayout">
-    <item>
-     <widget class="QPlainTextEdit" name="plainTextEdit"/>
-    </item>
-    <item>
-     <widget class="QPushButton" name="bt_save">
-      <property name="text">
-       <string>保存当前时间节点备注</string>
-      </property>
-     </widget>
-    </item>
-   </layout>
   </widget>
   <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
-     <x>330</x>
-     <y>360</y>
+     <x>470</x>
+     <y>540</y>
      <width>241</width>
      <height>42</height>
     </rect>
@@ -200,12 +153,59 @@
     </item>
    </layout>
   </widget>
-  <widget class="QWidget" name="layoutWidget">
+  <widget class="QGroupBox" name="groupBox_2">
+   <property name="geometry">
+    <rect>
+     <x>620</x>
+     <y>300</y>
+     <width>241</width>
+     <height>201</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true"/>
+   </property>
+   <property name="title">
+    <string>节点备注</string>
+   </property>
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <widget class="QPlainTextEdit" name="plainTextEdit"/>
+    </item>
+    <item>
+     <widget class="QPushButton" name="bt_save">
+      <property name="text">
+       <string>保存当前时间节点备注</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QPushButton" name="bt_control">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
+   <property name="geometry">
+    <rect>
+     <x>430</x>
+     <y>540</y>
+     <width>31</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="icon">
+    <iconset theme="QIcon::ThemeIcon::MediaPlaybackPause"/>
+   </property>
+  </widget>
+  <widget class="QWidget" name="layoutWidget_2">
    <property name="geometry">
     <rect>
      <x>30</x>
-     <y>320</y>
-     <width>551</width>
+     <y>510</y>
+     <width>821</width>
      <height>20</height>
     </rect>
    </property>

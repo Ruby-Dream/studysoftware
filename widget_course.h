@@ -19,7 +19,7 @@ class courseform : public QWidget
     Q_OBJECT
 
 public:
-    explicit courseform(QSqlTableModel *sqlmodel,QSqlTableModel *sqlmodel2,QSqlTableModel *sqlmodel3,QWidget *parent = nullptr);
+    explicit courseform(QSqlDatabase db,QSqlTableModel *sqlmodel,QSqlTableModel *sqlmodel2,QSqlTableModel *sqlmodel3,QWidget *parent = nullptr);
     ~courseform();
     void loadtable();
     void enable();
@@ -49,9 +49,6 @@ private:
     int column;//一周的天数
     QDate day;//一学期开学第一周的周一
     int week;//当前周是第几周
-
-
-
 
     QSqlTableModel *sqlmodel,*sqlmodel2,*sqlmodel3;
     QSqlDatabase db;

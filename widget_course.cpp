@@ -4,12 +4,12 @@
 #include "dialog_tablesetting.h"
 #include "widget_coursemanager.h"
 
-courseform::courseform(QSqlTableModel *sqlmodel,QSqlTableModel *sqlmodel2,QSqlTableModel *sqlmodel3,QWidget *parent)
+courseform::courseform(QSqlDatabase db,QSqlTableModel *sqlmodel,QSqlTableModel *sqlmodel2,QSqlTableModel *sqlmodel3,QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::courseform)
 {
     ui->setupUi(this);
-
+    this->db=db;
     this->sqlmodel=sqlmodel;
     this->sqlmodel2=sqlmodel2;
     this->sqlmodel3=sqlmodel3;
@@ -209,7 +209,7 @@ void courseform::on_bt_tablesetting_clicked()//点击课表设置，以及处理
 void courseform::on_bt_coursemanager_clicked()//点击课程管理按钮
 {
     ui->bt_coursemanager->setEnabled(false);//按钮禁用，避免多开
-    widget_coursemanager *course=new widget_coursemanager(this,mmodel,sqlmodel3,nullptr);
+    widget_coursemanager *course=new widget_coursemanager(db,this,mmodel,sqlmodel3,nullptr);
     course->setWindowFlag(Qt::MSWindowsFixedSizeDialogHint);
     course->setAttribute(Qt::WA_DeleteOnClose);//关闭窗口时自动释放内存，避免内存占用无限上涨
     course->show();

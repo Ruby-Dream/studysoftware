@@ -40,7 +40,7 @@ MainWindow::MainWindow(QWidget *parent)
     }
 
 
-    _courseform=new courseform(sqlmodel,sqlmodel2,sqlmodel3,this);
+    _courseform=new courseform(db,sqlmodel,sqlmodel2,sqlmodel3,this);
     ui->stackedWidget->addWidget(_courseform);
     ui->stackedWidget->setCurrentWidget(_courseform);
     ui->bt_coursefile->setEnabled(true);
@@ -59,7 +59,7 @@ void MainWindow::on_bt_course_clicked()//切换到课表窗口
 {
     delete_old_widget();
     currentwidget=1;
-    _courseform=new courseform(sqlmodel,sqlmodel2,sqlmodel3,this);
+    _courseform=new courseform(db,sqlmodel,sqlmodel2,sqlmodel3,this);
     ui->stackedWidget->addWidget(_courseform);
     ui->stackedWidget->setCurrentWidget(_courseform);
     ui->bt_coursefile->setEnabled(true);

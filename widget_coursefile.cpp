@@ -88,10 +88,12 @@ void widget_coursefile::on_bt_include_clicked()//导入课件
                 continue;//如果已经有这个文件了，跳过
             }
             QSqlRecord rec=sqlmodel4->record();
-            rec.setValue("no",sqlmodel4->rowCount()+1);
+            rec.setValue("no",sqlmodel4->record(sqlmodel4->rowCount()-1).value("no").toInt()+1);//no主键为最后一条记录的+1值，防止重复
             rec.setValue("name",course);
             rec.setValue("file",filelist.at(i));
             sqlmodel4->insertRecord(sqlmodel4->rowCount(),rec);
+
+
         }
         sqlmodel4->submitAll();//更改到数据库
         loadfile();
@@ -133,10 +135,7 @@ void widget_coursefile::on_listView_file_clicked(const QModelIndex &index)//单�
     QSqlRecord r=q->record(0);
     ui->plainTextEdit_filetext->setPlainText(r.value("text").toString());
     QString ss=ui->listView_course->currentIndex().data().toString();
-/*    if(ss=="全部"){
-        ui->bt_delete->setEnabled(false);
-    }
-    else */ui->bt_delete->setEnabled(true);
+    ui->bt_delete->setEnabled(true);
     ui->bt_save->setEnabled(true);
 }
 
@@ -144,16 +143,29 @@ void widget_coursefile::on_listView_file_clicked(const QModelIndex &index)//单�
 void widget_coursefile::on_listView_file_doubleClicked(const QModelIndex &index)//双击课件条目时打开文件
 {
     QString file=listmodel2->data(index).toString();
-    QFileInfo fileinfo(file);
-    if(fileinfo.suffix().toLower()=="mp3"){
-        widget_audioplayer *_audioplayer=new widget_audioplayer(file,db,nullptr);
-        _audioplayer->setWindowFlag(Qt::MSWindowsFixedSizeDialogHint);
-        _audioplayer->setAttribute(Qt::WA_DeleteOnClose);
-        _audioplayer->show();
+    if(!QFile::exists(file)){//如果文件路径无效，询问是否删除该条目的对话框
+        auto result=QMessageBox::information(this,"文件路径无效","文件可能已被移动或删除\n是否删除该条目?",QMessageBox::Yes|QMessageBox::Cancel,QMessageBox::Cancel);
+        if(result==QMessageBox::Yes){
+            QSqlQuery query(db);
+            query.prepare("DELETE from coursefile where file = ?");
+            query.bindValue(0,file);
+            query.exec();
+            loadfile();
+        }
     }
     else{
-        QDesktopServices::openUrl(QUrl::fromLocalFile(file));
+        QFileInfo fileinfo(file);
+        if(fileinfo.suffix().toLower()=="mp3"){
+            widget_audioplayer *_audioplayer=new widget_audioplayer(file,db,nullptr);
+            _audioplayer->setWindowFlag(Qt::MSWindowsFixedSizeDialogHint);
+            _audioplayer->setAttribute(Qt::WA_DeleteOnClose);
+            _audioplayer->show();
+        }
+        else{
+            QDesktopServices::openUrl(QUrl::fromLocalFile(file));
+        }
     }
+
 }
 
 

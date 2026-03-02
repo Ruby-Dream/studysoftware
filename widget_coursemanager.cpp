@@ -1,13 +1,14 @@
 #include "widget_coursemanager.h"
 #include "ui_widget_coursemanager.h"
 
-widget_coursemanager::widget_coursemanager(courseform *m,QStandardItemModel *mmodel,QSqlTableModel *sqlmodel,QWidget *parent)
+widget_coursemanager::widget_coursemanager(QSqlDatabase db,courseform *m,QStandardItemModel *mmodel,QSqlTableModel *sqlmodel,QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::widget_coursemanager)
 {
     ui->setupUi(this);
     sqlmodel3=sqlmodel;
     this->mmodel=mmodel;
+    this->db=db;
     w=m;
     //qDebug() << "当前对象数：" << QApplication::allWidgets().size();
     opentable();
@@ -16,7 +17,8 @@ widget_coursemanager::widget_coursemanager(courseform *m,QStandardItemModel *mmo
 widget_coursemanager::~widget_coursemanager()
 {
     delete ui;
-    w->enable();//按钮恢复
+    w->enable();//
+
 }
 
 void widget_coursemanager::opentable()
@@ -100,13 +102,13 @@ void widget_coursemanager::on_btchangecolor_clicked()//修改颜色
 void widget_coursemanager::on_bt_save_clicked()//点击保存按钮
 {
     QModelIndex index=selection->currentIndex();//当前索引
-    for(int i=0;i<sqlmodel3->rowCount()+1;i++){
-        QString ss=sqlmodel3->record(i).value("color").toString();
-    }
+    // for(int i=0;i<sqlmodel3->rowCount()+1;i++){
+    //     QString ss=sqlmodel3->record(i).value("color").toString();
+    // }
     sqlmodel3->submitAll();
-    for(int i=0;i<sqlmodel3->rowCount()+1;i++){
-        QString ss=sqlmodel3->record(i).value("color").toString();
-    }
+    // for(int i=0;i<sqlmodel3->rowCount()+1;i++){
+    //     QString ss=sqlmodel3->record(i).value("color").toString();
+    // }
     selection->setCurrentIndex(index,QItemSelectionModel::Select);//
     mmodel->clear();
     w->loadtable();
@@ -130,6 +132,8 @@ void widget_coursemanager::on_bt_new_clicked()//点击新建课程按钮
     rec.setValue("noticed",true);
     sqlmodel3->insertRecord(sqlmodel3->rowCount(),rec);
     sqlmodel3->submitAll();
+
+
     QModelIndex index=sqlmodel3->index(sqlmodel3->rowCount()-1,1);
     selection->setCurrentIndex(index,QItemSelectionModel::Select);//选择新建的条目
 
@@ -140,9 +144,20 @@ void widget_coursemanager::on_bt_delete_clicked()//点击删除当前课程
 {
     if(selection->hasSelection()){
         QModelIndex curindex=selection->currentIndex();//当前要删除的课程
+
         int row=selection->currentIndex().row();//当前索引的行号
+        QString name=sqlmodel3->index(row,1).data().toString();
         sqlmodel3->removeRow(curindex.row());//删除当前行
         sqlmodel3->submitAll();
+        //如果删除的是最后一节课，把同门课的所有课件记录也删除
+        QSqlQueryModel *qrymodel=new QSqlQueryModel(this);
+        qrymodel->setQuery("SELECT name from course where name = \""+name+"\"",db);
+        if(qrymodel->rowCount()==0){
+            QSqlQuery q;
+            q.prepare("DELETE from coursefile where name =?");
+            q.bindValue(0,name);
+            q.exec();
+        }
         if(sqlmodel3->rowCount()>0){//如果模型非空，就把选择光标移到上一行条目
             selection->setCurrentIndex(sqlmodel3->index(row-1,1),QItemSelectionModel::Select);//选择其之上一个项
         }
@@ -151,5 +166,14 @@ void widget_coursemanager::on_bt_delete_clicked()//点击删除当前课程
     mmodel->clear();
     w->loadtable();
     w->loadcourse(w->selected_week);//更新课表显示
+}
+
+
+void widget_coursemanager::on_name_editingFinished()
+{
+    if(ui->name->text()=="其他"){
+        ui->name->setText("新课程");
+        QMessageBox::critical(this,"课程名称无效","不可使用 \"其他\" 作为课程名称");
+    }
 }
 
