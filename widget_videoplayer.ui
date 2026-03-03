@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>884</width>
-    <height>590</height>
+    <width>951</width>
+    <height>588</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,10 +16,10 @@
   <widget class="QGroupBox" name="groupBox">
    <property name="geometry">
     <rect>
-     <x>620</x>
-     <y>70</y>
+     <x>700</x>
+     <y>20</y>
      <width>241</width>
-     <height>221</height>
+     <height>241</height>
     </rect>
    </property>
    <property name="title">
@@ -75,8 +75,8 @@
   <widget class="QRadioButton" name="bt_isloop">
    <property name="geometry">
     <rect>
-     <x>320</x>
-     <y>540</y>
+     <x>340</x>
+     <y>530</y>
      <width>102</width>
      <height>22</height>
     </rect>
@@ -88,10 +88,10 @@
   <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
-     <x>470</x>
-     <y>540</y>
+     <x>570</x>
+     <y>530</y>
      <width>241</width>
-     <height>42</height>
+     <height>31</height>
     </rect>
    </property>
    <layout class="QHBoxLayout" name="horizontalLayout_3">
@@ -156,10 +156,10 @@
   <widget class="QGroupBox" name="groupBox_2">
    <property name="geometry">
     <rect>
-     <x>620</x>
-     <y>300</y>
+     <x>700</x>
+     <y>260</y>
      <width>241</width>
-     <height>201</height>
+     <height>221</height>
     </rect>
    </property>
    <property name="styleSheet">
@@ -170,10 +170,17 @@
    </property>
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
-     <widget class="QPlainTextEdit" name="plainTextEdit"/>
+     <widget class="QPlainTextEdit" name="plainTextEdit">
+      <property name="readOnly">
+       <bool>false</bool>
+      </property>
+     </widget>
     </item>
     <item>
      <widget class="QPushButton" name="bt_save">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
       <property name="text">
        <string>保存当前时间节点备注</string>
       </property>
@@ -187,8 +194,8 @@
    </property>
    <property name="geometry">
     <rect>
-     <x>430</x>
-     <y>540</y>
+     <x>470</x>
+     <y>530</y>
      <width>31</width>
      <height>31</height>
     </rect>
@@ -203,8 +210,8 @@
   <widget class="QWidget" name="layoutWidget_2">
    <property name="geometry">
     <rect>
-     <x>30</x>
-     <y>510</y>
+     <x>70</x>
+     <y>500</y>
      <width>821</width>
      <height>20</height>
     </rect>
@@ -242,7 +249,38 @@
     </item>
    </layout>
   </widget>
+  <widget class="Myvideowidget" name="videowidget" native="true">
+   <property name="geometry">
+    <rect>
+     <x>40</x>
+     <y>50</y>
+     <width>640</width>
+     <height>360</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="bt_fullscreen">
+   <property name="geometry">
+    <rect>
+     <x>180</x>
+     <y>530</y>
+     <width>86</width>
+     <height>25</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>全屏播放</string>
+   </property>
+  </widget>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Myvideowidget</class>
+   <extends>QWidget</extends>
+   <header>myvideowidget.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

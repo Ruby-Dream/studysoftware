@@ -22,7 +22,6 @@ class widget_videoplayer : public QWidget
 public:
     explicit widget_videoplayer(QString videofile,QSqlDatabase db,QWidget *parent = nullptr);
     ~widget_videoplayer();
-
 private slots:
     void on_bt_control_clicked();
 
@@ -53,6 +52,8 @@ private slots:
     void on_timeview_clicked(const QModelIndex &index);
 
     void on_bt_save_clicked();
+
+    void on_bt_fullscreen_clicked();
 
 private:
     Ui::widget_videoplayer *ui;

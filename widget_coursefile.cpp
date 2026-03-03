@@ -161,6 +161,12 @@ void widget_coursefile::on_listView_file_doubleClicked(const QModelIndex &index)
             _audioplayer->setAttribute(Qt::WA_DeleteOnClose);
             _audioplayer->show();
         }
+        else if(fileinfo.suffix().toLower()=="mp4" ||fileinfo.suffix().toLower()=="wmv" || fileinfo.suffix().toLower()=="mkv"){
+            widget_videoplayer *_videoplayer=new widget_videoplayer(file,db,nullptr);
+            _videoplayer->setWindowFlag(Qt::MSWindowsFixedSizeDialogHint);
+            _videoplayer->setAttribute(Qt::WA_DeleteOnClose);
+            _videoplayer->show();
+        }
         else{
             QDesktopServices::openUrl(QUrl::fromLocalFile(file));
         }

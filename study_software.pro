@@ -13,6 +13,7 @@ SOURCES += \
     dialog_timesetting.cpp \
     main.cpp \
     mainwindow.cpp \
+    myvideowidget.cpp \
     widget_audioplayer.cpp \
     widget_course.cpp \
     widget_coursefile.cpp \
@@ -24,6 +25,7 @@ HEADERS += \
     dialog_tablesetting.h \
     dialog_timesetting.h \
     mainwindow.h \
+    myvideowidget.h \
     widget_audioplayer.h \
     widget_course.h \
     widget_coursefile.h \

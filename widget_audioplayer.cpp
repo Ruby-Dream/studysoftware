@@ -165,6 +165,7 @@ void widget_audioplayer::on_bt_newtime_clicked()//新建时间节点
     query.exec();
 
     loadtimestamp();//刷新时间节点视图
+    ui->bt_save->setEnabled(false);
 }
 
 

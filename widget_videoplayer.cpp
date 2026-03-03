@@ -14,8 +14,11 @@ widget_videoplayer::widget_videoplayer(QString videofile,QSqlDatabase db,QWidget
     connect(player,&QMediaPlayer::playbackStateChanged,this,&widget_videoplayer::do_statechanged);//播放状态改变时的槽函数
     connect(player,&QMediaPlayer::positionChanged,this,&widget_videoplayer::do_positionchanged);//播放位置自动改变时的槽函数
     connect(player,&QMediaPlayer::durationChanged,this,&widget_videoplayer::do_durationchanged);//首次加载媒介时配置进度条的槽函数
+    connect(ui->videowidget,&Myvideowidget::statechange,this,&widget_videoplayer::on_bt_control_clicked);//点击视频组件时，相当于点击了控制按钮
     output->setVolume(volume);//初始音量
     player->setAudioOutput(output);
+    player->setVideoOutput(ui->videowidget);//设置视频输出
+
     QUrl s=QUrl::fromLocalFile(filename);
     player->setSource(s);
     player->play();
@@ -24,6 +27,7 @@ widget_videoplayer::widget_videoplayer(QString videofile,QSqlDatabase db,QWidget
 
     ui->timeview->setModel(listmodel);
     loadtimestamp();
+    ui->videowidget->setMediaPlayer(player);
 }
 
 widget_videoplayer::~widget_videoplayer()
@@ -156,6 +160,7 @@ void widget_videoplayer::on_bt_newtime_clicked()//新建时间节点
     query.exec();
 
     loadtimestamp();//刷新时间节点视图
+    ui->bt_save->setEnabled(false);
 }
 
 
@@ -195,5 +200,11 @@ void widget_videoplayer::on_bt_save_clicked()//点击保存备注
     query.bindValue(2,QString::asprintf("%d",getinttime(ui->timeview->currentIndex().data().toString())));
     query.exec();
     ui->bt_save->setText("已保存");
+}
+
+
+void widget_videoplayer::on_bt_fullscreen_clicked()
+{
+    ui->videowidget->setFullScreen(true);
 }
 
