@@ -10,7 +10,7 @@
 #include <QSqlDatabase>
 #include <QDataWidgetMapper>//数据映射组件
 #include <QSqlQuery>
-#include "widget_course.h"
+#include <QMessageBox>
 namespace Ui {
 class widget_coursemanager;
 }
@@ -20,14 +20,15 @@ class widget_coursemanager : public QWidget
     Q_OBJECT
 
 public:
-    explicit widget_coursemanager(QSqlDatabase db,courseform *m,QStandardItemModel *mmodel,QSqlTableModel *sqlmodel,QWidget *parent = nullptr);
-    void opentable();
+    explicit widget_coursemanager(QSqlDatabase db,int week,QStandardItemModel *mmodel,QSqlTableModel *sqlmodel,QWidget *parent = nullptr);
+
     ~widget_coursemanager();
 private slots:
     void do_currentRowChanged(const QModelIndex &current,const QModelIndex &previous);
     void on_btchangecolor_clicked();
 
     void on_bt_save_clicked();
+    void opentable();
 
     void on_bt_new_clicked();
 
@@ -41,9 +42,12 @@ private:
     QStandardItemModel *mmodel;
     QItemSelectionModel *selection;
     QDataWidgetMapper *mapper;
-    courseform *w;
     QSqlDatabase db;
     int currentweek;
+signals:
+    void wantloadtable();
+    void wantloadcourse(int weekof);
+    void wantsetenable();
 };
 
 #endif // WIDGET_COURSEMANAGER_H

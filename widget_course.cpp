@@ -21,6 +21,7 @@ courseform::courseform(QSqlDatabase db,QSqlTableModel *sqlmodel,QSqlTableModel *
     mmodel=new QStandardItemModel(row,column,this);
     ui->tableView->setModel(mmodel);//课程表模型-视图
 
+
     //第一次启动时获取时间
     //day=sqlmodel->record(0).value("firstday").toDate();
     //QDate now=QDate::currentDate();
@@ -31,9 +32,10 @@ courseform::courseform(QSqlDatabase db,QSqlTableModel *sqlmodel,QSqlTableModel *
 
     //model->clear();
     loadtable();//加载课表结构框架
+
     QDate now=QDate::currentDate();
-    week=day.daysTo(now)/7+1;
-    selected_week=week;
+    week=day.daysTo(now)/7+1;//这个是启动软件时是第几周
+    selected_week=week;//这个是想看第几周的课表
     loadcourse(selected_week);//加载数据库中的课程
 }
 
@@ -175,7 +177,12 @@ void courseform::on_bt_tablesetting_clicked()//点击课表设置，以及处理
     if(ret==QDialog::Accepted){//设置新的课表长和宽，以及第一周
         row=settable->getcuroptionrow();
         column=settable->getcuroptioncolumn();
-        day=settable->getcuroptiondate();
+        if(day!=settable->getcuroptiondate()){//如果开课日期发生了改变
+            day=settable->getcuroptiondate();
+            QDate now=QDate::currentDate();
+            week=day.daysTo(now)/7+1;//这个是启动软件时是第几周
+            selected_week=week;//这个是想看第几周的课表
+        }
 
         mmodel->setColumnCount(column);//更新一周天数
         mmodel->setRowCount(row);//更新一天节数
@@ -209,10 +216,13 @@ void courseform::on_bt_tablesetting_clicked()//点击课表设置，以及处理
 void courseform::on_bt_coursemanager_clicked()//点击课程管理按钮
 {
     ui->bt_coursemanager->setEnabled(false);//按钮禁用，避免多开
-    widget_coursemanager *course=new widget_coursemanager(db,this,mmodel,sqlmodel3,nullptr);
+    widget_coursemanager *course=new widget_coursemanager(db,week,mmodel,sqlmodel3,nullptr);
     course->setWindowFlag(Qt::MSWindowsFixedSizeDialogHint);
     course->setAttribute(Qt::WA_DeleteOnClose);//关闭窗口时自动释放内存，避免内存占用无限上涨
     course->show();
+    connect(course,&widget_coursemanager::wantsetenable,this,&courseform::enable);
+    connect(course,&widget_coursemanager::wantloadtable,this,&courseform::loadtable);
+    connect(course,&widget_coursemanager::wantloadcourse,this,&courseform::loadcourse);
 }
 
 

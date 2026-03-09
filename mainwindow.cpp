@@ -85,7 +85,7 @@ void MainWindow::on_bt_notice_clicked()//切换到通知窗口
 {
     delete_old_widget();
     currentwidget=3;
-    _widget_notice=new widget_notice(this);
+    _widget_notice=new widget_notice(db,this);
     ui->stackedWidget->addWidget(_widget_notice);
     ui->stackedWidget->setCurrentWidget(_widget_notice);
     ui->bt_coursefile->setEnabled(true);

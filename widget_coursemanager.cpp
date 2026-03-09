@@ -1,7 +1,7 @@
 #include "widget_coursemanager.h"
 #include "ui_widget_coursemanager.h"
 
-widget_coursemanager::widget_coursemanager(QSqlDatabase db,courseform *m,QStandardItemModel *mmodel,QSqlTableModel *sqlmodel,QWidget *parent)
+widget_coursemanager::widget_coursemanager(QSqlDatabase db,int week,QStandardItemModel *mmodel,QSqlTableModel *sqlmodel,QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::widget_coursemanager)
 {
@@ -9,16 +9,16 @@ widget_coursemanager::widget_coursemanager(QSqlDatabase db,courseform *m,QStanda
     sqlmodel3=sqlmodel;
     this->mmodel=mmodel;
     this->db=db;
-    w=m;
+    currentweek=week;
     //qDebug() << "当前对象数：" << QApplication::allWidgets().size();
     opentable();
+
 }
 
 widget_coursemanager::~widget_coursemanager()
 {
+    emit wantsetenable();//让按钮恢复可用
     delete ui;
-    w->enable();//
-
 }
 
 void widget_coursemanager::opentable()
@@ -102,17 +102,13 @@ void widget_coursemanager::on_btchangecolor_clicked()//修改颜色
 void widget_coursemanager::on_bt_save_clicked()//点击保存按钮
 {
     QModelIndex index=selection->currentIndex();//当前索引
-    // for(int i=0;i<sqlmodel3->rowCount()+1;i++){
-    //     QString ss=sqlmodel3->record(i).value("color").toString();
-    // }
     sqlmodel3->submitAll();
-    // for(int i=0;i<sqlmodel3->rowCount()+1;i++){
-    //     QString ss=sqlmodel3->record(i).value("color").toString();
-    // }
     selection->setCurrentIndex(index,QItemSelectionModel::Select);//
     mmodel->clear();
-    w->loadtable();
-    w->loadcourse(w->selected_week);//更新课表显示
+
+
+    emit wantloadtable();
+    emit wantloadcourse(currentweek);//更新课表显示
 
 }
 
@@ -164,8 +160,8 @@ void widget_coursemanager::on_bt_delete_clicked()//点击删除当前课程
 
     }
     mmodel->clear();
-    w->loadtable();
-    w->loadcourse(w->selected_week);//更新课表显示
+    emit wantloadtable();
+    emit wantloadcourse(currentweek);//更新课表显示
 }
 
 

@@ -30,6 +30,7 @@ int Dialog_tablesetting::getcuroptioncolumn()//获取课表一周显示几天
     return ui->cbcolumn->currentIndex()+5;
 }
 
+
 QDate Dialog_tablesetting::getcuroptiondate()
 {
     return ui->dateEdit->date();

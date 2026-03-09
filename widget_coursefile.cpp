@@ -184,6 +184,7 @@ void widget_coursefile::on_bt_delete_clicked()//点击删除当前课件条目
     query.bindValue(0,filename);
     query.exec();
 
+
     query.prepare("DELETE from media_time where media = ?");//顺带删除课件下的时间节点
     query.bindValue(0,filename);
     query.exec();
