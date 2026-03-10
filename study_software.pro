@@ -58,3 +58,4 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 DISTFILES += \
     table.db \
+    大润发/bf.txt
