@@ -3,6 +3,11 @@
 
 #include <QWidget>
 #include <QSqlDatabase>
+#include <QSqlTableModel>
+#include <QMessageBox>
+#include "spindelegate.h"
+#include "readonlydelegate.h"
+#include "lineeditdelegate.h"
 
 namespace Ui {
 class widget_notice;
@@ -19,6 +24,10 @@ public:
 private:
     Ui::widget_notice *ui;
     QSqlDatabase db;
+    QSqlTableModel *sqlmodel;
+    SpinDelegate *spin_delegate;
+    ReadonlyDelegate *readonly_delegate;
+    LineeditDelegate *lineedit_delegate;
 };
 
 #endif // WIDGET_NOTICE_H

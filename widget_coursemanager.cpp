@@ -31,8 +31,7 @@ void widget_coursemanager::opentable()
     sqlmodel3->setHeaderData(sqlmodel3->fieldIndex("end_at"),Qt::Horizontal,"下课节");
     sqlmodel3->setHeaderData(sqlmodel3->fieldIndex("color"),Qt::Horizontal,"颜色");
     sqlmodel3->setHeaderData(sqlmodel3->fieldIndex("text"),Qt::Horizontal,"备注");
-    sqlmodel3->setHeaderData(sqlmodel3->fieldIndex("noticed"),Qt::Horizontal,"是否提醒");
-    sqlmodel3->setHeaderData(sqlmodel3->fieldIndex("notice_text"),Qt::Horizontal,"提醒备注");
+
     //绑定选择模型
     selection=new QItemSelectionModel(sqlmodel3,this);
     connect(selection,&QItemSelectionModel::currentRowChanged,this,&widget_coursemanager::do_currentRowChanged);
@@ -40,6 +39,8 @@ void widget_coursemanager::opentable()
     ui->tableView->setModel(sqlmodel3);
     ui->tableView->setSelectionModel(selection);
     ui->tableView->setColumnHidden(0,true);
+    ui->tableView->setColumnHidden(9,true);
+    ui->tableView->setColumnHidden(10,true);
     //绑定模型映射组件
     mapper=new QDataWidgetMapper(this);
     mapper->setModel(sqlmodel3);
@@ -106,7 +107,6 @@ void widget_coursemanager::on_bt_save_clicked()//点击保存按钮
     selection->setCurrentIndex(index,QItemSelectionModel::Select);//
     mmodel->clear();
 
-
     emit wantloadtable();
     emit wantloadcourse(currentweek);//更新课表显示
 
@@ -125,10 +125,10 @@ void widget_coursemanager::on_bt_new_clicked()//点击新建课程按钮
     rec.setValue("begin_at",1);
     rec.setValue("end_at",1);
     rec.setValue("color","#000001");
-    rec.setValue("noticed",true);
+    rec.setValue("notice_before_min",0);
+
     sqlmodel3->insertRecord(sqlmodel3->rowCount(),rec);
     sqlmodel3->submitAll();
-
 
     QModelIndex index=sqlmodel3->index(sqlmodel3->rowCount()-1,1);
     selection->setCurrentIndex(index,QItemSelectionModel::Select);//选择新建的条目

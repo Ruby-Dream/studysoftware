@@ -11,9 +11,12 @@ CONFIG += c++17
 SOURCES += \
     dialog_tablesetting.cpp \
     dialog_timesetting.cpp \
+    lineeditdelegate.cpp \
     main.cpp \
     mainwindow.cpp \
     myvideowidget.cpp \
+    readonlydelegate.cpp \
+    spindelegate.cpp \
     widget_audioplayer.cpp \
     widget_course.cpp \
     widget_coursefile.cpp \
@@ -24,8 +27,11 @@ SOURCES += \
 HEADERS += \
     dialog_tablesetting.h \
     dialog_timesetting.h \
+    lineeditdelegate.h \
     mainwindow.h \
     myvideowidget.h \
+    readonlydelegate.h \
+    spindelegate.h \
     widget_audioplayer.h \
     widget_course.h \
     widget_coursefile.h \

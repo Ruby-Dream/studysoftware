@@ -16,8 +16,8 @@
   <widget class="QPushButton" name="pushButton">
    <property name="geometry">
     <rect>
-     <x>590</x>
-     <y>490</y>
+     <x>560</x>
+     <y>610</y>
      <width>86</width>
      <height>25</height>
     </rect>
@@ -36,8 +36,8 @@ color: rgb(255, 255, 0);</string>
   <widget class="QPushButton" name="pushButton_2">
    <property name="geometry">
     <rect>
-     <x>720</x>
-     <y>500</y>
+     <x>690</x>
+     <y>610</y>
      <width>86</width>
      <height>25</height>
     </rect>
@@ -49,8 +49,8 @@ color: rgb(255, 255, 0);</string>
   <widget class="QGroupBox" name="groupBox">
    <property name="geometry">
     <rect>
-     <x>600</x>
-     <y>90</y>
+     <x>660</x>
+     <y>490</y>
      <width>171</width>
      <height>81</height>
     </rect>
@@ -64,31 +64,13 @@ color: rgb(255, 255, 0);</string>
     </item>
    </layout>
   </widget>
-  <widget class="QGroupBox" name="groupBox_2">
-   <property name="geometry">
-    <rect>
-     <x>620</x>
-     <y>260</y>
-     <width>149</width>
-     <height>67</height>
-    </rect>
-   </property>
-   <property name="title">
-    <string>提醒备注</string>
-   </property>
-   <layout class="QHBoxLayout" name="horizontalLayout">
-    <item>
-     <widget class="QLineEdit" name="lineEdit"/>
-    </item>
-   </layout>
-  </widget>
   <widget class="QGroupBox" name="groupBox_3">
    <property name="geometry">
     <rect>
-     <x>50</x>
-     <y>60</y>
-     <width>521</width>
-     <height>261</height>
+     <x>120</x>
+     <y>30</y>
+     <width>761</width>
+     <height>211</height>
     </rect>
    </property>
    <property name="title">
@@ -96,7 +78,7 @@ color: rgb(255, 255, 0);</string>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
-     <widget class="QTableView" name="tableView"/>
+     <widget class="QTableView" name="tv_course"/>
     </item>
    </layout>
   </widget>
@@ -114,7 +96,7 @@ color: rgb(255, 255, 0);</string>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout_2">
     <item>
-     <widget class="QTableWidget" name="tableWidget"/>
+     <widget class="QTableView" name="tv_person"/>
     </item>
    </layout>
   </widget>

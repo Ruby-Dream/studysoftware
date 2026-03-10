@@ -181,7 +181,8 @@ void courseform::on_bt_tablesetting_clicked()//点击课表设置，以及处理
             day=settable->getcuroptiondate();
             QDate now=QDate::currentDate();
             week=day.daysTo(now)/7+1;//这个是启动软件时是第几周
-            selected_week=week;//这个是想看第几周的课表
+            selected_week=week;//这个是手动操作想看第几周的课表
+            if(selected_week==1) ui->bt_upweek->setHidden(true);
         }
 
         mmodel->setColumnCount(column);//更新一周天数
@@ -202,7 +203,7 @@ void courseform::on_bt_tablesetting_clicked()//点击课表设置，以及处理
         sqlmodel2->submitAll();
         mmodel->clear();
         loadtable();//更新横竖表头
-        loadcourse(week);//更新本周内课程
+        loadcourse(selected_week);//更新本周内课程
 
     }
     {//无论返回结果如何
