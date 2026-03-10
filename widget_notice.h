@@ -8,6 +8,8 @@
 #include "spindelegate.h"
 #include "readonlydelegate.h"
 #include "lineeditdelegate.h"
+#include "datedelegate.h"
+#include "timedelegate.h"
 
 namespace Ui {
 class widget_notice;
@@ -31,6 +33,8 @@ private:
     SpinDelegate *spin_delegate;
     ReadonlyDelegate *readonly_delegate;
     LineeditDelegate *lineedit_delegate;
+    DateDelegate *date_delegate;
+    TimeDelegate *time_delegate;
 };
 
 #endif // WIDGET_NOTICE_H

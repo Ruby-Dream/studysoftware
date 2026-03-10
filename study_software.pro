@@ -9,6 +9,7 @@ CONFIG += c++17
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    datedelegate.cpp \
     dialog_tablesetting.cpp \
     dialog_timesetting.cpp \
     lineeditdelegate.cpp \
@@ -17,6 +18,7 @@ SOURCES += \
     myvideowidget.cpp \
     readonlydelegate.cpp \
     spindelegate.cpp \
+    timedelegate.cpp \
     widget_audioplayer.cpp \
     widget_course.cpp \
     widget_coursefile.cpp \
@@ -25,6 +27,7 @@ SOURCES += \
     widget_videoplayer.cpp
 
 HEADERS += \
+    datedelegate.h \
     dialog_tablesetting.h \
     dialog_timesetting.h \
     lineeditdelegate.h \
@@ -32,6 +35,7 @@ HEADERS += \
     myvideowidget.h \
     readonlydelegate.h \
     spindelegate.h \
+    timedelegate.h \
     widget_audioplayer.h \
     widget_course.h \
     widget_coursefile.h \

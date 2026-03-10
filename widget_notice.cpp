@@ -61,6 +61,11 @@ widget_notice::widget_notice(QSqlDatabase db,QWidget *parent)
     ui->tv_person->setModel(sqlmodel2);
     ui->tv_person->setColumnHidden(0,true);
 
+    date_delegate=new DateDelegate(this);
+    time_delegate=new TimeDelegate(this);
+    ui->tv_person->setItemDelegateForColumn(1,date_delegate);
+    ui->tv_person->setItemDelegateForColumn(2,time_delegate);
+
 }
 
 widget_notice::~widget_notice()
