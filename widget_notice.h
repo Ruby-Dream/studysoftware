@@ -21,10 +21,13 @@ public:
     explicit widget_notice(QSqlDatabase db,QWidget *parent = nullptr);
     ~widget_notice();
 
+private slots:
+    void on_pushButton_clicked();
+
 private:
     Ui::widget_notice *ui;
     QSqlDatabase db;
-    QSqlTableModel *sqlmodel;
+    QSqlTableModel *sqlmodel,*sqlmodel2;
     SpinDelegate *spin_delegate;
     ReadonlyDelegate *readonly_delegate;
     LineeditDelegate *lineedit_delegate;

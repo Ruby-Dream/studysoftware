@@ -1,4 +1,4 @@
-#include "header/widget_coursefile.h"
+#include "widget_coursefile.h"
 #include "ui_widget_coursefile.h"
 
 widget_coursefile::widget_coursefile(QSqlDatabase db,QWidget *parent)

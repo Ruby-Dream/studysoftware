@@ -1,4 +1,4 @@
-#include "header/spindelegate.h"
+#include "spindelegate.h"
 
 SpinDelegate::SpinDelegate(QObject *parent)
     : QStyledItemDelegate{parent}

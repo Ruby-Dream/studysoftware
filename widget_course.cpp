@@ -1,8 +1,8 @@
-#include "header/widget_course.h"
-#include "header/dialog_timesetting.h"
+#include "widget_course.h"
+#include "dialog_timesetting.h"
 #include "ui_widget_course.h"
-#include "header/dialog_tablesetting.h"
-#include "header/widget_coursemanager.h"
+#include "dialog_tablesetting.h"
+#include "widget_coursemanager.h"
 
 courseform::courseform(QSqlDatabase db,QSqlTableModel *sqlmodel,QSqlTableModel *sqlmodel2,QSqlTableModel *sqlmodel3,QWidget *parent)
     : QWidget(parent)

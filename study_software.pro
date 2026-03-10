@@ -25,19 +25,19 @@ SOURCES += \
     widget_videoplayer.cpp
 
 HEADERS += \
-    header/dialog_tablesetting.h \
-    header/dialog_timesetting.h \
-    header/lineeditdelegate.h \
-    header/mainwindow.h \
-    header/myvideowidget.h \
-    header/readonlydelegate.h \
-    header/spindelegate.h \
-    header/widget_audioplayer.h \
-    header/widget_course.h \
-    header/widget_coursefile.h \
-    header/widget_coursemanager.h \
-    header/widget_notice.h \
-    header/widget_videoplayer.h \
+    dialog_tablesetting.h \
+    dialog_timesetting.h \
+    lineeditdelegate.h \
+    mainwindow.h \
+    myvideowidget.h \
+    readonlydelegate.h \
+    spindelegate.h \
+    widget_audioplayer.h \
+    widget_course.h \
+    widget_coursefile.h \
+    widget_coursemanager.h \
+    widget_notice.h \
+    widget_videoplayer.h
 
 
 FORMS += \

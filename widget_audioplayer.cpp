@@ -1,4 +1,4 @@
-#include "header/widget_audioplayer.h"
+#include "widget_audioplayer.h"
 #include "ui_widget_audioplayer.h"
 
 

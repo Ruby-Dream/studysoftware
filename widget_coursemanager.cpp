@@ -1,4 +1,4 @@
-#include "header/widget_coursemanager.h"
+#include "widget_coursemanager.h"
 #include "ui_widget_coursemanager.h"
 
 widget_coursemanager::widget_coursemanager(QSqlDatabase db,QStandardItemModel *mmodel,QSqlTableModel *sqlmodel,QWidget *parent)

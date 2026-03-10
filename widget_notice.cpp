@@ -1,4 +1,4 @@
-#include "header/widget_notice.h"
+#include "widget_notice.h"
 
 #include "ui_widget_notice.h"
 
@@ -45,6 +45,22 @@ widget_notice::widget_notice(QSqlDatabase db,QWidget *parent)
     ui->tv_course->setItemDelegateForColumn(6,readonly_delegate);
     ui->tv_course->setItemDelegateForColumn(7,readonly_delegate);
     ui->tv_course->setItemDelegateForColumn(8,readonly_delegate);
+
+    //以上为课程通知
+    //以下为事务通知
+    sqlmodel2=new QSqlTableModel(nullptr,db);
+    sqlmodel2->setTable("notice_personal");
+    sqlmodel2->setEditStrategy(QSqlTableModel::OnManualSubmit);
+    sqlmodel2->setSort(sqlmodel->fieldIndex("rowid"),Qt::AscendingOrder);
+    if(!sqlmodel2->select()){
+        QMessageBox::critical(this,"bad","e");
+    }
+    sqlmodel2->setHeaderData(sqlmodel2->fieldIndex("date"),Qt::Horizontal,"提醒日期");
+    sqlmodel2->setHeaderData(sqlmodel2->fieldIndex("time"),Qt::Horizontal,"提醒时间");
+    sqlmodel2->setHeaderData(sqlmodel2->fieldIndex("text"),Qt::Horizontal,"备注");
+    ui->tv_person->setModel(sqlmodel2);
+    ui->tv_person->setColumnHidden(0,true);
+
 }
 
 widget_notice::~widget_notice()
@@ -52,4 +68,10 @@ widget_notice::~widget_notice()
     delete ui;
 }
 
+
+
+void widget_notice::on_pushButton_clicked()
+{
+
+}
 

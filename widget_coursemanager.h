@@ -20,7 +20,7 @@ class widget_coursemanager : public QWidget
     Q_OBJECT
 
 public:
-    explicit widget_coursemanager(QSqlDatabase db,int week,QStandardItemModel *mmodel,QSqlTableModel *sqlmodel,QWidget *parent = nullptr);
+    explicit widget_coursemanager(QSqlDatabase db,QStandardItemModel *mmodel,QSqlTableModel *sqlmodel,QWidget *parent = nullptr);
 
     ~widget_coursemanager();
 private slots:
@@ -43,10 +43,9 @@ private:
     QItemSelectionModel *selection;
     QDataWidgetMapper *mapper;
     QSqlDatabase db;
-    int currentweek;
 signals:
     void wantloadtable();
-    void wantloadcourse(int weekof);
+    void wantloadcourse();
     void wantsetenable();
 };
 

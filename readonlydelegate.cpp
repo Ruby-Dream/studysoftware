@@ -1,4 +1,4 @@
-#include "header/readonlydelegate.h"
+#include "readonlydelegate.h"
 
 ReadonlyDelegate::ReadonlyDelegate(QObject *parent)
     : QStyledItemDelegate{parent}

@@ -21,12 +21,12 @@ class courseform : public QWidget
 public:
     explicit courseform(QSqlDatabase db,QSqlTableModel *sqlmodel,QSqlTableModel *sqlmodel2,QSqlTableModel *sqlmodel3,QWidget *parent = nullptr);
     ~courseform();
-    int selected_week;//当前课表显示的是第几周
+    int watching_week;//当前课表显示的是第几周
 
 private slots:
     void enable();
     void loadtable();
-    void loadcourse(int weekof);
+    void loadcourse();
     void on_bt_change_clicked(bool checked);
 
     void on_bt_upweek_clicked();
@@ -48,7 +48,7 @@ private:
     int row;//一天的课程节数
     int column;//一周的天数
     QDate day;//一学期开学第一周的周一
-    int week;//当前周是第几周
+    int today_week;//当前周是第几周
 
     QSqlTableModel *sqlmodel,*sqlmodel2,*sqlmodel3;
     QSqlDatabase db;
