@@ -1,4 +1,4 @@
-#include "dialog_tablesetting.h"
+#include "header/dialog_tablesetting.h"
 #include "ui_dialog_tablesetting.h"
 
 Dialog_tablesetting::Dialog_tablesetting(QSqlTableModel *m,QWidget *parent)

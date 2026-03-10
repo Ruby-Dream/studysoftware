@@ -1,4 +1,4 @@
-#include "dialog_timesetting.h"
+#include "header/dialog_timesetting.h"
 #include "ui_dialog_timesetting.h"
 
 Dialog_timesetting::Dialog_timesetting(QSqlTableModel *model,QWidget *parent)

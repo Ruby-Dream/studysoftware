@@ -1,8 +1,8 @@
-#include "widget_course.h"
-#include "dialog_timesetting.h"
+#include "header/widget_course.h"
+#include "header/dialog_timesetting.h"
 #include "ui_widget_course.h"
-#include "dialog_tablesetting.h"
-#include "widget_coursemanager.h"
+#include "header/dialog_tablesetting.h"
+#include "header/widget_coursemanager.h"
 
 courseform::courseform(QSqlDatabase db,QSqlTableModel *sqlmodel,QSqlTableModel *sqlmodel2,QSqlTableModel *sqlmodel3,QWidget *parent)
     : QWidget(parent)
@@ -34,9 +34,10 @@ courseform::courseform(QSqlDatabase db,QSqlTableModel *sqlmodel,QSqlTableModel *
     loadtable();//加载课表结构框架
 
     QDate now=QDate::currentDate();
-    week=day.daysTo(now)/7+1;//这个是启动软件时是第几周
-    selected_week=week;//这个是想看第几周的课表
-    loadcourse(selected_week);//加载数据库中的课程
+    today_week=day.daysTo(now)/7+1;//这个是启动软件当天时是第几周
+    watching_week=today_week;//这个是正在看第几周的课表
+    if(watching_week==1) ui->bt_upweek->setHidden(true);
+    loadcourse();//加载数据库中的课程
 }
 
 courseform::~courseform()
@@ -104,12 +105,12 @@ void courseform::enable()//恢复按钮可用性
     ui->bt_coursemanager->setEnabled(true);
 }
 
-void courseform::loadcourse(int weekof)//加载课程
+void courseform::loadcourse()//加载课程
 {
-    ui->labelweek->setText(QString::asprintf("第%d周",weekof));
+    ui->labelweek->setText(QString::asprintf("第%d周",watching_week));
     for(int i=0;i<sqlmodel3->rowCount();i++){
         QSqlRecord rec=sqlmodel3->record(i);
-        if(rec.value("weekfrom").toInt()>weekof ||rec.value("weekto").toInt()<weekof){//如果当前不在开课周和结课周之间，跳过
+        if(rec.value("weekfrom").toInt()>watching_week ||rec.value("weekto").toInt()<watching_week){//如果当前不在开课周和结课周之间，跳过
             continue;
         }
 
@@ -152,8 +153,9 @@ void courseform::on_bt_upweek_clicked()//点击上一周
 {
     mmodel->clear();
     loadtable();
-    loadcourse(selected_week-=1);
-    if(selected_week==1) ui->bt_upweek->setHidden(true);//如果是从第二周切换到第一周，隐藏 上一周 按钮
+    watching_week-=1;
+    loadcourse();
+    if(watching_week==1) ui->bt_upweek->setHidden(true);//如果是从第二周切换到第一周，隐藏 上一周 按钮
 
 }
 
@@ -162,7 +164,8 @@ void courseform::on_bt_downweek_clicked()//下一周
 {
     mmodel->clear();
     loadtable();
-    loadcourse(selected_week+=1);
+    watching_week+=1;
+    loadcourse();
     if(ui->bt_upweek->isHidden()) ui->bt_upweek->setHidden(false);//如果是从第一周切换到第二周，显示 上一周 按钮
 }
 
@@ -180,9 +183,9 @@ void courseform::on_bt_tablesetting_clicked()//点击课表设置，以及处理
         if(day!=settable->getcuroptiondate()){//如果开课日期发生了改变
             day=settable->getcuroptiondate();
             QDate now=QDate::currentDate();
-            week=day.daysTo(now)/7+1;//这个是启动软件时是第几周
-            selected_week=week;//这个是手动操作想看第几周的课表
-            if(selected_week==1) ui->bt_upweek->setHidden(true);
+            today_week=day.daysTo(now)/7+1;//这个是启动软件时是第几周
+            watching_week=today_week;//这个是手动操作想看第几周的课表
+            if(watching_week==1) ui->bt_upweek->setHidden(true);
         }
 
         mmodel->setColumnCount(column);//更新一周天数
@@ -203,7 +206,7 @@ void courseform::on_bt_tablesetting_clicked()//点击课表设置，以及处理
         sqlmodel2->submitAll();
         mmodel->clear();
         loadtable();//更新横竖表头
-        loadcourse(selected_week);//更新本周内课程
+        loadcourse();//更新本周内课程
 
     }
     {//无论返回结果如何
@@ -217,7 +220,7 @@ void courseform::on_bt_tablesetting_clicked()//点击课表设置，以及处理
 void courseform::on_bt_coursemanager_clicked()//点击课程管理按钮
 {
     ui->bt_coursemanager->setEnabled(false);//按钮禁用，避免多开
-    widget_coursemanager *course=new widget_coursemanager(db,week,mmodel,sqlmodel3,nullptr);
+    widget_coursemanager *course=new widget_coursemanager(db,mmodel,sqlmodel3,nullptr);
     course->setWindowFlag(Qt::MSWindowsFixedSizeDialogHint);
     course->setAttribute(Qt::WA_DeleteOnClose);//关闭窗口时自动释放内存，避免内存占用无限上涨
     course->show();

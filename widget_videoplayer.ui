@@ -91,7 +91,7 @@
      <x>570</x>
      <y>530</y>
      <width>241</width>
-     <height>31</height>
+     <height>42</height>
     </rect>
    </property>
    <layout class="QHBoxLayout" name="horizontalLayout_3">
@@ -277,7 +277,7 @@
   <customwidget>
    <class>Myvideowidget</class>
    <extends>QWidget</extends>
-   <header>myvideowidget.h</header>
+   <header>../../header/myvideowidget.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

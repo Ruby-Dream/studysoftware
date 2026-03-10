@@ -1,4 +1,4 @@
-#include "widget_notice.h"
+#include "header/widget_notice.h"
 
 #include "ui_widget_notice.h"
 

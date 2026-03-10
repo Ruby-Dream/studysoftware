@@ -1,7 +1,7 @@
-#include "widget_coursemanager.h"
+#include "header/widget_coursemanager.h"
 #include "ui_widget_coursemanager.h"
 
-widget_coursemanager::widget_coursemanager(QSqlDatabase db,int week,QStandardItemModel *mmodel,QSqlTableModel *sqlmodel,QWidget *parent)
+widget_coursemanager::widget_coursemanager(QSqlDatabase db,QStandardItemModel *mmodel,QSqlTableModel *sqlmodel,QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::widget_coursemanager)
 {
@@ -9,7 +9,6 @@ widget_coursemanager::widget_coursemanager(QSqlDatabase db,int week,QStandardIte
     sqlmodel3=sqlmodel;
     this->mmodel=mmodel;
     this->db=db;
-    currentweek=week;
     //qDebug() << "当前对象数：" << QApplication::allWidgets().size();
     opentable();
 
@@ -108,7 +107,7 @@ void widget_coursemanager::on_bt_save_clicked()//点击保存按钮
     mmodel->clear();
 
     emit wantloadtable();
-    emit wantloadcourse(currentweek);//更新课表显示
+    emit wantloadcourse();//更新课表显示
 
 }
 
@@ -161,7 +160,7 @@ void widget_coursemanager::on_bt_delete_clicked()//点击删除当前课程
     }
     mmodel->clear();
     emit wantloadtable();
-    emit wantloadcourse(currentweek);//更新课表显示
+    emit wantloadcourse();//更新课表显示
 }
 
 

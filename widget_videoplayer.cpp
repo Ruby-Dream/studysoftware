@@ -1,4 +1,4 @@
-#include "widget_videoplayer.h"
+#include "header/widget_videoplayer.h"
 #include "ui_widget_videoplayer.h"
 
 widget_videoplayer::widget_videoplayer(QString videofile,QSqlDatabase db,QWidget *parent)

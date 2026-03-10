@@ -1,4 +1,4 @@
-#include "lineeditdelegate.h"
+#include "header/lineeditdelegate.h"
 
 LineeditDelegate::LineeditDelegate(QObject *parent)
     : QStyledItemDelegate{parent}

@@ -1,4 +1,4 @@
-#include "myvideowidget.h"
+#include "header/myvideowidget.h"
 
 Myvideowidget::Myvideowidget(QWidget *parent):QVideoWidget(parent)  {
 }
