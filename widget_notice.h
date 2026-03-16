@@ -33,6 +33,8 @@ private slots:
 
     void on_tv_person_clicked(const QModelIndex &index);
 
+    void on_bt_refresh_clicked();
+
 private:
     Ui::widget_notice *ui;
     QSqlDatabase db;
@@ -43,6 +45,8 @@ private:
     DateDelegate *date_delegate;
     TimeDelegate *time_delegate;
     void loadnotice_personal();
+signals:
+    void refresh();
 };
 
 #endif // WIDGET_NOTICE_H

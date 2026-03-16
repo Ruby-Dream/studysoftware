@@ -60,6 +60,7 @@ widget_notice::widget_notice(QSqlDatabase db,QWidget *parent)
     ui->tv_person->setItemDelegateForColumn(3,lineedit_delegate2);
     //加载事务通知
     loadnotice_personal();
+
 }
 
 widget_notice::~widget_notice()
@@ -107,5 +108,10 @@ void widget_notice::on_tv_person_clicked(const QModelIndex &index)
 {
     Q_UNUSED(index);
     ui->pushButton_2->setEnabled(true);
+}
+
+void widget_notice::on_bt_refresh_clicked()
+{
+    emit refresh();
 }
 

@@ -85,6 +85,19 @@ color: rgb(255, 255, 0);</string>
     </item>
    </layout>
   </widget>
+  <widget class="QPushButton" name="bt_refresh">
+   <property name="geometry">
+    <rect>
+     <x>640</x>
+     <y>480</y>
+     <width>151</width>
+     <height>25</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>修改后点击刷新通知</string>
+   </property>
+  </widget>
  </widget>
  <resources/>
  <connections/>

@@ -1,12 +1,15 @@
 #include "mainwindow.h"
-
-
 #include "ui_mainwindow.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
+    t=new QSystemTrayIcon(this);
+    t->setIcon(QIcon("D:/desktop/图片/好康的/4.jpg"));
+    t->setToolTip("h");
+    t->show();
+
     ui->setupUi(this);
     this->setWindowFlag(Qt::MSWindowsFixedSizeDialogHint);
 
@@ -47,6 +50,9 @@ MainWindow::MainWindow(QWidget *parent)
     ui->bt_course->setEnabled(false);
     ui->bt_notice->setEnabled(true);
     currentwidget=1;
+    qrymodel=new QSqlQueryModel(nullptr);
+    update();//首次启动时运行
+
 }
 
 MainWindow::~MainWindow()
@@ -91,6 +97,14 @@ void MainWindow::on_bt_notice_clicked()//切换到通知窗口
     ui->bt_coursefile->setEnabled(true);
     ui->bt_course->setEnabled(true);
     ui->bt_notice->setEnabled(false);
+    connect(_widget_notice,&widget_notice::refresh,this,&MainWindow::setsingleshot_personal);
+}
+
+void MainWindow::do_singleshot_timeout_personal()
+{
+    t->showMessage("来自软件的通知",personal_notice);
+    update();
+    setsingleshot_personal();
 }
 
 void MainWindow::delete_old_widget()//释放上一个页面的内存
@@ -110,5 +124,29 @@ void MainWindow::delete_old_widget()//释放上一个页面的内存
         delete _widget_notice;
         _widget_notice=nullptr;
     }
+}
+
+void MainWindow::setsingleshot_personal()//设定下一次事务通知
+{
+    QString query="SELECT * from notice_personal where date = \""+date+"\" ORDER BY time" ;
+    qrymodel->setQuery(query,db);
+    if(qrymodel->rowCount()==0) return;//如果今天没有事项 今天就不再运行
+
+    for(int i=0;i<qrymodel->rowCount();i++){
+        QTime t=qrymodel->record(i).value("time").toTime();
+        QTime now=QTime::currentTime();
+        if(now.msecsTo(t)>0){//找到那个最近的时间
+            personal_notice=qrymodel->record(i).value("text").toString();
+            QTimer::singleShot(1000+now.msecsTo(t),Qt::PreciseTimer,this,&MainWindow::do_singleshot_timeout_personal);
+            break;
+        }
+    }
+}
+
+void MainWindow::update()//更新此时日期
+{
+    date=QDate::currentDate().toString("yyyy-MM-dd");
+    QTimer::singleShot(86401000-QTime::currentTime().msec(),this,&MainWindow::update);//下一次更新日期是在过午夜12点的时候
+    setsingleshot_personal();//每天要执行一次检查是否今天有提醒事项
 }
 
