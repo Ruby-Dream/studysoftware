@@ -2,7 +2,9 @@
 
 DateDelegate::DateDelegate(QObject *parent)
     : QStyledItemDelegate{parent}
-{}
+{
+    this->parent=parent;
+}
 
 QWidget *DateDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
@@ -28,10 +30,18 @@ void DateDelegate::setModelData(QWidget *editor, QAbstractItemModel *model, cons
 
     QSqlTableModel *sqlmodel=static_cast<QSqlTableModel*>(model);
     sqlmodel->submitAll();
+    if(parent->findChild<QTableView*>("tv_person",Qt::FindDirectChildrenOnly)!=nullptr){
+        const_cast<DateDelegate*>(this)->dofresh();
+    }
 }
 
 void DateDelegate::updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
     Q_UNUSED(index);
     editor->setGeometry(option.rect);
+}
+
+void DateDelegate::dofresh()
+{
+    emit fresh();
 }

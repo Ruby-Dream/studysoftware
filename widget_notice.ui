@@ -49,7 +49,7 @@ color: rgb(255, 255, 0);</string>
     <string>删除提醒</string>
    </property>
   </widget>
-  <widget class="QGroupBox" name="groupBox_3">
+  <widget class="QGroupBox" name="gb_course">
    <property name="geometry">
     <rect>
      <x>120</x>
@@ -67,7 +67,7 @@ color: rgb(255, 255, 0);</string>
     </item>
    </layout>
   </widget>
-  <widget class="QGroupBox" name="groupBox_4">
+  <widget class="QGroupBox" name="gb_personal">
    <property name="geometry">
     <rect>
      <x>130</x>
@@ -84,19 +84,6 @@ color: rgb(255, 255, 0);</string>
      <widget class="QTableView" name="tv_person"/>
     </item>
    </layout>
-  </widget>
-  <widget class="QPushButton" name="bt_refresh">
-   <property name="geometry">
-    <rect>
-     <x>640</x>
-     <y>480</y>
-     <width>151</width>
-     <height>25</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>修改后点击刷新通知</string>
-   </property>
   </widget>
  </widget>
  <resources/>

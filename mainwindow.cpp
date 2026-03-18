@@ -50,8 +50,22 @@ MainWindow::MainWindow(QWidget *parent)
     ui->bt_course->setEnabled(false);
     ui->bt_notice->setEnabled(true);
     currentwidget=1;
+
+    personal_timer=new QTimer(nullptr);
+    personal_timer->setSingleShot(true);
+    personal_timer->setTimerType(Qt::PreciseTimer);
+    personal_timer->stop();
+    connect(personal_timer,&QTimer::timeout,this,&MainWindow::do_singleshot_timeout_personal);
+
+    course_timer=new QTimer(nullptr);
+    course_timer->setSingleShot(true);
+    course_timer->setTimerType(Qt::PreciseTimer);
+    course_timer->stop();
+    // QDate now=QDate::currentDate();
+    // today_week=day.daysTo(now)/7+1;//这个是启动软件当天时是第几周
+
     qrymodel=new QSqlQueryModel(nullptr);
-    update();//首次启动时运行
+    update_personal();//首次启动时运行
 
 }
 
@@ -97,7 +111,10 @@ void MainWindow::on_bt_notice_clicked()//切换到通知窗口
     ui->bt_coursefile->setEnabled(true);
     ui->bt_course->setEnabled(true);
     ui->bt_notice->setEnabled(false);
-    connect(_widget_notice,&widget_notice::refresh,this,&MainWindow::setsingleshot_personal);
+    //connect(_widget_notice,&widget_notice::refresh,this,&MainWindow::setsingleshot_personal);
+    connect(_widget_notice->time_delegate,&TimeDelegate::fresh,this,&MainWindow::setsingleshot_personal);
+    connect(_widget_notice->date_delegate,&DateDelegate::fresh,this,&MainWindow::setsingleshot_personal);
+    connect(_widget_notice->lineedit_delegate2,&LineeditDelegate::fresh,this,&MainWindow::setsingleshot_personal);
 }
 
 void MainWindow::do_singleshot_timeout_personal()
@@ -128,6 +145,7 @@ void MainWindow::delete_old_widget()//释放上一个页面的内存
 
 void MainWindow::setsingleshot_personal()//设定下一次事务通知
 {
+    personal_timer->stop();//停止上一次的
     QString query="SELECT * from notice_personal where date = \""+date+"\" ORDER BY time" ;
     qrymodel->setQuery(query,db);
     if(qrymodel->rowCount()==0) return;//如果今天没有事项 今天就不再运行
@@ -137,16 +155,44 @@ void MainWindow::setsingleshot_personal()//设定下一次事务通知
         QTime now=QTime::currentTime();
         if(now.msecsTo(t)>0){//找到那个最近的时间
             personal_notice=qrymodel->record(i).value("text").toString();
-            QTimer::singleShot(1000+now.msecsTo(t),Qt::PreciseTimer,this,&MainWindow::do_singleshot_timeout_personal);
+            personal_timer->setInterval(1000+now.msecsTo(t));
+            personal_timer->start();
             break;
         }
     }
 }
 
-void MainWindow::update()//更新此时日期
+void MainWindow::setsingleshot_course()
+{
+    course_timer->stop();
+    QString query="SELECT * from course where workday_on = \"" + workday+ "\""  ;
+}
+
+void MainWindow::update_personal()//每天首次启动或午夜十二点时更新此时日期
 {
     date=QDate::currentDate().toString("yyyy-MM-dd");
-    QTimer::singleShot(86401000-QTime::currentTime().msec(),this,&MainWindow::update);//下一次更新日期是在过午夜12点的时候
+    switch (QDate::currentDate().dayOfWeek()){
+    case 1: workday="周一";
+        break;
+    case 2: workday="周二";
+        break;
+    case 3: workday="周三";
+        break;
+    case 4: workday="周四";
+        break;
+    case 5: workday="周五";
+        break;
+    case 6: workday="周六";
+        break;
+    case 7: workday="周日";
+        break;
+    }
+    QTimer::singleShot(86401000-QTime::currentTime().msec(),this,&MainWindow::update_personal);//下一次更新日期是在过午夜12点的时候
     setsingleshot_personal();//每天要执行一次检查是否今天有提醒事项
+}
+
+void MainWindow::update_course()
+{
+
 }
 

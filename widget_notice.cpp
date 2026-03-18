@@ -32,8 +32,8 @@ widget_notice::widget_notice(QSqlDatabase db,QWidget *parent)
     ui->tv_course->setColumnHidden(8,true);
     spin_delegate=new SpinDelegate(this);
     readonly_delegate=new ReadonlyDelegate(this);
-    lineedit_delegate1=new LineeditDelegate(this);
-    lineedit_delegate2=new LineeditDelegate(this);
+    lineedit_delegate1=new LineeditDelegate(ui->gb_course);
+
 
     ui->tv_course->setItemDelegateForColumn(9,spin_delegate);
     ui->tv_course->setItemDelegateForColumn(10,lineedit_delegate1);
@@ -53,8 +53,10 @@ widget_notice::widget_notice(QSqlDatabase db,QWidget *parent)
     sqlmodel2->setEditStrategy(QSqlTableModel::OnManualSubmit);
     sqlmodel2->setSort(sqlmodel2->fieldIndex("no"),Qt::AscendingOrder);
     ui->tv_person->setModel(sqlmodel2);
-    date_delegate=new DateDelegate(this);
-    time_delegate=new TimeDelegate(this);
+    date_delegate=new DateDelegate(ui->gb_personal);
+    time_delegate=new TimeDelegate(ui->gb_personal);
+    lineedit_delegate2=new LineeditDelegate(ui->gb_personal);
+
     ui->tv_person->setItemDelegateForColumn(1,date_delegate);
     ui->tv_person->setItemDelegateForColumn(2,time_delegate);
     ui->tv_person->setItemDelegateForColumn(3,lineedit_delegate2);
@@ -93,7 +95,6 @@ void widget_notice::on_pushButton_2_clicked()//点击删除记录
 
 void widget_notice::loadnotice_personal()
 {
-
     sqlmodel2->setTable("notice_personal");
     sqlmodel2->select();
     sqlmodel2->setHeaderData(sqlmodel2->fieldIndex("date"),Qt::Horizontal,"提醒日期");
@@ -110,8 +111,4 @@ void widget_notice::on_tv_person_clicked(const QModelIndex &index)
     ui->pushButton_2->setEnabled(true);
 }
 
-void widget_notice::on_bt_refresh_clicked()
-{
-    emit refresh();
-}
 

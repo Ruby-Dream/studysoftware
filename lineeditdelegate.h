@@ -4,6 +4,7 @@
 #include <QStyledItemDelegate>
 #include <QLineEdit>
 #include <QSqlTableModel>
+#include <QTableView>
 
 class LineeditDelegate : public QStyledItemDelegate
 {
@@ -14,6 +15,11 @@ public:
     void setEditorData(QWidget *editor, const QModelIndex &index)const; //设置代理数据
     void setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index)const; //更新模型数据
     void updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem &option, const QModelIndex &index)const;
+    void dofresh();
+private:
+    QObject *parent;
+signals:
+    void fresh();
 };
 
 #endif // LINEEDITDELEGATE_H

@@ -2,7 +2,9 @@
 
 LineeditDelegate::LineeditDelegate(QObject *parent)
     : QStyledItemDelegate{parent}
-{}
+{
+    this->parent=parent;
+}
 
 QWidget *LineeditDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
@@ -26,10 +28,18 @@ void LineeditDelegate::setModelData(QWidget *editor, QAbstractItemModel *model, 
     model->setData(index,str);
     QSqlTableModel *sqlmodel=static_cast<QSqlTableModel*>(model);
     sqlmodel->submitAll();
+    if(parent->findChild<QTableView*>("tv_person",Qt::FindDirectChildrenOnly)!=nullptr){
+        const_cast<LineeditDelegate*>(this)->dofresh();
+    }
 }
 
 void LineeditDelegate::updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
     Q_UNUSED(index);
     editor->setGeometry(option.rect);
+}
+
+void LineeditDelegate::dofresh()
+{
+    emit fresh();
 }

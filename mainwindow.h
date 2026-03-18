@@ -35,8 +35,12 @@ private slots:
 
     void do_singleshot_timeout_personal();
 
-    void update();
+    void update_personal();
+    //更新软件运行这时候的日期（与用户无关）
     //什么时候需要更新：第一次启动时，过午夜12点时,事务通知发生修改时
+    void update_course();
+    //更新软件运行这时候是星期几（与用户有关）
+    //什么时候需要更新：第一次启动时，过午夜12点时，修改学期第一天时，修改课程开始节时，修改课程前多少分钟提醒时
 
 private:
     Ui::MainWindow *ui;
@@ -53,9 +57,11 @@ private:
     QSqlQueryModel *qrymodel;//用来查下一个需要定时的事务
     QString date;//今天是哪年哪月哪日
     int currrentweek;//这是学期的第几周
-    int workday;//今天是星期几
+    QString workday;//今天是星期几
     void setsingleshot_personal();
+    void setsingleshot_course();
     QString personal_notice;//事务提醒备注
+    QTimer *personal_timer,*course_timer;//事务计时器和课程计时器
 
 };
 #endif // MAINWINDOW_H
