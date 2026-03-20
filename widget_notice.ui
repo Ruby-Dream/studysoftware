@@ -6,82 +6,74 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1000</width>
+    <width>1200</width>
     <height>650</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <widget class="QPushButton" name="bt_new">
+  <widget class="QWidget" name="">
    <property name="geometry">
     <rect>
-     <x>180</x>
-     <y>490</y>
-     <width>86</width>
-     <height>25</height>
+     <x>130</x>
+     <y>40</y>
+     <width>991</width>
+     <height>571</height>
     </rect>
    </property>
-   <property name="styleSheet">
-    <string notr="true">border-radius:12px;
+   <layout class="QVBoxLayout" name="verticalLayout_3">
+    <item>
+     <widget class="QGroupBox" name="gb_course">
+      <property name="title">
+       <string>上课通知</string>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout">
+       <item>
+        <widget class="QTableView" name="tv_course"/>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item>
+     <widget class="QGroupBox" name="gb_personal">
+      <property name="title">
+       <string>事务通知</string>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout_2">
+       <item>
+        <widget class="QTableView" name="tv_person"/>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout">
+         <item>
+          <widget class="QPushButton" name="bt_new">
+           <property name="styleSheet">
+            <string notr="true">border-radius:12px;
 border-width:5px;
 border-style:soild;
 background-color: rgb(0, 255, 255);
 color: rgb(255, 255, 0);</string>
-   </property>
-   <property name="text">
-    <string>新建提醒</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="pushButton_2">
-   <property name="enabled">
-    <bool>false</bool>
-   </property>
-   <property name="geometry">
-    <rect>
-     <x>370</x>
-     <y>490</y>
-     <width>86</width>
-     <height>25</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>删除提醒</string>
-   </property>
-  </widget>
-  <widget class="QGroupBox" name="gb_course">
-   <property name="geometry">
-    <rect>
-     <x>120</x>
-     <y>30</y>
-     <width>761</width>
-     <height>211</height>
-    </rect>
-   </property>
-   <property name="title">
-    <string>上课通知</string>
-   </property>
-   <layout class="QVBoxLayout" name="verticalLayout">
-    <item>
-     <widget class="QTableView" name="tv_course"/>
-    </item>
-   </layout>
-  </widget>
-  <widget class="QGroupBox" name="gb_personal">
-   <property name="geometry">
-    <rect>
-     <x>130</x>
-     <y>250</y>
-     <width>711</width>
-     <height>181</height>
-    </rect>
-   </property>
-   <property name="title">
-    <string>事务通知</string>
-   </property>
-   <layout class="QVBoxLayout" name="verticalLayout_2">
-    <item>
-     <widget class="QTableView" name="tv_person"/>
+           </property>
+           <property name="text">
+            <string>新建提醒</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="pushButton_2">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="text">
+            <string>删除提醒</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </widget>
     </item>
    </layout>
   </widget>

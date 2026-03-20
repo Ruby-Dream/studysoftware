@@ -73,12 +73,15 @@ void courseform::loadtable()//设置课表横竖表头，以及长宽
 
     if(column==5){
         strlist<<"周一"<<"周二"<<"周三"<<"周四"<<"周五";
+        ui->tableView->horizontalHeader()->setDefaultSectionSize(168);
     }
     else if(column==6){
         strlist<<"周一"<<"周二"<<"周三"<<"周四"<<"周五"<<"周六";
+        ui->tableView->horizontalHeader()->setDefaultSectionSize(140);
     }
     else if(column==7){
         strlist<<"周一"<<"周二"<<"周三"<<"周四"<<"周五"<<"周六"<<"周日";
+        ui->tableView->horizontalHeader()->setDefaultSectionSize(120);
     }
     mmodel->setHorizontalHeaderLabels(strlist);
 

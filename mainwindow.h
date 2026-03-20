@@ -7,8 +7,6 @@
 #include "widget_notice.h"
 #include <QSystemTrayIcon>//右下角程序托盘图标
 #include <QSqlDatabase>//数据库连接
-
-//#include <QTimer>
 #include <QDate>
 #include <QTime>
 QT_BEGIN_NAMESPACE
@@ -35,6 +33,8 @@ private slots:
 
     void do_singleshot_timeout_personal();
 
+    void do_singleshot_timeout_course();
+
     void update_personal();
     //更新软件运行这时候的日期（与用户无关）
     //什么时候需要更新：第一次启动时，过午夜12点时,事务通知发生修改时
@@ -53,14 +53,14 @@ private:
     QSqlTableModel *sqlmodel2;//时间表，上课时间下课时间对应的节
     QSqlTableModel *sqlmodel3;//课程
     int currentwidget;//切换前是哪个窗口，需要释放内存
-    void delete_old_widget();
-    QSqlQueryModel *qrymodel;//用来查下一个需要定时的事务
+    void delete_old_widget();//切换时释放上一个窗口内存
+    QSqlQueryModel *qrymodel,*qrymodel2;//用来查下一个需要定时的事务
     QString date;//今天是哪年哪月哪日
-    int currrentweek;//这是学期的第几周
+    int currentweek;//这是学期的第几周
     QString workday;//今天是星期几
     void setsingleshot_personal();
     void setsingleshot_course();
-    QString personal_notice;//事务提醒备注
+    QString personal_notice,course_notice;//事务提醒备注和课程备注
     QTimer *personal_timer,*course_timer;//事务计时器和课程计时器
 
 };

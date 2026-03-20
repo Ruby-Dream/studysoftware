@@ -30,7 +30,8 @@ widget_notice::widget_notice(QSqlDatabase db,QWidget *parent)
     ui->tv_course->setColumnHidden(6,true);
     ui->tv_course->setColumnHidden(7,true);
     ui->tv_course->setColumnHidden(8,true);
-    spin_delegate=new SpinDelegate(this);
+    spin_delegate=new SpinDelegate(ui->gb_course);
+
     readonly_delegate=new ReadonlyDelegate(this);
     lineedit_delegate1=new LineeditDelegate(ui->gb_course);
 
@@ -105,7 +106,7 @@ void widget_notice::loadnotice_personal()
 }
 
 
-void widget_notice::on_tv_person_clicked(const QModelIndex &index)
+void widget_notice::on_tv_person_clicked(const QModelIndex &index)//激活删除按钮
 {
     Q_UNUSED(index);
     ui->pushButton_2->setEnabled(true);

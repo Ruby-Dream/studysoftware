@@ -9,6 +9,7 @@ CONFIG += c++17
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    comboboxdelegate.cpp \
     datedelegate.cpp \
     dialog_tablesetting.cpp \
     dialog_timesetting.cpp \
@@ -27,6 +28,7 @@ SOURCES += \
     widget_videoplayer.cpp
 
 HEADERS += \
+    comboboxdelegate.h \
     datedelegate.h \
     dialog_tablesetting.h \
     dialog_timesetting.h \

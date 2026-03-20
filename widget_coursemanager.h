@@ -11,6 +11,10 @@
 #include <QDataWidgetMapper>//数据映射组件
 #include <QSqlQuery>
 #include <QMessageBox>
+
+#include "lineeditdelegate.h"
+#include "comboboxdelegate.h"
+#include "spindelegate.h"
 namespace Ui {
 class widget_coursemanager;
 }
@@ -24,6 +28,7 @@ public:
 
     ~widget_coursemanager();
 private slots:
+    void do_fresh_coursemanager();
     void do_currentRowChanged(const QModelIndex &current,const QModelIndex &previous);
     void on_btchangecolor_clicked();
 
@@ -43,6 +48,10 @@ private:
     QItemSelectionModel *selection;
     QDataWidgetMapper *mapper;
     QSqlDatabase db;
+
+    LineeditDelegate *lineedit_delegate1,*lineedit_delegate2;
+    ComboboxDelegate *combobox_delegate;
+    SpinDelegate *spin_delegate;
 signals:
     void wantloadtable();
     void wantloadcourse();

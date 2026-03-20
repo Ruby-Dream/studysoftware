@@ -1,27 +1,24 @@
-#ifndef SPINDELEGATE_H
-#define SPINDELEGATE_H
+#ifndef COMBOBOXDELEGATE_H
+#define COMBOBOXDELEGATE_H
 
 #include <QStyledItemDelegate>
-#include <QSpinBox>
+#include <QComboBox>
 #include <QSqlTableModel>
 #include <QTableView>
-
-class SpinDelegate : public QStyledItemDelegate
+class ComboboxDelegate : public QStyledItemDelegate
 {
     Q_OBJECT
 public:
-    explicit SpinDelegate(QObject *parent = nullptr);
+    explicit ComboboxDelegate(QObject *parent = nullptr);
     QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index)const; //创建代理
     void setEditorData(QWidget *editor, const QModelIndex &index)const; //设置代理数据
     void setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index)const; //更新模型数据
     void updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem &option, const QModelIndex &index)const;
-    void dofresh();
     void dofresh_coursemanager();
 private:
     QObject *parent;
 signals:
-    void fresh();
     void fresh_coursemanager();
 };
 
-#endif // SPINDELEGATE_H
+#endif // COMBOBOXDELEGATE_H

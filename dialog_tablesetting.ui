@@ -29,101 +29,88 @@
     <set>QDialogButtonBox::StandardButton::Cancel|QDialogButtonBox::StandardButton::Save</set>
    </property>
   </widget>
-  <widget class="QDateEdit" name="dateEdit">
-   <property name="geometry">
-    <rect>
-     <x>210</x>
-     <y>170</y>
-     <width>110</width>
-     <height>25</height>
-    </rect>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label_3">
-   <property name="geometry">
-    <rect>
-     <x>90</x>
-     <y>180</y>
-     <width>111</width>
-     <height>17</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>学期开课周的周一</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label_2">
-   <property name="geometry">
-    <rect>
-     <x>80</x>
-     <y>120</y>
-     <width>101</width>
-     <height>17</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>一天的课程节数</string>
-   </property>
-  </widget>
-  <widget class="QSpinBox" name="sbrow">
-   <property name="geometry">
-    <rect>
-     <x>190</x>
-     <y>120</y>
-     <width>81</width>
-     <height>25</height>
-    </rect>
-   </property>
-   <property name="suffix">
-    <string>节</string>
-   </property>
-   <property name="minimum">
-    <number>1</number>
-   </property>
-   <property name="value">
-    <number>1</number>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label">
+  <widget class="QWidget" name="">
    <property name="geometry">
     <rect>
      <x>80</x>
      <y>80</y>
-     <width>91</width>
-     <height>17</height>
+     <width>215</width>
+     <height>131</height>
     </rect>
    </property>
-   <property name="text">
-    <string>一周的课表天数</string>
-   </property>
-  </widget>
-  <widget class="QComboBox" name="cbcolumn">
-   <property name="geometry">
-    <rect>
-     <x>180</x>
-     <y>80</y>
-     <width>111</width>
-     <height>25</height>
-    </rect>
-   </property>
-   <property name="currentIndex">
-    <number>1</number>
-   </property>
-   <item>
-    <property name="text">
-     <string>5天</string>
-    </property>
-   </item>
-   <item>
-    <property name="text">
-     <string>6天</string>
-    </property>
-   </item>
-   <item>
-    <property name="text">
-     <string>7天</string>
-    </property>
-   </item>
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout_3">
+      <item>
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>一周的课表天数</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QComboBox" name="cbcolumn">
+        <property name="currentIndex">
+         <number>1</number>
+        </property>
+        <item>
+         <property name="text">
+          <string>5天</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>6天</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>7天</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout_2">
+      <item>
+       <widget class="QLabel" name="label_2">
+        <property name="text">
+         <string>一天的课程节数</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QSpinBox" name="sbrow">
+        <property name="suffix">
+         <string>节</string>
+        </property>
+        <property name="minimum">
+         <number>1</number>
+        </property>
+        <property name="value">
+         <number>1</number>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout">
+      <item>
+       <widget class="QLabel" name="label_3">
+        <property name="text">
+         <string>学期开课周的周一</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QDateEdit" name="dateEdit"/>
+      </item>
+     </layout>
+    </item>
+   </layout>
   </widget>
  </widget>
  <resources/>

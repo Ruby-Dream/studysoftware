@@ -53,8 +53,7 @@ void Dialog_timesetting::on_btsavetime_clicked()
 
 void Dialog_timesetting::on_spinBox_valueChanged(int arg1)
 {
-    Q_UNUSED(arg1);
-    QSqlRecord rec=sqlmodel2->record(ui->spinBox->value()-1);
+    QSqlRecord rec=sqlmodel2->record(arg1-1);
     inittime(rec);
 }
 

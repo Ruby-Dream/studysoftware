@@ -20,6 +20,13 @@ widget_coursemanager::~widget_coursemanager()
     delete ui;
 }
 
+void widget_coursemanager::do_fresh_coursemanager()
+{
+    mmodel->clear();
+    emit wantloadtable();
+    emit wantloadcourse();//更新课表显示
+}
+
 void widget_coursemanager::opentable()
 {   //配置表头
     sqlmodel3->setHeaderData(sqlmodel3->fieldIndex("name"),Qt::Horizontal,"课程名称");
@@ -30,16 +37,29 @@ void widget_coursemanager::opentable()
     sqlmodel3->setHeaderData(sqlmodel3->fieldIndex("end_at"),Qt::Horizontal,"下课节");
     sqlmodel3->setHeaderData(sqlmodel3->fieldIndex("color"),Qt::Horizontal,"颜色");
     sqlmodel3->setHeaderData(sqlmodel3->fieldIndex("text"),Qt::Horizontal,"备注");
+    lineedit_delegate1=new LineeditDelegate(ui->gb_tv);
+    combobox_delegate=new ComboboxDelegate(ui->gb_tv);
+    spin_delegate=new SpinDelegate(ui->gb_tv);
+    ui->tv->setItemDelegateForColumn(1,lineedit_delegate1);
+    ui->tv->setItemDelegateForColumn(2,spin_delegate);
+    ui->tv->setItemDelegateForColumn(3,spin_delegate);
+    ui->tv->setItemDelegateForColumn(4,combobox_delegate);
+    ui->tv->setItemDelegateForColumn(5,spin_delegate);
+    ui->tv->setItemDelegateForColumn(6,spin_delegate);
+    ui->tv->setItemDelegateForColumn(8,lineedit_delegate1);
+    connect(spin_delegate,&SpinDelegate::fresh_coursemanager,this,&widget_coursemanager::do_fresh_coursemanager);
+    connect(combobox_delegate,&ComboboxDelegate::fresh_coursemanager,this,&widget_coursemanager::do_fresh_coursemanager);
+    connect(lineedit_delegate1,&LineeditDelegate::fresh_coursemanager,this,&widget_coursemanager::do_fresh_coursemanager);
 
     //绑定选择模型
     selection=new QItemSelectionModel(sqlmodel3,this);
     connect(selection,&QItemSelectionModel::currentRowChanged,this,&widget_coursemanager::do_currentRowChanged);
     //绑定模型视图
-    ui->tableView->setModel(sqlmodel3);
-    ui->tableView->setSelectionModel(selection);
-    ui->tableView->setColumnHidden(0,true);
-    ui->tableView->setColumnHidden(9,true);
-    ui->tableView->setColumnHidden(10,true);
+    ui->tv->setModel(sqlmodel3);
+    ui->tv->setSelectionModel(selection);
+    ui->tv->setColumnHidden(0,true);
+    ui->tv->setColumnHidden(9,true);
+    ui->tv->setColumnHidden(10,true);
     //绑定模型映射组件
     mapper=new QDataWidgetMapper(this);
     mapper->setModel(sqlmodel3);

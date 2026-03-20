@@ -6,50 +6,18 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1000</width>
+    <width>1200</width>
     <height>650</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <widget class="QPushButton" name="bt_include">
-   <property name="enabled">
-    <bool>false</bool>
-   </property>
-   <property name="geometry">
-    <rect>
-     <x>160</x>
-     <y>30</y>
-     <width>86</width>
-     <height>25</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>导入课件</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="bt_delete">
-   <property name="enabled">
-    <bool>false</bool>
-   </property>
-   <property name="geometry">
-    <rect>
-     <x>290</x>
-     <y>30</y>
-     <width>86</width>
-     <height>25</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>删除课件</string>
-   </property>
-  </widget>
   <widget class="QGroupBox" name="groupBox">
    <property name="geometry">
     <rect>
-     <x>70</x>
-     <y>70</y>
+     <x>120</x>
+     <y>90</y>
      <width>381</width>
      <height>521</height>
     </rect>
@@ -67,10 +35,10 @@
     </item>
    </layout>
   </widget>
-  <widget class="QWidget" name="">
+  <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
-     <x>480</x>
+     <x>580</x>
      <y>50</y>
      <width>491</width>
      <height>571</height>
@@ -113,6 +81,38 @@
         </widget>
        </item>
       </layout>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QWidget" name="">
+   <property name="geometry">
+    <rect>
+     <x>190</x>
+     <y>60</y>
+     <width>251</width>
+     <height>27</height>
+    </rect>
+   </property>
+   <layout class="QHBoxLayout" name="horizontalLayout_3">
+    <item>
+     <widget class="QPushButton" name="bt_include">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="text">
+       <string>导入课件</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QPushButton" name="bt_delete">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="text">
+       <string>删除课件</string>
+      </property>
      </widget>
     </item>
    </layout>

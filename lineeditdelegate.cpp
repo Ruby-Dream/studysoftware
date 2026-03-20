@@ -29,7 +29,13 @@ void LineeditDelegate::setModelData(QWidget *editor, QAbstractItemModel *model, 
     QSqlTableModel *sqlmodel=static_cast<QSqlTableModel*>(model);
     sqlmodel->submitAll();
     if(parent->findChild<QTableView*>("tv_person",Qt::FindDirectChildrenOnly)!=nullptr){
-        const_cast<LineeditDelegate*>(this)->dofresh();
+        const_cast<LineeditDelegate*>(this)->dofresh_personal();
+    }
+    else if(parent->findChild<QTableView*>("tv_course",Qt::FindDirectChildrenOnly)!=nullptr){
+        const_cast<LineeditDelegate*>(this)->dofresh_course();
+    }
+    else if(parent->findChild<QTableView*>("tv",Qt::FindDirectChildrenOnly)!=nullptr){
+        const_cast<LineeditDelegate*>(this)->dofresh_coursemanager();
     }
 }
 
@@ -39,7 +45,17 @@ void LineeditDelegate::updateEditorGeometry(QWidget *editor, const QStyleOptionV
     editor->setGeometry(option.rect);
 }
 
-void LineeditDelegate::dofresh()
+void LineeditDelegate::dofresh_personal()
 {
-    emit fresh();
+    emit fresh_personal();
+}
+
+void LineeditDelegate::dofresh_course()
+{
+    emit fresh_course();
+}
+
+void LineeditDelegate::dofresh_coursemanager()
+{
+    emit fresh_coursemanager();
 }

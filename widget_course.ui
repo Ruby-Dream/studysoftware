@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1000</width>
+    <width>1200</width>
     <height>650</height>
    </rect>
   </property>
@@ -16,10 +16,10 @@
   <widget class="QTableView" name="tableView">
    <property name="geometry">
     <rect>
-     <x>60</x>
+     <x>80</x>
      <y>80</y>
-     <width>751</width>
-     <height>501</height>
+     <width>905</width>
+     <height>500</height>
     </rect>
    </property>
    <property name="verticalScrollBarPolicy">
@@ -31,11 +31,14 @@
    <property name="sizeAdjustPolicy">
     <enum>QAbstractScrollArea::SizeAdjustPolicy::AdjustToContents</enum>
    </property>
+   <attribute name="horizontalHeaderMinimumSectionSize">
+    <number>20</number>
+   </attribute>
    <attribute name="horizontalHeaderDefaultSectionSize">
-    <number>80</number>
+    <number>70</number>
    </attribute>
    <attribute name="verticalHeaderDefaultSectionSize">
-    <number>55</number>
+    <number>50</number>
    </attribute>
   </widget>
   <widget class="QPushButton" name="bt_change">
@@ -54,52 +57,10 @@
     <bool>true</bool>
    </property>
   </widget>
-  <widget class="QLabel" name="labelweek">
-   <property name="geometry">
-    <rect>
-     <x>240</x>
-     <y>50</y>
-     <width>111</width>
-     <height>31</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>TextLabel</string>
-   </property>
-   <property name="alignment">
-    <set>Qt::AlignmentFlag::AlignCenter</set>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="bt_upweek">
-   <property name="geometry">
-    <rect>
-     <x>120</x>
-     <y>50</y>
-     <width>132</width>
-     <height>25</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>上一周</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="bt_downweek">
-   <property name="geometry">
-    <rect>
-     <x>400</x>
-     <y>50</y>
-     <width>81</width>
-     <height>25</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>下一周</string>
-   </property>
-  </widget>
   <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
-     <x>850</x>
+     <x>1060</x>
      <y>180</y>
      <width>107</width>
      <height>231</height>
@@ -124,6 +85,42 @@
      <widget class="QPushButton" name="bt_coursemanager">
       <property name="text">
        <string>课程管理</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QWidget" name="">
+   <property name="geometry">
+    <rect>
+     <x>340</x>
+     <y>50</y>
+     <width>232</width>
+     <height>27</height>
+    </rect>
+   </property>
+   <layout class="QHBoxLayout" name="horizontalLayout">
+    <item>
+     <widget class="QPushButton" name="bt_upweek">
+      <property name="text">
+       <string>上一周</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QLabel" name="labelweek">
+      <property name="text">
+       <string>TextLabel</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignmentFlag::AlignCenter</set>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QPushButton" name="bt_downweek">
+      <property name="text">
+       <string>下一周</string>
       </property>
      </widget>
     </item>
