@@ -10,9 +10,13 @@ MainWindow::MainWindow(QWidget *parent)
     t->setToolTip("h");
     t->show();
 
+
     ui->setupUi(this);
-    ui->statusbar->showMessage("aef");
     this->setWindowFlag(Qt::MSWindowsFixedSizeDialogHint);
+    right=new QLabel(nullptr);
+    left=new QLabel(nullptr);
+    ui->statusbar->addPermanentWidget(right);
+    ui->statusbar->addWidget(left);
 
     db=QSqlDatabase::addDatabase("QSQLITE");//所有数据库的连接，用哪个构造函数传哪个
     db.setDatabaseName("table.db");
@@ -44,6 +48,7 @@ MainWindow::MainWindow(QWidget *parent)
     }
 
     _courseform=new courseform(db,sqlmodel,sqlmodel2,sqlmodel3,this);
+    connect(_courseform,&courseform::status,this,&MainWindow::do_status);
     ui->stackedWidget->addWidget(_courseform);
     ui->stackedWidget->setCurrentWidget(_courseform);
     ui->bt_coursefile->setEnabled(true);
@@ -73,6 +78,10 @@ MainWindow::MainWindow(QWidget *parent)
     update_personal();//首次启动时运行
     update_course();
 
+    ui->bt_course->installEventFilter(this);
+    ui->bt_coursefile->installEventFilter(this);
+    ui->bt_notice->installEventFilter(this);
+
 }
 
 MainWindow::~MainWindow()
@@ -80,9 +89,18 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+void MainWindow::do_status(QString s,int LorR)
+{
+    if(LorR==-1){
+        left->setText(s);
+    }
+    else right->setText(s);
+}
+
 
 void MainWindow::on_bt_course_clicked()//切换到课表窗口
 {
+    left->clear();
     delete_old_widget();
     currentwidget=1;
     _courseform=new courseform(db,sqlmodel,sqlmodel2,sqlmodel3,this);
@@ -91,11 +109,13 @@ void MainWindow::on_bt_course_clicked()//切换到课表窗口
     ui->bt_coursefile->setEnabled(true);
     ui->bt_course->setEnabled(false);
     ui->bt_notice->setEnabled(true);
+    connect(_courseform,&courseform::status,this,&MainWindow::do_status);
 }
 
 
 void MainWindow::on_bt_coursefile_clicked()//切换到课件窗口
 {
+    left->clear();
     delete_old_widget();
     currentwidget=2;
     _widget_coursefile=new widget_coursefile(db,this);
@@ -109,6 +129,7 @@ void MainWindow::on_bt_coursefile_clicked()//切换到课件窗口
 
 void MainWindow::on_bt_notice_clicked()//切换到通知窗口
 {
+    left->clear();
     delete_old_widget();
     currentwidget=3;
     _widget_notice=new widget_notice(db,this);
@@ -230,5 +251,22 @@ void MainWindow::update_course()
     currentweek=rec.value("firstday").toDate().daysTo(QDate::currentDate())/7+1;//更新软件当天时是第几周
     QTimer::singleShot(86401000-QTime::currentTime().msec(),this,&MainWindow::update_course);//下一次更新日期是在过午夜12点的时候
     setsingleshot_course();
+}
+
+bool MainWindow::eventFilter(QObject *watched, QEvent *event)
+{
+    if(watched==ui->bt_course && event->type()==QEvent::Enter){
+        right->setText("查看并管理课程信息");
+    }
+    else if(watched==ui->bt_coursefile && event->type()==QEvent::Enter){
+        right->setText("查看并管理本地课件");
+    }
+    else if(watched==ui->bt_notice && event->type()==QEvent::Enter){
+        right->setText("查看并管理课程提醒及事务通知");
+    }
+    else if(event->type()==QEvent::Leave){
+        right->clear();
+    }
+    return QWidget::eventFilter(watched,event);
 }
 

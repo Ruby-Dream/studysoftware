@@ -48,6 +48,7 @@ void Dialog_timesetting::on_btsavetime_clicked()
     }
     sqlmodel2->submitAll();
     ui->btsavetime->setHidden(true);
+    emit fresh();
 }
 
 

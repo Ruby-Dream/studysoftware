@@ -20,17 +20,6 @@ courseform::courseform(QSqlDatabase db,QSqlTableModel *sqlmodel,QSqlTableModel *
     day=rec.value("firstday").toDate();
     mmodel=new QStandardItemModel(row,column,this);
     ui->tableView->setModel(mmodel);//课程表模型-视图
-
-
-    //第一次启动时获取时间
-    //day=sqlmodel->record(0).value("firstday").toDate();
-    //QDate now=QDate::currentDate();
-    // qint64 d=date.daysTo(now);
-    // int week=d/7+1;
-    // ui->label_2->setText(QString::asprintf("这是第%d周星期%d",week,now.dayOfWeek()));
-    // //ui->label_2->setText(date.toString("yyyy-MM-dd"));
-
-    //model->clear();
     loadtable();//加载课表结构框架
 
     QDate now=QDate::currentDate();
@@ -38,6 +27,11 @@ courseform::courseform(QSqlDatabase db,QSqlTableModel *sqlmodel,QSqlTableModel *
     watching_week=today_week;//这个是正在看第几周的课表
     if(watching_week==1) ui->bt_upweek->setHidden(true);
     loadcourse();//加载数据库中的课程
+
+    ui->bt_change->installEventFilter(this);
+    ui->bt_tablesetting->installEventFilter(this);
+    ui->bt_timesetting->installEventFilter(this);
+    ui->bt_coursemanager->installEventFilter(this);
 }
 
 courseform::~courseform()
@@ -45,6 +39,25 @@ courseform::~courseform()
     delete ui;
 }
 
+bool courseform::eventFilter(QObject *watched, QEvent *event)
+{
+    if(watched==ui->bt_change && event->type()==QEvent::Enter){
+        emit status("点击切换课表按时间/节显示",1);
+    }
+    else if(watched==ui->bt_tablesetting && event->type()==QEvent::Enter){
+        emit status("设置开课第一天、一周显示几天、一天上几节课",1);
+    }
+    else if(watched==ui->bt_timesetting && event->type()==QEvent::Enter){
+        emit status("设置每节课的上下课时间",1);
+    }
+    else if(watched==ui->bt_coursemanager && event->type()==QEvent::Enter){
+        emit status("管理课程信息",1);
+    }
+    else if(event->type()==QEvent::Leave){
+        emit status(" ",1);
+    }
+    return QWidget::eventFilter(watched,event);
+}
 void courseform::on_bt_change_clicked(bool checked)//切换课表显示为时间/节数
 {
     if(checked){//变成时间
@@ -240,6 +253,20 @@ void courseform::on_bt_timesetting_clicked()//点击时间管理按钮
     settime->setAttribute(Qt::WA_DeleteOnClose);
     QSqlRecord rec=sqlmodel2->record(0);
     settime->inittime(rec);
+    connect(settime,&Dialog_timesetting::fresh,this,&courseform::loadtable);
     settime->exec();
+}
+
+
+void courseform::on_tableView_clicked(const QModelIndex &index)
+{   switch(index.column()){
+        case 0: emit status(QString::asprintf("周一，第%d节 ",index.row()+1)+index.data().toString(),-1); break;
+        case 1: emit status(QString::asprintf("周二，第%d节 ",index.row()+1)+index.data().toString(),-1); break;
+        case 2: emit status(QString::asprintf("周三，第%d节 ",index.row()+1)+index.data().toString(),-1); break;
+        case 3: emit status(QString::asprintf("周四，第%d节 ",index.row()+1)+index.data().toString(),-1); break;
+        case 4: emit status(QString::asprintf("周五，第%d节 ",index.row()+1)+index.data().toString(),-1); break;
+        case 5: emit status(QString::asprintf("周六，第%d节 ",index.row()+1)+index.data().toString(),-1); break;
+        case 6: emit status(QString::asprintf("周日，第%d节 ",index.row()+1)+index.data().toString(),-1); break;
+    }
 }
 

@@ -28,6 +28,8 @@ private slots:
 private:
     Ui::Dialog_timesetting *ui;
     QSqlTableModel *sqlmodel2;
+signals:
+    void fresh();
 };
 
 #endif // DIALOG_TIMESETTING_H

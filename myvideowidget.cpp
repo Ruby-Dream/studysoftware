@@ -21,6 +21,22 @@ void Myvideowidget::mousePressEvent(QMouseEvent *event)//处理点击事件
     QVideoWidget::mousePressEvent(event);
 }
 
+void Myvideowidget::mouseDoubleClickEvent(QMouseEvent *event)
+{
+    if(event->button()==Qt::LeftButton){
+        if(this->isFullScreen()){
+            this->setFullScreen(false);//取消全屏
+            this->setGeometry(40,50,640,360);//重新设置布局
+
+        }
+        else{
+            this->setFullScreen(true);
+        }
+    }
+    event->accept();
+    QVideoWidget::mouseDoubleClickEvent(event);
+}
+
 void Myvideowidget::setMediaPlayer(QMediaPlayer *player)
 {
     this->player=player;

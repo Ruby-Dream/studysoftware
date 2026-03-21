@@ -31,7 +31,7 @@ void ComboboxDelegate::setModelData(QWidget *editor, QAbstractItemModel *model, 
     model->setData(index,workday);
     QSqlTableModel *sqlmodel=static_cast<QSqlTableModel*>(model);
     sqlmodel->submitAll();
-    if(parent->findChild<QTableView*>("tv",Qt::FindDirectChildrenOnly)!=nullptr){
+    if(this->parent->findChild<QTableView*>("tv",Qt::FindDirectChildrenOnly)!=nullptr){
         const_cast<ComboboxDelegate*>(this)->dofresh_coursemanager();
     }
 }

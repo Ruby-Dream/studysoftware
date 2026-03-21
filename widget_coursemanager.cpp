@@ -9,7 +9,6 @@ widget_coursemanager::widget_coursemanager(QSqlDatabase db,QStandardItemModel *m
     sqlmodel3=sqlmodel;
     this->mmodel=mmodel;
     this->db=db;
-    //qDebug() << "当前对象数：" << QApplication::allWidgets().size();
     opentable();
 
 }
@@ -37,20 +36,24 @@ void widget_coursemanager::opentable()
     sqlmodel3->setHeaderData(sqlmodel3->fieldIndex("end_at"),Qt::Horizontal,"下课节");
     sqlmodel3->setHeaderData(sqlmodel3->fieldIndex("color"),Qt::Horizontal,"颜色");
     sqlmodel3->setHeaderData(sqlmodel3->fieldIndex("text"),Qt::Horizontal,"备注");
-    lineedit_delegate1=new LineeditDelegate(ui->gb_tv);
+
+    lineedit_delegate1=new LineeditDelegate(ui->gb_tv,true);//改课程用代理
+    lineedit_delegate2=new LineeditDelegate(ui->gb_tv,false);//改备注用代理
     combobox_delegate=new ComboboxDelegate(ui->gb_tv);
     spin_delegate=new SpinDelegate(ui->gb_tv);
+    readonly_delegate=new ReadonlyDelegate(ui->gb_tv);
     ui->tv->setItemDelegateForColumn(1,lineedit_delegate1);
     ui->tv->setItemDelegateForColumn(2,spin_delegate);
     ui->tv->setItemDelegateForColumn(3,spin_delegate);
     ui->tv->setItemDelegateForColumn(4,combobox_delegate);
     ui->tv->setItemDelegateForColumn(5,spin_delegate);
     ui->tv->setItemDelegateForColumn(6,spin_delegate);
-    ui->tv->setItemDelegateForColumn(8,lineedit_delegate1);
+    ui->tv->setItemDelegateForColumn(7,readonly_delegate);
+    ui->tv->setItemDelegateForColumn(8,lineedit_delegate2);
     connect(spin_delegate,&SpinDelegate::fresh_coursemanager,this,&widget_coursemanager::do_fresh_coursemanager);
     connect(combobox_delegate,&ComboboxDelegate::fresh_coursemanager,this,&widget_coursemanager::do_fresh_coursemanager);
     connect(lineedit_delegate1,&LineeditDelegate::fresh_coursemanager,this,&widget_coursemanager::do_fresh_coursemanager);
-
+    connect(lineedit_delegate1,&LineeditDelegate::fresh_sql,this,&widget_coursemanager::sql);
     //绑定选择模型
     selection=new QItemSelectionModel(sqlmodel3,this);
     connect(selection,&QItemSelectionModel::currentRowChanged,this,&widget_coursemanager::do_currentRowChanged);
@@ -115,6 +118,11 @@ void widget_coursemanager::on_btchangecolor_clicked()//修改颜色
 
         QModelIndex index=sqlmodel3->index(selection->currentIndex().row(),7);
         sqlmodel3->setData(index,c.name());
+        sqlmodel3->submit();
+        mmodel->clear();
+
+        emit wantloadtable();
+        emit wantloadcourse();//更新课表显示
     }
 }
 
@@ -151,7 +159,6 @@ void widget_coursemanager::on_bt_new_clicked()//点击新建课程按钮
 
     QModelIndex index=sqlmodel3->index(sqlmodel3->rowCount()-1,1);
     selection->setCurrentIndex(index,QItemSelectionModel::Select);//选择新建的条目
-
 }
 
 
@@ -190,5 +197,14 @@ void widget_coursemanager::on_name_editingFinished()
         ui->name->setText("新课程");
         QMessageBox::critical(this,"课程名称无效","不可使用 \"其他\" 作为课程名称");
     }
+}
+
+void widget_coursemanager::sql(QString old, QString now)
+{
+    QSqlQuery query;
+    query.prepare("UPDATE coursefile set name =? where name = ?");
+    query.bindValue(0,now);
+    query.bindValue(1,old);
+    query.exec();
 }
 

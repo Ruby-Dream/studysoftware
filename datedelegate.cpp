@@ -30,7 +30,7 @@ void DateDelegate::setModelData(QWidget *editor, QAbstractItemModel *model, cons
 
     QSqlTableModel *sqlmodel=static_cast<QSqlTableModel*>(model);
     sqlmodel->submitAll();
-    if(parent->findChild<QTableView*>("tv_person",Qt::FindDirectChildrenOnly)!=nullptr){
+    if(this->parent->findChild<QTableView*>("tv_person",Qt::FindDirectChildrenOnly)!=nullptr){
         const_cast<DateDelegate*>(this)->dofresh();
     }
 }

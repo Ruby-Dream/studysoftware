@@ -9,6 +9,7 @@
 #include <QSqlRecord>//sql记录读取写入
 #include <QSqlQueryModel>//sql查询模型
 #include <QWidget>
+//#include <QAbstractNativeEventFilter>
 
 namespace Ui {
 class courseform;
@@ -22,7 +23,8 @@ public:
     explicit courseform(QSqlDatabase db,QSqlTableModel *sqlmodel,QSqlTableModel *sqlmodel2,QSqlTableModel *sqlmodel3,QWidget *parent = nullptr);
     ~courseform();
     int watching_week;//当前课表显示的是第几周
-
+protected:
+    bool eventFilter(QObject *watched, QEvent *event);
 private slots:
     void enable();
     void loadtable();
@@ -40,6 +42,8 @@ private slots:
     void on_bt_timesetting_clicked();
 
 
+    void on_tableView_clicked(const QModelIndex &index);
+
 private:
     Ui::courseform *ui;
     QStandardItemModel *mmodel;
@@ -53,6 +57,8 @@ private:
     QSqlTableModel *sqlmodel,*sqlmodel2,*sqlmodel3;
     QSqlDatabase db;
     //QSqlQueryModel *qrymodel;
+signals:
+    void status(QString s,int LorR);
 };
 
 #endif // WIDGET_COURSE_H

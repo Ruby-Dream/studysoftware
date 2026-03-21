@@ -11,11 +11,11 @@ QWidget *SpinDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem 
     Q_UNUSED(index);
     Q_UNUSED(option);
     QSpinBox *spinbox=new QSpinBox(parent);
-    if(parent->findChild<QTableView*>("tv_course",Qt::FindDirectChildrenOnly)!=nullptr){
+    if(this->parent->findChild<QTableView*>("tv_course",Qt::FindDirectChildrenOnly)!=nullptr){
         spinbox->setMinimum(-1);
         spinbox->setMaximum(60);
     }
-    else if(parent->findChild<QTableView*>("tv",Qt::FindDirectChildrenOnly)!=nullptr){
+    else if(this->parent->findChild<QTableView*>("tv",Qt::FindDirectChildrenOnly)!=nullptr){
         spinbox->setMinimum(1);
         spinbox->setMaximum(50);
     }
@@ -36,10 +36,10 @@ void SpinDelegate::setModelData(QWidget *editor, QAbstractItemModel *model, cons
     model->setData(index,val);
     QSqlTableModel *sqlmodel=static_cast<QSqlTableModel*>(model);
     sqlmodel->submitAll();
-    if(parent->findChild<QTableView*>("tv_course",Qt::FindDirectChildrenOnly)!=nullptr){
+    if(this->parent->findChild<QTableView*>("tv_course",Qt::FindDirectChildrenOnly)!=nullptr){
         const_cast<SpinDelegate*>(this)->dofresh();
     }
-    else if(parent->findChild<QTableView*>("tv",Qt::FindDirectChildrenOnly)!=nullptr){
+    else if(this->parent->findChild<QTableView*>("tv",Qt::FindDirectChildrenOnly)!=nullptr){
         const_cast<SpinDelegate*>(this)->dofresh_coursemanager();
     }
 }

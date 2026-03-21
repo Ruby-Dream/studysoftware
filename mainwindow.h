@@ -24,7 +24,7 @@ public:
     ~MainWindow();
 
 private slots:
-
+    void do_status(QString s,int LorR);
     void on_bt_course_clicked();
 
     void on_bt_coursefile_clicked();
@@ -41,7 +41,8 @@ private slots:
     void update_course();
     //更新软件运行这时候是星期几（与用户有关）
     //什么时候需要更新：第一次启动时，过午夜12点时，修改学期第一天时，修改课程开始节时，修改课程前多少分钟提醒时
-
+protected:
+    bool eventFilter(QObject *watched, QEvent *event);
 private:
     Ui::MainWindow *ui;
     QSystemTrayIcon *t;
@@ -62,6 +63,7 @@ private:
     void setsingleshot_course();
     QString personal_notice,course_notice;//事务提醒备注和课程备注
     QTimer *personal_timer,*course_timer;//事务计时器和课程计时器
+    QLabel *left,*right;
 
 };
 #endif // MAINWINDOW_H

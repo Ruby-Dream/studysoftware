@@ -5,12 +5,13 @@
 #include <QLineEdit>
 #include <QSqlTableModel>
 #include <QTableView>
+#include <QMessageBox>
 
 class LineeditDelegate : public QStyledItemDelegate
 {
     Q_OBJECT
 public:
-    explicit LineeditDelegate(QObject *parent = nullptr);
+    explicit LineeditDelegate(QObject *parent = nullptr,bool isname= false);
     QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index)const; //创建代理
     void setEditorData(QWidget *editor, const QModelIndex &index)const; //设置代理数据
     void setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index)const; //更新模型数据
@@ -18,12 +19,16 @@ public:
     void dofresh_personal();
     void dofresh_course();
     void dofresh_coursemanager();
+    void dofresh_sql(QString old,QString now);
 private:
     QObject *parent;
+    mutable QString old;
+    bool isname;
 signals:
     void fresh_personal();
     void fresh_course();
     void fresh_coursemanager();
+    void fresh_sql(QString old,QString now);
 };
 
 #endif // LINEEDITDELEGATE_H

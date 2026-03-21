@@ -15,6 +15,7 @@
 #include "lineeditdelegate.h"
 #include "comboboxdelegate.h"
 #include "spindelegate.h"
+#include "readonlydelegate.h"
 namespace Ui {
 class widget_coursemanager;
 }
@@ -41,6 +42,8 @@ private slots:
 
     void on_name_editingFinished();
 
+    void sql(QString old,QString now);
+
 private:
     Ui::widget_coursemanager *ui;
     QSqlTableModel *sqlmodel3;
@@ -52,6 +55,7 @@ private:
     LineeditDelegate *lineedit_delegate1,*lineedit_delegate2;
     ComboboxDelegate *combobox_delegate;
     SpinDelegate *spin_delegate;
+    ReadonlyDelegate *readonly_delegate;
 signals:
     void wantloadtable();
     void wantloadcourse();

@@ -16,7 +16,7 @@
   <widget class="QPushButton" name="bt_save">
    <property name="geometry">
     <rect>
-     <x>160</x>
+     <x>100</x>
      <y>590</y>
      <width>86</width>
      <height>25</height>
@@ -29,8 +29,8 @@
   <widget class="QPushButton" name="bt_new">
    <property name="geometry">
     <rect>
-     <x>290</x>
-     <y>580</y>
+     <x>650</x>
+     <y>430</y>
      <width>86</width>
      <height>25</height>
     </rect>
@@ -42,8 +42,8 @@
   <widget class="QPushButton" name="bt_delete">
    <property name="geometry">
     <rect>
-     <x>470</x>
-     <y>580</y>
+     <x>740</x>
+     <y>460</y>
      <width>86</width>
      <height>25</height>
     </rect>
@@ -55,8 +55,8 @@
   <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
-     <x>80</x>
-     <y>370</y>
+     <x>-70</x>
+     <y>380</y>
      <width>711</width>
      <height>189</height>
     </rect>
@@ -84,41 +84,6 @@
          </property>
          <property name="minimum">
           <number>1</number>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </widget>
-    </item>
-    <item row="0" column="3">
-     <widget class="QGroupBox" name="groupBox_4">
-      <property name="title">
-       <string>颜色</string>
-      </property>
-      <layout class="QHBoxLayout" name="horizontalLayout_4">
-       <item>
-        <widget class="QLabel" name="color">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-           <horstretch>2</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="text">
-          <string/>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="btchangecolor">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-           <horstretch>3</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="text">
-          <string>点击修改</string>
          </property>
         </widget>
        </item>
@@ -291,6 +256,47 @@
       </property>
       <property name="sortingEnabled">
        <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QGroupBox" name="groupBox_4">
+   <property name="geometry">
+    <rect>
+     <x>650</x>
+     <y>340</y>
+     <width>171</width>
+     <height>71</height>
+    </rect>
+   </property>
+   <property name="title">
+    <string>颜色</string>
+   </property>
+   <layout class="QHBoxLayout" name="horizontalLayout_4">
+    <item>
+     <widget class="QLabel" name="color">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+        <horstretch>2</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QPushButton" name="btchangecolor">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+        <horstretch>3</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="text">
+       <string>点击修改</string>
       </property>
      </widget>
     </item>

@@ -16,6 +16,7 @@ private:
 protected:
     void keyPressEvent(QKeyEvent *event);
     void mousePressEvent(QMouseEvent *event);
+    void mouseDoubleClickEvent(QMouseEvent *event);
 public:
     Myvideowidget(QWidget *parent =nullptr);
     void setMediaPlayer(QMediaPlayer *player);
