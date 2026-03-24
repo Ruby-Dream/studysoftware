@@ -67,10 +67,6 @@ MainWindow::MainWindow(QWidget *parent)
     course_timer->setTimerType(Qt::PreciseTimer);
     course_timer->stop();
 
-    // QSqlRecord rec=sqlmodel->record(0);
-    // QDate now=QDate::currentDate();//今天的日期
-    // currentweek=rec.value("firstday").toDate().daysTo(now)/7+1;//这个是软件当天时是第几周
-
     qrymodel=new QSqlQueryModel(nullptr);
     qrymodel2=new QSqlQueryModel(nullptr);
     connect(personal_timer,&QTimer::timeout,this,&MainWindow::do_singleshot_timeout_personal);

@@ -1,5 +1,4 @@
 #include "widget_notice.h"
-
 #include "ui_widget_notice.h"
 
 widget_notice::widget_notice(QSqlDatabase db,QWidget *parent)

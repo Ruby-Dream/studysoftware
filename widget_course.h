@@ -9,7 +9,9 @@
 #include <QSqlRecord>//sql记录读取写入
 #include <QSqlQueryModel>//sql查询模型
 #include <QWidget>
-//#include <QAbstractNativeEventFilter>
+#include "dialog_timesetting.h"
+#include "dialog_tablesetting.h"
+#include "widget_coursemanager.h"
 
 namespace Ui {
 class courseform;
@@ -47,8 +49,6 @@ private slots:
 private:
     Ui::courseform *ui;
     QStandardItemModel *mmodel;
-    //QWidget p;
-
     int row;//一天的课程节数
     int column;//一周的天数
     QDate day;//一学期开学第一周的周一
@@ -56,7 +56,6 @@ private:
 
     QSqlTableModel *sqlmodel,*sqlmodel2,*sqlmodel3;
     QSqlDatabase db;
-    //QSqlQueryModel *qrymodel;
 signals:
     void status(QString s,int LorR);
 };

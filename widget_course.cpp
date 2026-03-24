@@ -1,8 +1,6 @@
 #include "widget_course.h"
-#include "dialog_timesetting.h"
 #include "ui_widget_course.h"
-#include "dialog_tablesetting.h"
-#include "widget_coursemanager.h"
+
 
 courseform::courseform(QSqlDatabase db,QSqlTableModel *sqlmodel,QSqlTableModel *sqlmodel2,QSqlTableModel *sqlmodel3,QWidget *parent)
     : QWidget(parent)
@@ -243,6 +241,7 @@ void courseform::on_bt_coursemanager_clicked()//点击课程管理按钮
     connect(course,&widget_coursemanager::wantsetenable,this,&courseform::enable);
     connect(course,&widget_coursemanager::wantloadtable,this,&courseform::loadtable);
     connect(course,&widget_coursemanager::wantloadcourse,this,&courseform::loadcourse);
+
 }
 
 

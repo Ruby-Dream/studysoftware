@@ -6,16 +6,13 @@
 #include <QItemSelectionModel>//选择模型
 #include <QStandardItemModel>
 #include <QSqlRecord>//sql记录读取写入
-#include <QColorDialog>//颜色对话框
 #include <QSqlDatabase>
-#include <QDataWidgetMapper>//数据映射组件
 #include <QSqlQuery>
-#include <QMessageBox>
 
 #include "lineeditdelegate.h"
 #include "comboboxdelegate.h"
 #include "spindelegate.h"
-#include "readonlydelegate.h"
+#include "colordelegate.h"
 namespace Ui {
 class widget_coursemanager;
 }
@@ -31,16 +28,12 @@ public:
 private slots:
     void do_fresh_coursemanager();
     void do_currentRowChanged(const QModelIndex &current,const QModelIndex &previous);
-    void on_btchangecolor_clicked();
 
-    void on_bt_save_clicked();
     void opentable();
 
     void on_bt_new_clicked();
 
     void on_bt_delete_clicked();
-
-    void on_name_editingFinished();
 
     void sql(QString old,QString now);
 
@@ -49,13 +42,12 @@ private:
     QSqlTableModel *sqlmodel3;
     QStandardItemModel *mmodel;
     QItemSelectionModel *selection;
-    QDataWidgetMapper *mapper;
     QSqlDatabase db;
 
     LineeditDelegate *lineedit_delegate1,*lineedit_delegate2;
     ComboboxDelegate *combobox_delegate;
     SpinDelegate *spin_delegate;
-    ReadonlyDelegate *readonly_delegate;
+    ColorDelegate *color_delegate;
 signals:
     void wantloadtable();
     void wantloadcourse();
