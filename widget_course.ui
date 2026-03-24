@@ -63,15 +63,21 @@
   <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
-     <x>1060</x>
-     <y>180</y>
+     <x>1040</x>
+     <y>260</y>
      <width>107</width>
-     <height>231</height>
+     <height>161</height>
     </rect>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
      <widget class="QPushButton" name="bt_tablesetting">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
       <property name="text">
        <string>课表设置</string>
       </property>
@@ -79,6 +85,12 @@
     </item>
     <item>
      <widget class="QPushButton" name="bt_timesetting">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
       <property name="text">
        <string>上下课时间设置</string>
       </property>
@@ -86,8 +98,17 @@
     </item>
     <item>
      <widget class="QPushButton" name="bt_coursemanager">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
       <property name="text">
        <string>课程管理</string>
+      </property>
+      <property name="checkable">
+       <bool>true</bool>
       </property>
      </widget>
     </item>

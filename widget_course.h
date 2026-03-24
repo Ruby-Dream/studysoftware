@@ -39,12 +39,11 @@ private slots:
 
     void on_bt_tablesetting_clicked();
 
-    void on_bt_coursemanager_clicked();
-
     void on_bt_timesetting_clicked();
 
-
     void on_tableView_clicked(const QModelIndex &index);
+
+    void on_bt_coursemanager_clicked(bool checked);
 
 private:
     Ui::courseform *ui;
@@ -53,7 +52,7 @@ private:
     int column;//一周的天数
     QDate day;//一学期开学第一周的周一
     int today_week;//当前周是第几周
-
+    widget_coursemanager *course_manager;
     QSqlTableModel *sqlmodel,*sqlmodel2,*sqlmodel3;
     QSqlDatabase db;
 signals:

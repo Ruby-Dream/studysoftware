@@ -116,7 +116,8 @@ void courseform::loadtable()//设置课表横竖表头，以及长宽
 
 void courseform::enable()//恢复按钮可用性
 {
-    ui->bt_coursemanager->setEnabled(true);
+    ui->bt_coursemanager->setChecked(false);
+    ui->bt_coursemanager->setText("课程管理");
 }
 
 void courseform::loadcourse()//加载课程
@@ -170,9 +171,7 @@ void courseform::on_bt_upweek_clicked()//点击上一周
     watching_week-=1;
     loadcourse();
     if(watching_week==1) ui->bt_upweek->setHidden(true);//如果是从第二周切换到第一周，隐藏 上一周 按钮
-
 }
-
 
 void courseform::on_bt_downweek_clicked()//下一周
 {
@@ -230,21 +229,6 @@ void courseform::on_bt_tablesetting_clicked()//点击课表设置，以及处理
     }
 }
 
-
-void courseform::on_bt_coursemanager_clicked()//点击课程管理按钮
-{
-    ui->bt_coursemanager->setEnabled(false);//按钮禁用，避免多开
-    widget_coursemanager *course=new widget_coursemanager(db,mmodel,sqlmodel3,nullptr);
-    course->setWindowFlag(Qt::MSWindowsFixedSizeDialogHint);
-    course->setAttribute(Qt::WA_DeleteOnClose);//关闭窗口时自动释放内存，避免内存占用无限上涨
-    course->show();
-    connect(course,&widget_coursemanager::wantsetenable,this,&courseform::enable);
-    connect(course,&widget_coursemanager::wantloadtable,this,&courseform::loadtable);
-    connect(course,&widget_coursemanager::wantloadcourse,this,&courseform::loadcourse);
-
-}
-
-
 void courseform::on_bt_timesetting_clicked()//点击时间管理按钮
 {
     Dialog_timesetting *settime=new Dialog_timesetting(sqlmodel2,this);
@@ -266,6 +250,25 @@ void courseform::on_tableView_clicked(const QModelIndex &index)
         case 4: emit status(QString::asprintf("周五，第%d节 ",index.row()+1)+index.data().toString(),-1); break;
         case 5: emit status(QString::asprintf("周六，第%d节 ",index.row()+1)+index.data().toString(),-1); break;
         case 6: emit status(QString::asprintf("周日，第%d节 ",index.row()+1)+index.data().toString(),-1); break;
+    }
+}
+
+
+void courseform::on_bt_coursemanager_clicked(bool checked)
+{
+    if(checked){//点击打开窗口
+        ui->bt_coursemanager->setText("点击关闭");
+        course_manager=new widget_coursemanager(db,mmodel,sqlmodel3,nullptr);
+        course_manager->setWindowFlag(Qt::MSWindowsFixedSizeDialogHint);
+        course_manager->setAttribute(Qt::WA_DeleteOnClose);//关闭窗口时自动释放内存，避免内存占用无限上涨
+        course_manager->show();
+        connect(course_manager,&widget_coursemanager::wantsetenable,this,&courseform::enable);
+        connect(course_manager,&widget_coursemanager::wantloadtable,this,&courseform::loadtable);
+        connect(course_manager,&widget_coursemanager::wantloadcourse,this,&courseform::loadcourse);
+    }
+    else{//再点击关闭窗口
+        course_manager->close();
+        ui->bt_coursemanager->setText("课程管理");
     }
 }
 
