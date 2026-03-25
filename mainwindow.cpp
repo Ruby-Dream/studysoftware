@@ -8,6 +8,11 @@ MainWindow::MainWindow(QWidget *parent)
     t=new QSystemTrayIcon(this);
     t->setIcon(QIcon("D:/desktop/图片/好康的/4.jpg"));
     t->setToolTip("h");
+    QMenu *m = new QMenu;
+    m->addAction("显示", this, &QWidget::showNormal);
+    m->addSeparator();
+    m->addAction("退出", qApp, &QCoreApplication::quit);
+    t->setContextMenu(m);
     t->show();
 
 
@@ -85,7 +90,7 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::do_status(QString s,int LorR)
+void MainWindow::do_status(QString s,int LorR)//接收其他窗口的槽函数，修改左右下方状态栏小字显示，-1为左，1为右
 {
     if(LorR==-1){
         left->setText(s);
@@ -120,6 +125,7 @@ void MainWindow::on_bt_coursefile_clicked()//切换到课件窗口
     ui->bt_coursefile->setEnabled(false);
     ui->bt_course->setEnabled(true);
     ui->bt_notice->setEnabled(true);
+    connect(_widget_coursefile,&widget_coursefile::status,this,&MainWindow::do_status);
 }
 
 
@@ -150,7 +156,7 @@ void MainWindow::do_singleshot_timeout_personal()
 
 void MainWindow::do_singleshot_timeout_course()
 {
-    t->showMessage("该上课了",course_notice);
+    t->showMessage("即将上课",course_notice);
     setsingleshot_course();
 }
 
@@ -207,8 +213,10 @@ void MainWindow::setsingleshot_course()//设定下一次课程提醒
         QTime t=sqlmodel2->record(begin-1).value("begin_at").toTime().addSecs(-60*(qrymodel2->record(i).value("notice_before_min").toInt()));//应该提醒的时间
         QTime now=QTime::currentTime();//当前时间
         if(now.msecsTo(t)>0){
-            course_notice="上课时间："+qrymodel2->record(i).value("notice_before_min").toString()+"分钟后\n"
-                            +qrymodel2->record(i).value("notice_text").toString();
+            course_notice="现在是"+QTime::currentTime().toString("HH:mm")+'\n'
+                            +qrymodel2->record(i).value("name").toString()+"即将上课\n"
+                            +"上课时间："+qrymodel2->record(i).value("notice_before_min").toString()+"分钟后\n"
+                            +"备注:"+qrymodel2->record(i).value("notice_text").toString();
             //int n=1000+now.msecsTo(t);
             course_timer->setInterval(1000+now.msecsTo(t));
             course_timer->start();

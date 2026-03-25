@@ -7,6 +7,9 @@ widget_coursefile::widget_coursefile(QSqlDatabase db,QWidget *parent)
 {
     ui->setupUi(this);
     this->db=db;
+    ui->bt_include->installEventFilter(this);
+    ui->bt_delete->installEventFilter(this);
+    ui->bt_save->installEventFilter(this);
 
     sqlmodel4=new QSqlTableModel(nullptr,db);
     sqlmodel4->setTable("coursefile");
@@ -42,13 +45,30 @@ widget_coursefile::widget_coursefile(QSqlDatabase db,QWidget *parent)
     }
     listmodel2->setStringList(strlist2);
     ui->listView_file->setModel(listmodel2);
-
     ui->bt_delete->setEnabled(false);
+    emit status("全部",-1);
 }
 
 widget_coursefile::~widget_coursefile()
 {
     delete ui;
+}
+
+bool widget_coursefile::eventFilter(QObject *watched, QEvent *event)//事件过滤器
+{
+    if(watched==ui->bt_include && event->type()==QEvent::Enter){
+        emit status("导入一个或多个课件记录，重复的课件将被忽略",1);
+    }
+    else if(watched==ui->bt_delete && event->type()==QEvent::Enter){
+        emit status("删除选中的课件记录及备注，若是媒体则其节点将一并删除",1);
+    }
+    else if(watched==ui->bt_save && event->type()==QEvent::Enter){
+        emit status("保存该课件的备注，也可留空",1);
+    }
+    else if(event->type()==QEvent::Leave){
+        emit status(" ",1);
+    }
+    return QWidget::eventFilter(watched,event);
 }
 
 void widget_coursefile::loadfile()//加载视图，显示对应科目下的文件
@@ -92,8 +112,6 @@ void widget_coursefile::on_bt_include_clicked()//导入课件
             rec.setValue("name",course);
             rec.setValue("file",filelist.at(i));
             sqlmodel4->insertRecord(sqlmodel4->rowCount(),rec);
-
-
         }
         sqlmodel4->submitAll();//更改到数据库
         loadfile();
@@ -124,6 +142,8 @@ void widget_coursefile::on_listView_course_clicked(const QModelIndex &index)//�
     listmodel2->setStringList(strlist2);
     ui->listView_file->setModel(listmodel2);
     ui->plainTextEdit_filetext->clear();//切换课程时清空备注
+    ui->plainTextEdit_filetext->setEnabled(false);
+    emit status(s,-1);
 }
 
 
@@ -137,6 +157,8 @@ void widget_coursefile::on_listView_file_clicked(const QModelIndex &index)//单�
     QString ss=ui->listView_course->currentIndex().data().toString();
     ui->bt_delete->setEnabled(true);
     ui->bt_save->setEnabled(true);
+    ui->plainTextEdit_filetext->setEnabled(true);
+    emit status(ss+","+s,-1);
 }
 
 
@@ -189,6 +211,7 @@ void widget_coursefile::on_bt_delete_clicked()//点击删除当前课件条目
     query.bindValue(0,filename);
     query.exec();
     ui->plainTextEdit_filetext->clear();
+    ui->plainTextEdit_filetext->setEnabled(false);
     ui->bt_save->setEnabled(false);
     loadfile();
 }

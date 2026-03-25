@@ -29,7 +29,8 @@ public:
     LineeditDelegate *lineedit_delegate1,*lineedit_delegate2;
     DateDelegate *date_delegate;
     TimeDelegate *time_delegate;
-
+protected:
+    bool eventFilter(QObject *watched, QEvent *event);
 private slots:
 
     void on_bt_new_clicked();
@@ -38,11 +39,15 @@ private slots:
 
     void on_tv_person_clicked(const QModelIndex &index);
 
+    void on_tv_course_clicked(const QModelIndex &index);
+
 private:
     Ui::widget_notice *ui;
     QSqlDatabase db;
     QSqlTableModel *sqlmodel,*sqlmodel2;
     void loadnotice_personal();
+signals:
+    void status(QString s,int LorR);
 };
 
 #endif // WIDGET_NOTICE_H

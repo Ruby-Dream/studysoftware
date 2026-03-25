@@ -70,6 +70,11 @@ widget_notice::~widget_notice()
     delete ui;
 }
 
+bool widget_notice::eventFilter(QObject *watched, QEvent *event)
+{
+
+}
+
 
 void widget_notice::on_bt_new_clicked()//点击新增记录
 {
@@ -111,4 +116,12 @@ void widget_notice::on_tv_person_clicked(const QModelIndex &index)//激活删除
     ui->pushButton_2->setEnabled(true);
 }
 
+
+
+void widget_notice::on_tv_course_clicked(const QModelIndex &index)
+{
+    if(index.column()==9){
+
+    }
+}
 

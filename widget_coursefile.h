@@ -26,7 +26,8 @@ class widget_coursefile : public QWidget
 public:
     explicit widget_coursefile(QSqlDatabase db,QWidget *parent = nullptr);
     ~widget_coursefile();
-
+protected:
+    bool eventFilter(QObject *watched, QEvent *event);
 private slots:
     void on_bt_include_clicked();
 
@@ -50,6 +51,8 @@ private:
     QItemSelectionModel *selection1,*selection2;
     QSqlTableModel *sqlmodel4;
     void loadfile();
+signals:
+    void status(QString s,int LorR);
 };
 
 #endif // WIDGET_COURSEFILE_H
