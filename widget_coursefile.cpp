@@ -158,7 +158,13 @@ void widget_coursefile::on_listView_file_clicked(const QModelIndex &index)//单�
     ui->bt_delete->setEnabled(true);
     ui->bt_save->setEnabled(true);
     ui->plainTextEdit_filetext->setEnabled(true);
-    emit status(ss+","+s,-1);
+    QFileInfo fileinfo(ss);
+    if(fileinfo.suffix()=="mp3" ||fileinfo.suffix()=="mp4" ||fileinfo.suffix()=="wmv" ||fileinfo.suffix()=="mkv"){
+        emit status(ss+","+s+",双击以播放媒体",-1);
+    }
+    else{
+        emit status(ss+","+s+",双击以打开文件",-1);
+    }
 }
 
 
@@ -193,7 +199,6 @@ void widget_coursefile::on_listView_file_doubleClicked(const QModelIndex &index)
             QDesktopServices::openUrl(QUrl::fromLocalFile(file));
         }
     }
-
 }
 
 

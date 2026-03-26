@@ -54,6 +54,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     _courseform=new courseform(db,sqlmodel,sqlmodel2,sqlmodel3,this);
     connect(_courseform,&courseform::status,this,&MainWindow::do_status);
+    connect(_courseform,&courseform::fresh_timer_course,this,&MainWindow::setsingleshot_course);
     ui->stackedWidget->addWidget(_courseform);
     ui->stackedWidget->setCurrentWidget(_courseform);
     ui->bt_coursefile->setEnabled(true);
@@ -111,6 +112,7 @@ void MainWindow::on_bt_course_clicked()//切换到课表窗口
     ui->bt_course->setEnabled(false);
     ui->bt_notice->setEnabled(true);
     connect(_courseform,&courseform::status,this,&MainWindow::do_status);
+    connect(_courseform,&courseform::fresh_timer_course,this,&MainWindow::setsingleshot_course);
 }
 
 
@@ -140,7 +142,7 @@ void MainWindow::on_bt_notice_clicked()//切换到通知窗口
     ui->bt_coursefile->setEnabled(true);
     ui->bt_course->setEnabled(true);
     ui->bt_notice->setEnabled(false);
-
+    connect(_widget_notice,&widget_notice::status,this,&MainWindow::do_status);
     connect(_widget_notice->lineedit_delegate1,&LineeditDelegate::fresh_course,this,&MainWindow::setsingleshot_course);
     connect(_widget_notice->spin_delegate,&SpinDelegate::fresh,this,&MainWindow::setsingleshot_course);
     connect(_widget_notice->time_delegate,&TimeDelegate::fresh,this,&MainWindow::setsingleshot_personal);
@@ -224,7 +226,7 @@ void MainWindow::setsingleshot_course()//设定下一次课程提醒
         }
     }
 }
-//更新软件运行这时候的日期（与用户无关）
+//更新软件运行这时候的日期
 //什么时候需要更新：第一次启动时√，过午夜12点时√,事务通知发生修改时√
 void MainWindow::update_personal()
 {
@@ -232,7 +234,7 @@ void MainWindow::update_personal()
     QTimer::singleShot(86401000-QTime::currentTime().msec(),this,&MainWindow::update_personal);//下一次更新日期是在过午夜12点的时候
     setsingleshot_personal();//每天要执行一次检查是否今天有提醒事项
 }
-//更新软件运行这时候是星期几（与用户有关）
+//更新软件运行这时候是星期几
 //什么时候需要更新：第一次启动时√，过午夜12点时√，修改学期第一天时√，修改课程开始节时，修改课程前多少分钟提醒时，修改提醒备注时√√
 void MainWindow::update_course()
 {   switch (QDate::currentDate().dayOfWeek()){//更新当天是周几

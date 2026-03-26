@@ -39,7 +39,7 @@
     <string>保存</string>
    </property>
   </widget>
-  <widget class="QWidget" name="">
+  <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
      <x>110</x>
@@ -142,7 +142,7 @@
    <sender>btback</sender>
    <signal>clicked()</signal>
    <receiver>Dialog_timesetting</receiver>
-   <slot>close()</slot>
+   <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>172</x>

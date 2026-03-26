@@ -238,6 +238,7 @@ void courseform::on_bt_timesetting_clicked()//点击时间管理按钮
     settime->inittime(rec);
     connect(settime,&Dialog_timesetting::fresh,this,&courseform::loadtable);
     settime->exec();
+    emit fresh_timer_course();
 }
 
 

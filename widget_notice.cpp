@@ -121,7 +121,8 @@ void widget_notice::on_tv_person_clicked(const QModelIndex &index)//激活删除
 void widget_notice::on_tv_course_clicked(const QModelIndex &index)
 {
     if(index.column()==9){
-
+        emit status(sqlmodel->record(index.row()).value("name").toString()+"提前"+index.data().toString()+"分钟提醒上课,在-1~60之间变化,-1为不提醒",-1);
     }
+    else emit status(" ",-1);
 }
 

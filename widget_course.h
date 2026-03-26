@@ -57,6 +57,7 @@ private:
     QSqlDatabase db;
 signals:
     void status(QString s,int LorR);
+    void fresh_timer_course();
 };
 
 #endif // WIDGET_COURSE_H
